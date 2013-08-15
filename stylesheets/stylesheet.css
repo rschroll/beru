@@ -357,6 +357,10 @@ nav .next {
   float: right;
 }
 
+#disqus {
+  margin-top: 20px;
+}
+
 footer {
   background: transparent url('../images/hr.png') 0 0 no-repeat;
   margin-top: 15px;
