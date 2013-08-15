@@ -10,7 +10,7 @@ title: Devlog Archive
 <ul id="archive">
     {% for post in site.posts reversed %}
     <li>
-        <span>{{ post.date | date_to_string }}</span><a href="{{ post.url }}">{{ post.title }}</a>
+        <span>{{ post.date | date_to_string }}</span><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
     </li>
     {% endfor %}
 </ul>

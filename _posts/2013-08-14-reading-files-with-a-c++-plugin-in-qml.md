@@ -2,7 +2,7 @@
 layout: post
 title: Reading files with a C++ plugin in QML
 ---
-In the [previous post]({% post_url 2013-08-12-opening-a-file-in-qml %}), we saw the difficulty in reading a file with QML.  Most resources helpfully point out that you can do this in C++.  Because if there's one thing every programmer hopes for, it's to use C++ more often.
+In the [previous post]({{ site.baseurl }}{% post_url 2013-08-12-opening-a-file-in-qml %}), we saw the difficulty in reading a file with QML.  Most resources helpfully point out that you can do this in C++.  Because if there's one thing every programmer hopes for, it's to use C++ more often.
 
 There seem to be two ways you can do this: you can write your program in C++, with a `main.cpp` and everything, and then load the QML to be the GUI, or you can write a plugin in C++ that you can call from your QML program.  Since I'm one of those [rare programmers](http://yosefk.com/c++fqa/) that doesn't love C++, we're going to go the second way.
 
@@ -17,7 +17,7 @@ There's no comments.
 
 Okay, let's just build and run the thing to see what it does.  Then maybe I can work backwards to figure out which files are doing what.  Let's hit that green arrow and....
 
-<div style="text-align: center"><img src="{{ site.url }}/assets/plugin-run.png" alt="Run dialog with no executable specified" height="303" width="388" /></div>
+<div style="text-align: center"><img src="{{ site.baseurl }}/assets/plugin-run.png" alt="Run dialog with no executable specified" height="303" width="388" /></div>
 
 ...
 
@@ -190,8 +190,8 @@ Now if you click the run arrow, everything should build, but you'll get that dia
 
 ### Opening binary files
 
-Those of you with a good memory may remember the reason we're doing all of this work is that we can't [open binary files]({% post_url 2013-08-12-opening-a-file-in-qml %}) with directly with QML.  But if we try opening a binary file with `FileReader`, we find that it gets corrupted.
+Those of you with a good memory may remember the reason we're doing all of this work is that we can't [open binary files]({{ site.baseurl }}{% post_url 2013-08-12-opening-a-file-in-qml %}) with directly with QML.  But if we try opening a binary file with `FileReader`, we find that it gets corrupted.
 
 *Argh!* It seems that QML doesn't have an equivalent type for `QByteArray`, so it gets converted into a string when it becomes enters QML space.  I'm guessing that it becomes Unicode with a UTF-8 encoding or something, but that's not what we want.  I suspect there's no way around this.  We saw before that QML doesn't have an arraybuffer type, so there's probably nothing that can represent an arbitrary sequence of bytes.  The only thing we can do is to base64 encode the file before returning it to QML.  It's straightforward to add a `read_b64` method to `FileReader`.
 
-Here's a [tarball]({{ site.url }}/assets/filereader.tar.gz) with the whole project, including the base64 encoding.  Enjoy!
+Here's a [tarball]({{ site.baseurl }}/assets/filereader.tar.gz) with the whole project, including the base64 encoding.  Enjoy!
