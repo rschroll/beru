@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<h3 class="posttitle">{{ page.title }}</h3>
+<h4>{{ page.date | date_to_long_string }}</h4>
+
+<hr>
+
+<section id="main_content">
+{{ content }}
+</section>
+
+<nav>
+    <a href="{{ site.url}}/archive.html">Devlog Archive</a>
+    {% if page.previous.url %}
+    <a href="{{ page.previous.url }}" class="previous">« Previous</a>
+    {% endif %}
+    {% if page.next.url %}
+    <a href="{{ page.next.url }}" class="next">Next »</a>
+    {% endif %}
+</nav>

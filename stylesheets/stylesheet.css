@@ -65,7 +65,7 @@ a:hover {
 
 header {
   padding-top: 35px;
-  padding-bottom: 25px;
+  padding-bottom: 10px;
 }
 
 header h1 {
@@ -82,6 +82,10 @@ header h2 {
   color: #aaa;
   font-weight: normal;
   line-height: 1.3;
+}
+
+h1 a, h1 a:hover, h2 a, h2 a:hover {
+  color: inherit;
 }
 
 #container {
@@ -116,9 +120,10 @@ a.button {
   font-size: 15px;
   padding: 12px 8px 12px 8px;
   display: block;
-  float: left;
+  float: right;
   width: 179px;
   margin-right: 14px;  
+  margin-top: -25px;
   background: #fdfdfd; /* Old browsers */
   background: -moz-linear-gradient(top,  #fdfdfd 0%, #f2f2f2 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fdfdfd), color-stop(100%,#f2f2f2)); /* Chrome,Safari4+ */
@@ -166,7 +171,7 @@ a.button span {
 }
 
 code, pre {
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   color: #222;
   margin-bottom: 30px;
   font-size: 14px;
@@ -178,7 +183,7 @@ code {
   padding: 0 3px;
 }
 
-pre {
+pre, .highlightname {
   padding: 20px;
   background: #303030;
   color: #f2f2f2;
@@ -190,6 +195,15 @@ pre code {
   background-color: #303030;
   border: none;
   padding: 0;
+}
+.highlightname {
+  padding: 5px 20px;
+  margin-bottom: 2px;
+  font-weight: bold;
+  font-size: 14px;
+}
+.highlightname + * pre {
+  padding-top: 5px;
 }
 
 ul, ol, dl {
@@ -274,6 +288,17 @@ h6 {
   color: #303030;
 } 
 
+h3.posttitle {
+  font-size: 30px;
+}
+h3.posttitle + h4 {
+  color: #aaa;
+  font-size: 1em;
+  font-weight: normal;
+  margin-top: -16px;
+  margin-bottom: 16px;
+}
+
 p {
   font-weight: 300;
   margin-bottom: 20px;
@@ -288,10 +313,9 @@ p a {
 }
 
 blockquote {
-  font-size: 1.6em;
-  border-left: 10px solid #e9e9e9;
+  border-left: 10px solid #d3d3d3;
   margin-bottom: 20px;
-  padding: 0 0 0 30px;
+  padding: 0 0 0 20px;
 }
 
 ul li {
@@ -308,9 +332,34 @@ dl dt {
   color: #303030;
 }
 
+#archive li {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0.5em;
+}
+#archive li span {
+  font-size: 14px;
+  color: #aaa;
+  padding-right: 1em;
+}
+#archive li a {
+  font-weight: bold;
+}
+
+nav {
+  font-size: 14px;
+  text-align: center;
+}
+nav .previous {
+  float: left;
+}
+nav .next {
+  float: right;
+}
+
 footer {
   background: transparent url('../images/hr.png') 0 0 no-repeat;
-  margin-top: 40px;
+  margin-top: 15px;
   padding-top: 20px;
   padding-bottom: 30px;
   font-size: 13px;
