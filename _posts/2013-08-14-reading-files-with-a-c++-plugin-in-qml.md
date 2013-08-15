@@ -184,7 +184,7 @@ The `-I .` argument tells it to look in the current directory for extensions to 
 
 ### Use with Qt Creator
 
-If you open the `filereader.pro` file with Qt Creator, it will open the whole project for you.  It will give you a configuration screen; just accept the defaults.  Qt Creator likes to use "shadow builds", wherein the build happens in a completely separate directory.  I can see places where this would be useful, but here it would interfere with the QML file finding the libraries.  Disable them by clicking on the *Project* tab and delecting *Shadow build* under *General*.
+If you open the `filereader.pro` file with Qt Creator, it will open the whole project for you.  It will give you a configuration screen; just accept the defaults.  Qt Creator likes to use "shadow builds", wherein the build happens in a completely separate directory.  I can see places where this would be useful, but here it would interfere with the QML file finding the libraries.  Disable them by clicking on the *Project* tab and deselecting *Shadow build* under *General*.
 
 Now if you click the run arrow, everything should build, but you'll get that dialog I showed at the beginning of this post.  For *Command*, enter `qmlscene`.  For *Arguments*, `-I . app.qml`.  With a bit of luck, everything will just work.
 
