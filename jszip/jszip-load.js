@@ -9,9 +9,6 @@ Dual licenced under the MIT license or GPLv3. See LICENSE.markdown.
 **/
 /*global JSZip */
 "use strict";
-(function (root) {
-
-   var JSZip = root.JSZip;
 
    var MAX_VALUE_16BITS = 65535;
    var MAX_VALUE_32BITS = -1; // well, "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF" is parsed as -1
@@ -678,35 +675,6 @@ Dual licenced under the MIT license or GPLv3. See LICENSE.markdown.
    };
    // }}} end of ZipEntries
 
-   /**
-    * Implementation of the load method of JSZip.
-    * It uses the above classes to decode a zip file, and load every files.
-    * @param {String|ArrayBuffer|Uint8Array|Buffer} data the data to load.
-    * @param {Object} options Options for loading the data.
-    *  options.base64 : is the data in base64 ? default : false
-    */
-   JSZip.prototype.load = function(data, options) {
-      var files, zipEntries, i, input;
-      options = options || {};
-      if(options.base64) {
-         data = JSZip.base64.decode(data);
-      }
 
-      zipEntries = new ZipEntries(data, options);
-      files = zipEntries.files;
-      for (i = 0; i < files.length; i++) {
-         input = files[i];
-         this.file(input.fileName, input.decompressed, {
-            binary:true,
-            optimizedBinaryString:true,
-            date:input.date,
-            dir:input.dir
-         });
-      }
-
-      return this;
-   };
-
-}(this));
 // enforcing Stuk's coding style
 // vim: set shiftwidth=3 softtabstop=3 foldmethod=marker:

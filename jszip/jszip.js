@@ -1421,5 +1421,38 @@ JSZip.base64 = (function() {
    };
 }());
 
+Qt.include("jszip-load.js")
+
+/**
+ * Implementation of the load method of JSZip.
+ * It uses the above classes to decode a zip file, and load every files.
+ * @param {String|ArrayBuffer|Uint8Array|Buffer} data the data to load.
+ * @param {Object} options Options for loading the data.
+ *  options.base64 : is the data in base64 ? default : false
+ */
+JSZip.prototype.load = function(data, options) {
+   var files, zipEntries, i, input;
+   options = options || {};
+   if(options.base64) {
+      data = JSZip.base64.decode(data);
+   }
+
+   zipEntries = new ZipEntries(data, options);
+   files = zipEntries.files;
+   for (i = 0; i < files.length; i++) {
+      input = files[i];
+      this.file(input.fileName, input.decompressed, {
+         binary:true,
+         optimizedBinaryString:true,
+         date:input.date,
+         dir:input.dir
+      });
+   }
+
+   return this;
+};
+
+Qt.include("jszip-inflate.js")
+
 // enforcing Stuk's coding style
 // vim: set shiftwidth=3 softtabstop=3:

@@ -3,7 +3,9 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import QtWebKit 3.0
 import org.nemomobile.folderlistmodel 1.0
+
 import File 1.0
+import "../jszip/jszip.js" as JsZip
 
 
 MainView {
@@ -56,7 +58,9 @@ MainView {
                     progression: true
                     onClicked: {
                         var file = filereader.read_b64(model.filePath)
-                        pageStack.push(webviewpage, {contents: model.fileName})
+                        var zipfile = new JsZip.JSZip()
+                        zipfile.load(file, {base64: true})
+                        pageStack.push(webviewpage, {contents: zipfile.file("mimetype").asText()})
                     }
                 }
             }
