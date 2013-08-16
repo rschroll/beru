@@ -104,7 +104,7 @@ MainView {
                     var file = zipfile.file(path.slice(1))
                     //response.setHeader("Content-Type", "text/plain")
                     response.writeHead(200)
-                    response.write(file.asText())
+                    response.write_b64(file.asBase64())
                     response.end()
                 }
 

@@ -121,6 +121,11 @@ public slots:
     Q_INVOKABLE void write(const QString &data);
 
     /*!
+     * Write data that has been encoded in base64.
+     */
+    Q_INVOKABLE void write_b64(const QByteArray &data);
+
+    /*!
      * End the response. Data will be flushed
      * to the underlying socket and the connection
      * itself will be closed if this is the last

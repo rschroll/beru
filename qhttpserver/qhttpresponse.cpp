@@ -172,6 +172,11 @@ void QHttpResponse::write(const QString &data)
     m_connection->write(data.toUtf8());
 }
 
+void QHttpResponse::write_b64(const QByteArray &data)
+{
+    this->write(QByteArray::fromBase64(data));
+}
+
 void QHttpResponse::end(const QString &data)
 {
     if(m_finished) {

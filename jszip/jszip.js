@@ -188,6 +188,13 @@ JSZip.prototype = (function () {
        */
       asArrayBuffer : function () {
          return this.asUint8Array().buffer;
+      },
+      /**
+       * Returns the content encoded with base 64.
+       * @return {string} the encoded content.
+       */
+      asBase64 : function () {
+         return JSZip.base64.encode(this.asBinary());
       }
    };
 
