@@ -5,6 +5,7 @@ import QtWebKit 3.0
 import org.nemomobile.folderlistmodel 1.0
 
 import File 1.0
+import HttpServer 1.0
 import "../jszip/jszip.js" as JsZip
 
 
@@ -58,9 +59,9 @@ MainView {
                     progression: true
                     onClicked: {
                         var file = filereader.read_b64(model.filePath)
-                        var zipfile = new JsZip.JSZip()
-                        zipfile.load(file, {base64: true})
-                        pageStack.push(webviewpage, {contents: zipfile.file("mimetype").asText()})
+                        server.zipfile = new JsZip.JSZip(file, {base64: true})
+                        webview.url = "http://127.0.0.1:5000"
+                        pageStack.push(webviewpage, {contents: server.zipfile.file("mimetype").asText()})
                     }
                 }
             }
@@ -71,15 +72,47 @@ MainView {
             visible: false
 
             property var contents
-            onContentsChanged: {
-                webview.loadHtml("<br><br><br><br>" + contents)
-            }
 
             WebView {
                 id: webview
                 anchors {
                     fill: parent
                     margins: units.gu(2)
+                }
+            }
+
+            HttpServer {
+                id: server
+                Component.onCompleted: listen("127.0.0.1", 5000)
+
+                property var zipfile
+
+                function index(response) {
+                    var files = zipfile.file(/.*/)
+                    response.setHeader("Content-Type", "text/html")
+                    response.writeHead(200)
+                    response.write("<html><body><ul>")
+                    for (var i=0; i<files.length; i++) {
+                        response.write("<li><a href='" + files[i].name + "'>" +
+                                       files[i].name + "</a></li>")
+                    }
+                    response.write("</ul></body></html>")
+                    response.end()
+                }
+
+                function component(path, response) {
+                    var file = zipfile.file(path.slice(1))
+                    //response.setHeader("Content-Type", "text/plain")
+                    response.writeHead(200)
+                    response.write(file.asText())
+                    response.end()
+                }
+
+                onNewRequest: { // request, response
+                    if (request.path == "/")
+                        return index(response)
+
+                    return component(request.path, response)
                 }
             }
         }
