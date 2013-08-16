@@ -16,6 +16,7 @@ Usage:
    base64zip = zip.generate();
 
 **/
+.pragma library
 "use strict";
 
 /**
