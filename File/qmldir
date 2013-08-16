@@ -1,0 +1,2 @@
+module File
+plugin filereaderplugin
