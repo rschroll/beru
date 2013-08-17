@@ -77,6 +77,14 @@ MainView {
             WebView {
                 id: webview
                 anchors.fill: parent
+
+                onTitleChanged: {
+                    var command = JSON.parse(title)
+                    if (command[0] == "ExternalLink")
+                        Qt.openUrlExternally(command[1])
+                    else
+                        console.log("Unknown command: " + command)
+                }
             }
 
             HttpServer {
@@ -107,7 +115,6 @@ MainView {
                 }
 
                 onNewRequest: { // request, response
-                    console.log(request.path)
                     if (request.path == "/")
                         return static_file("index.html", response)
                     if (request.path[1] == ".")

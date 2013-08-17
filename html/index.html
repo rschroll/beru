@@ -9,6 +9,10 @@
 <script src=".loadbook.js"></script>
 <script>
 function createReader(bookData) {
+    Monocle.Events.listen("reader", "monocle:link:external", function(event) {
+        document.title = JSON.stringify(["ExternalLink", event.m.href.external]);
+    });
+
     // Make sure each book saves its place to different cookies
     Monocle.Controls.PlaceSaver.COOKIE_NAMESPACE +=
         bookData.getMetaData("title").toLowerCase().replace(/[^a-z0-9]/g, '') + ".";
