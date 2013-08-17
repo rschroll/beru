@@ -9,9 +9,21 @@
 <script src=".loadbook.js"></script>
 <script>
 function createReader(bookData) {
-    Monocle.Reader("reader", bookData);
-    console.log("Done");
+    // Make sure each book saves its place to different cookies
+    Monocle.Controls.PlaceSaver.COOKIE_NAMESPACE +=
+        bookData.getMetaData("title").toLowerCase().replace(/[^a-z0-9]/g, '') + ".";
+    Monocle.Controls.PlaceSaver.COOKIE_EXPIRES_IN_DAYS = 365;
+    var placeSaver = new Monocle.Controls.PlaceSaver("reader");
+    Monocle.Reader("reader", bookData,
+        { panels: Monocle.Panels.TwoPane, place: placeSaver.savedPlace() },
+        function (reader) {
+            var stencil = new Monocle.Controls.Stencil(reader);
+            reader.addControl(stencil);
+            reader.addControl(placeSaver);
+        }
+    );
 }
+
 window.onload = function () {
     var epub = new Epub(createReader);
 }
