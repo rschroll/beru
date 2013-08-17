@@ -22,7 +22,7 @@ MainView {
     */
     //automaticOrientation: true
     
-    width: units.gu(100)
+    width: units.gu(50)
     height: units.gu(75)
 
     PageStack {
@@ -70,15 +70,13 @@ MainView {
         Page {
             id: webviewpage
             visible: false
+            //flickable: null
 
             property var contents
 
             WebView {
                 id: webview
-                anchors {
-                    fill: parent
-                    margins: units.gu(2)
-                }
+                anchors.fill: parent
             }
 
             HttpServer {

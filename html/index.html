@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 
 <script src=".monocle/scripts/monocore.js"></script>
 <script src=".monocle/scripts/monoctrl.js"></script>
@@ -12,7 +13,6 @@ function createReader(bookData) {
     console.log("Done");
 }
 window.onload = function () {
-    console.log("Here we go");
     var epub = new Epub(createReader);
 }
 </script>

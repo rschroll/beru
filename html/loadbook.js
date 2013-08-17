@@ -2,10 +2,8 @@
 // the XML document as the argument.
 function loadXMLComponent(path, callback) {
     var request = new XMLHttpRequest();
-    console.log(document.location.href + path)
     request.open("GET", document.location.href + path);
     request.onload = function () {
-        console.log("Callback")
         callback(request.responseXML);
     }
     request.send();
