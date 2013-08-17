@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+
+<script src=".monocle/scripts/monocore.js"></script>
+<script src=".monocle/scripts/monoctrl.js"></script>
+<script src=".loadbook.js"></script>
+<script>
+function createReader(bookData) {
+    Monocle.Reader("reader", bookData);
+    console.log("Done");
+}
+window.onload = function () {
+    console.log("Here we go");
+    var epub = new Epub(createReader);
+}
+</script>
+
+<link rel="stylesheet" type="text/css" href=".monocle/styles/monocore.css" />
+<link rel="stylesheet" type="text/css" href=".monocle/styles/monoctrl.css" />
+<style type="text/css">
+div#reader {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+div.monelem_page {
+    bottom: 0;
+    right: 0;
+}
+</style>
+</head>
+
+<body>
+<div id="reader"></div>
+</body>
+</html>

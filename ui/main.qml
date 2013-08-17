@@ -60,8 +60,8 @@ MainView {
                     onClicked: {
                         var file = filereader.read_b64(model.filePath)
                         server.zipfile = new JsZip.JSZip(file, {base64: true})
-                        webview.url = "http://127.0.0.1:5000"
-                        pageStack.push(webviewpage, {contents: server.zipfile.file("mimetype").asText()})
+                        webview.url = "http://127.0.0.1:" + server.port
+                        pageStack.push(webviewpage)
                     }
                 }
             }
@@ -83,20 +83,20 @@ MainView {
 
             HttpServer {
                 id: server
-                Component.onCompleted: listen("127.0.0.1", 5000)
+
+                property int port: 5000
+
+                Component.onCompleted: {
+                    while (!listen("127.0.0.1", port))
+                        port += 1
+                }
 
                 property var zipfile
 
-                function index(response) {
-                    var files = zipfile.file(/.*/)
-                    response.setHeader("Content-Type", "text/html")
+                function static_file(path, response) {
+                    var file = filereader.read_b64("html/" + path)
                     response.writeHead(200)
-                    response.write("<html><body><ul>")
-                    for (var i=0; i<files.length; i++) {
-                        response.write("<li><a href='" + files[i].name + "'>" +
-                                       files[i].name + "</a></li>")
-                    }
-                    response.write("</ul></body></html>")
+                    response.write_b64(file)
                     response.end()
                 }
 
@@ -109,9 +109,11 @@ MainView {
                 }
 
                 onNewRequest: { // request, response
+                    console.log(request.path)
                     if (request.path == "/")
-                        return index(response)
-
+                        return static_file("index.html", response)
+                    if (request.path[1] == ".")
+                        return static_file(request.path.slice(2), response)
                     return component(request.path, response)
                 }
             }
