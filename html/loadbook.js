@@ -1,3 +1,9 @@
+/* Copyright 2013 Robert Schroll
+ *
+ * This file is part of Beru and is distributed under the terms of
+ * the GPL license. See the file COPYING for full details.
+ */
+
 // Load the XML file at path from the sever, and then call the callback with
 // the XML document as the argument.
 function loadXMLComponent(path, callback) {

@@ -1,0 +1,32 @@
+Copyright 2013 Robert Schroll
+
+Beru is licensed under the GNU General Public License (version 3 or
+later).  See the LICENSE file for the terms of this license.
+
+Beru contains within it portions of several other free software
+projects.  The original licenses are included in the appropriate
+directories.  At your option, you may use these portions under the
+terms of the original license.  This includes any changes I have
+made to these portions.
+
+These components include:
+
+JSZip, in jszip/
+Copyright 2009-2012 Stuart Knightley, David Duponchel, Franz
+                    Buchinger, António Afonso
+Dual licensed under the MIT license or the GPLv3 license.
+http://stuk.github.io/jszip/
+
+Monocle, in html/monocle/
+Copyright 2012 Joseph Pearson
+Licensed under the MIT license.
+http://monocle.inventivelabs.com.au/
+
+QHttpServer, in qhttpserver/
+Copyright 2011-2012 Nikhil Marathe
+Licensed under the MIT license.
+https://github.com/nikhilm/qhttpserver
+
+HTTP Parser, in qhttpserver/http-parser
+Copyright Igor Sysoev, Joyent, Inc, and others
+Licensed under the MIT license.

@@ -1,3 +1,9 @@
+/* Copyright 2013 Robert Schroll
+ *
+ * This file is part of Beru and is distributed under the terms of
+ * the GPL license. See the file COPYING for full details.
+ */
+
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
