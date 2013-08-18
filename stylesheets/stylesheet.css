@@ -332,6 +332,11 @@ dl dt {
   color: #303030;
 }
 
+img.center {
+  display: block;
+  margin: auto auto 20px auto;
+}
+
 #archive li {
   list-style: none;
   padding-left: 0;

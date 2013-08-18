@@ -17,7 +17,7 @@ There's no comments.
 
 Okay, let's just build and run the thing to see what it does.  Then maybe I can work backwards to figure out which files are doing what.  Let's hit that green arrow and....
 
-<div style="text-align: center"><img src="{{ site.baseurl }}/assets/plugin-run.png" alt="Run dialog with no executable specified" height="303" width="388" /></div>
+<img class="center" src="{{ site.baseurl }}/assets/plugin-run.png" alt="Run dialog with no executable specified" height="303" width="388" />
 
 ...
 
