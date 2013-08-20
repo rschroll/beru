@@ -5,6 +5,7 @@
  */
 
 import QtQuick 2.0
+import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import QtWebKit 3.0
@@ -40,31 +41,107 @@ MainView {
             visible: false
             title: i18n.tr("Books")
 
+            function openDatabase() {
+                return LocalStorage.openDatabaseSync("BeruLocalBooks", "1", "Books on the local device", 1000000)
+            }
+
+            function fileToTitle(filename) {
+                return filename.replace(/\.epub$/, "").replace(/_/g, " ")
+            }
+
+            function addFile(filePath, fileName) {
+                var db = openDatabase()
+                db.transaction(function (tx) {
+                    // New items are given a lastread time of now, since these are probably
+                    // interesting for a user to see.
+                    tx.executeSql("INSERT OR IGNORE INTO LocalBooks(filename, title, lastread)" +
+                                  " VALUES(?, ?, datetime('now'))", [filePath, fileToTitle(fileName)])
+                })
+            }
+
+            function listBooks(sortBy) {
+                var db = openDatabase()
+                db.readTransaction(function (tx) {
+                    var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
+                                            "ORDER BY lastread DESC, title ASC");
+                    for (var i=0; i<res.rows.length; i++) {
+                        bookModel.append(res.rows.item(i))
+                    }
+                })
+            }
+
+            Component.onCompleted: {
+                var db = openDatabase()
+                db.transaction(function (tx) {
+                    tx.executeSql("CREATE TABLE IF NOT EXISTS LocalBooks(filename TEXT UNIQUE, " +
+                                  "title TEXT, author TEXT, cover BLOB, lastread TEXT)")
+                })
+                loadTimer.start()
+            }
+
+            // This will list all files in "~/Books"
+            FolderListModel {
+                id: folderModel
+                //readsMediaMetadata: true
+                isRecursive: true
+                showDirectories: true
+                filterDirectories: false
+                path: homePath() + "/Books"
+                nameFilters: ["*.epub"] // file types supported.
+            }
+
+            // We use the repeater to iterate through the folderModel
+            Repeater {
+                id: folderRepeater
+                model: folderModel
+
+                Component {
+                    Item {
+                        Component.onCompleted: {
+                            loadTimer.stop()
+                            listpage.addFile(filePath, fileName)
+                            loadTimer.start()
+                        }
+                    }
+                }
+            }
+
+            // When we're finished making sure all the files in ~/Books are
+            // in the database, we read out the database into our ListModel.
+            // This timer is to ensure that the loading runs only after all
+            // those files have been checked.
+            Timer {
+                id: loadTimer
+                interval: 100
+                repeat: false
+                running: false
+                triggeredOnStart: false
+
+                onTriggered: {
+                    console.log("Timer expired")
+                    listpage.listBooks("")
+                }
+            }
+
+            ListModel {
+                id: bookModel
+            }
+
+            FileReader {
+                id: filereader
+            }
+
             ListView {
                 id: listview
                 anchors.fill: parent
 
-                FolderListModel {
-                    id: folderScannerModel
-                    //readsMediaMetadata: true
-                    isRecursive: true
-                    showDirectories: true
-                    filterDirectories: false
-                    path: homePath() + "/Books"
-                    nameFilters: ["*.epub"] // file types supported.
-                }
-
-                FileReader {
-                    id: filereader
-                }
-
-                model: folderScannerModel
+                model: bookModel
                 delegate: Subtitled {
-                    text: model.fileName
-                    subText: model.filePath
+                    text: model.title
+                    subText: model.author || ""
                     progression: true
                     onClicked: {
-                        var file = filereader.read_b64(model.filePath)
+                        var file = filereader.read_b64(model.filename)
                         server.zipfile = new JsZip.JSZip(file, {base64: true})
                         webview.url = "http://127.0.0.1:" + server.port
                         pageStack.push(webviewpage)
