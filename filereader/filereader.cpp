@@ -20,3 +20,8 @@ QString FileReader::read_b64(const QString &filename)
 {
     return this->read(filename).toBase64();
 }
+
+bool FileReader::exists(const QString &filename)
+{
+    return QFile::exists(filename);
+}

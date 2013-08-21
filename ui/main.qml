@@ -65,7 +65,8 @@ MainView {
                     var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
                                             "ORDER BY lastread DESC, title ASC");
                     for (var i=0; i<res.rows.length; i++) {
-                        bookModel.append(res.rows.item(i))
+                        if (filereader.exists(res.rows.item(i).filename))
+                            bookModel.append(res.rows.item(i))
                     }
                 })
             }
