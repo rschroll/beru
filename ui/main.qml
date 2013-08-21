@@ -8,6 +8,7 @@ import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
+import Ubuntu.Components.Popups 0.1
 import QtWebKit 3.0
 import org.nemomobile.folderlistmodel 1.0
 
@@ -40,6 +41,8 @@ MainView {
             id: listpage
             visible: false
             title: i18n.tr("Books")
+            property int sort: 0
+            onSortChanged: listBooks()
 
             function openDatabase() {
                 return LocalStorage.openDatabaseSync("BeruLocalBooks", "1", "Books on the local device", 1000000)
@@ -59,11 +62,18 @@ MainView {
                 })
             }
 
-            function listBooks(sortBy) {
+            function listBooks() {
+                var sort = ["lastread DESC, title ASC", "title ASC", "author ASC, title ASC"][listpage.sort]
+                if (sort === undefined) {
+                    console.log("Error: Undefined sorting: " + listpage.sort)
+                    return
+                }
+
+                bookModel.clear()
                 var db = openDatabase()
                 db.readTransaction(function (tx) {
                     var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
-                                            "ORDER BY lastread DESC, title ASC");
+                                            "ORDER BY " + sort);
                     for (var i=0; i<res.rows.length; i++) {
                         if (filereader.exists(res.rows.item(i).filename))
                             bookModel.append(res.rows.item(i))
@@ -120,7 +130,7 @@ MainView {
 
                 onTriggered: {
                     console.log("Timer expired")
-                    listpage.listBooks("")
+                    listpage.listBooks()
                 }
             }
 
@@ -146,6 +156,52 @@ MainView {
                         server.zipfile = new JsZip.JSZip(file, {base64: true})
                         webview.url = "http://127.0.0.1:" + server.port
                         pageStack.push(webviewpage)
+                    }
+                }
+            }
+
+            tools: ToolbarItems {
+                id: listpageToolbar
+
+                ToolbarButton {
+                    id: sortButton
+                    action: Action {
+                        text: i18n.tr("Sort")
+                        iconSource: Qt.resolvedUrl("")
+                        onTriggered: PopupUtils.open(sortComponent, sortButton)
+                    }
+                }
+            }
+
+            Component {
+                id: sortComponent
+
+                ActionSelectionPopover {
+                    id: sortPopover
+
+                    delegate: Standard {
+                        text: action.text
+                        selected: action.sort == listpage.sort
+                        onTriggered: {
+                            listpage.sort = action.sort
+                            PopupUtils.close(sortPopover)
+                            listpageToolbar.opened = false
+                        }
+                    }
+
+                    actions: ActionList {
+                        Action {
+                            text: i18n.tr("Recently Read")
+                            property int sort: 0
+                        }
+                        Action {
+                            text: i18n.tr("Title")
+                            property int sort: 1
+                        }
+                        Action {
+                            text: i18n.tr("Author")
+                            property int sort: 2
+                        }
                     }
                 }
             }
