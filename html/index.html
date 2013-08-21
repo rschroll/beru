@@ -13,10 +13,11 @@ the GPL. See the file COPYING for full details.
 <script src=".monocle/scripts/monocore.js"></script>
 <script src=".monocle/scripts/monoctrl.js"></script>
 <script src=".loadbook.js"></script>
+<script src=".messaging.js"></script>
 <script>
 function createReader(bookData) {
     Monocle.Events.listen("reader", "monocle:link:external", function(event) {
-        document.title = JSON.stringify(["ExternalLink", event.m.href.external]);
+        Messaging.sendMessage("ExternalLink", event.m.href.external);
     });
 
     // Make sure each book saves its place to different cookies
@@ -24,7 +25,7 @@ function createReader(bookData) {
         bookData.getMetaData("title").toLowerCase().replace(/[^a-z0-9]/g, '') + ".";
     Monocle.Controls.PlaceSaver.COOKIE_EXPIRES_IN_DAYS = 365;
     var placeSaver = new Monocle.Controls.PlaceSaver("reader");
-    Monocle.Reader("reader", bookData,
+    var reader = Monocle.Reader("reader", bookData,
         { panels: Monocle.Panels.TwoPane, place: placeSaver.savedPlace() },
         function (reader) {
             var stencil = new Monocle.Controls.Stencil(reader);
@@ -32,6 +33,10 @@ function createReader(bookData) {
             reader.addControl(placeSaver);
         }
     );
+    Messaging.sendMessage("Contents", bookData.getContents());
+    Messaging.registerHandler("NavigateChapter", function (src) {
+        reader.skipToChapter(src);
+    });
 }
 
 window.onload = function () {
