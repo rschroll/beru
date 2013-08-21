@@ -1,7 +1,7 @@
 /* Copyright 2013 Robert Schroll
  *
  * This file is part of Beru and is distributed under the terms of
- * the GPL license. See the file COPYING for full details.
+ * the GPL. See the file COPYING for full details.
  */
 
 #ifndef FILEREADERPLUGIN_H
