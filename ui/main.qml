@@ -81,6 +81,16 @@ MainView {
                 })
             }
 
+            function updateRead(filename) {
+                var db = openDatabase()
+                db.transaction(function (tx) {
+                    tx.executeSql("UPDATE LocalBooks SET lastread=datetime('now') WHERE filename=?",
+                                  [filename])
+                })
+                if (listpage.sort == 0)
+                    listBooks()
+            }
+
             Component.onCompleted: {
                 var db = openDatabase()
                 db.transaction(function (tx) {
@@ -156,6 +166,7 @@ MainView {
                         server.zipfile = new JsZip.JSZip(file, {base64: true})
                         webview.url = "http://127.0.0.1:" + server.port
                         pageStack.push(webviewpage)
+                        listpage.updateRead(model.filename)
                     }
                 }
             }
