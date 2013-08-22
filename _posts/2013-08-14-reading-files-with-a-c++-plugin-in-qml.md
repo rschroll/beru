@@ -134,7 +134,7 @@ $ qmake
 $ make
 {% endhighlight %}
 
-and you should get a folder named `File` with `libfilereaderplugin.so` in it.  To this directory, you need to add a file named `qml` with these contents:
+and you should get a folder named `File` with `libfilereaderplugin.so` in it.  To this directory, you need to add a file named `qmldir` with these contents:
 
 <div class="highlightname">File/qmldir</div>
 {% highlight html %}
