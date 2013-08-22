@@ -28,7 +28,8 @@ HttpServer {
     }
     
     function static_file(path, response) {
-        var file = filereader.read_b64("html/" + path)
+        // Need to strip off leading "file://"
+        var file = filereader.read_b64(Qt.resolvedUrl("../html/" + path).slice(7))
         response.writeHead(200)
         response.write_b64(file)
         response.end()
