@@ -17,6 +17,7 @@ public:
     Q_INVOKABLE QByteArray read(const QString &filename);
     Q_INVOKABLE QString read_b64(const QString &filename);
     Q_INVOKABLE bool exists(const QString &filename);
+    Q_INVOKABLE QString canonicalFilePath(const QString &filename);
 };
 
 #endif // FILEREADER_H

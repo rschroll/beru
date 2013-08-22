@@ -51,4 +51,23 @@ MainView {
         pageStack.push(bookPage, {url: "http://127.0.0.1:" + server.port})
         localBooks.updateRead(filename)
     }
+
+    Arguments {
+        id: args
+
+        Argument {
+            name: "appargs"
+            required: true
+            valueNames: ["APP_ARGS"]
+        }
+    }
+
+    Component.onCompleted: {
+        var filePath = filereader.canonicalFilePath(args.values.appargs)
+        if (filePath !== "") {
+            var fileName = filePath.split("/").pop()
+            localBooks.addFile(filePath, fileName)
+            loadFile(fileName)
+        }
+    }
 }

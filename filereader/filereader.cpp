@@ -6,6 +6,7 @@
 
 #include "filereader.h"
 #include <QFile>
+#include <QFileInfo>
 
 QByteArray FileReader::read(const QString &filename)
 {
@@ -24,4 +25,10 @@ QString FileReader::read_b64(const QString &filename)
 bool FileReader::exists(const QString &filename)
 {
     return QFile::exists(filename);
+}
+
+QString FileReader::canonicalFilePath(const QString &filename)
+{
+    QFileInfo fileinfo(filename);
+    return fileinfo.canonicalFilePath();
 }
