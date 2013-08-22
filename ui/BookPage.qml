@@ -12,6 +12,7 @@ import QtWebKit 3.0
 import QtWebKit.experimental 1.0
 
 import "qmlmessaging.js" as Messaging
+import "historystack.js" as History
 
 
 Page {
@@ -20,6 +21,17 @@ Page {
     //flickable: null
     
     property alias url: bookWebView.url
+    property var currentChapter: null
+    property var history: new History.History(updateNavButtons)
+    property bool navjump: false
+
+    onVisibleChanged: {
+        if (visible == false) {
+            // Reset things for the next time this page is opened
+            history.clear()
+            url = ""
+        }
+    }
 
     ListModel {
         id: contentsListModel
@@ -34,6 +46,42 @@ Page {
 
     tools: ToolbarItems {
         id: bookPageToolbar
+        onOpenedChanged: {
+            backButton.visible = history.canBackward()
+            forwardButton.visible = history.canForward()
+        }
+
+        ToolbarButton {
+            id: backButton
+            action: Action {
+                text: i18n.tr("Back")
+                visible: false
+                iconSource: Qt.resolvedUrl("")
+                onTriggered: {
+                    var locus = history.goBackward()
+                    if (locus !== null) {
+                        navjump = true
+                        Messaging.sendMessage("GotoLocus", locus)
+                    }
+                }
+            }
+        }
+
+        ToolbarButton {
+            id: forwardButton
+            action: Action {
+                text: i18n.tr("Forward")
+                visible: false
+                iconSource: Qt.resolvedUrl("")
+                onTriggered: {
+                    var locus = history.goForward()
+                    if (locus !== null) {
+                        navjump = true
+                        Messaging.sendMessage("GotoLocus", locus)
+                    }
+                }
+            }
+        }
 
         ToolbarButton {
             id: contentsButton
@@ -63,14 +111,27 @@ Page {
                 model: contentsListModel
                 delegate: Standard {
                     text: (new Array(model.level + 1)).join("    ") + model.title.replace("\n", "")
+                    selected: bookPage.currentChapter == model.src
                     onClicked: {
                         Messaging.sendMessage("NavigateChapter", model.src)
                         PopupUtils.close(contentsPopover)
                         bookPageToolbar.opened = false
                     }
                 }
+
+                Component.onCompleted: {
+                    for (var i=0; i<contentsListModel.count; i++) {
+                        if (contentsListModel.get(i).src == bookPage.currentChapter)
+                            positionViewAtIndex(i, ListView.Center)
+                    }
+                }
             }
         }
+    }
+
+    function updateNavButtons(back, forward) {
+        backButton.visible = back
+        forwardButton.visible = forward
     }
 
     function onExternalLink(href) {
@@ -91,8 +152,21 @@ Page {
         }
     }
 
+    function onJumping(locuses) {
+        if (navjump)
+            navjump = false
+        else
+            history.add(locuses[0], locuses[1])
+    }
+
+    function setChapterSrc(src) {
+        currentChapter = src
+    }
+
     Component.onCompleted: {
         Messaging.registerHandler("ExternalLink", onExternalLink)
         Messaging.registerHandler("Contents", parseContents)
+        Messaging.registerHandler("Jumping", onJumping)
+        Messaging.registerHandler("ChapterSrc", setChapterSrc)
     }
 }

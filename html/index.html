@@ -16,10 +16,6 @@ the GPL. See the file COPYING for full details.
 <script src=".messaging.js"></script>
 <script>
 function createReader(bookData) {
-    Monocle.Events.listen("reader", "monocle:link:external", function(event) {
-        Messaging.sendMessage("ExternalLink", event.m.href.external);
-    });
-
     // Make sure each book saves its place to different cookies
     Monocle.Controls.PlaceSaver.COOKIE_NAMESPACE +=
         bookData.getMetaData("title").toLowerCase().replace(/[^a-z0-9]/g, '') + ".";
@@ -36,6 +32,19 @@ function createReader(bookData) {
     Messaging.sendMessage("Contents", bookData.getContents());
     Messaging.registerHandler("NavigateChapter", function (src) {
         reader.skipToChapter(src);
+    });
+    Messaging.registerHandler("GotoLocus", function(locus) {
+        reader.moveTo(locus);
+    });
+
+    reader.listen("monocle:link:external", function(event) {
+        Messaging.sendMessage("ExternalLink", event.m.href.external);
+    });
+    reader.listen("monocle:jumping", function(event) {
+        Messaging.sendMessage("Jumping", [reader.getPlace().getLocus(), event.m.locus]);
+    });
+    reader.listen("monocle:pagechange", function(event) {
+        Messaging.sendMessage("ChapterSrc", reader.getPlace().chapterSrc());
     });
 }
 
