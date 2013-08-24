@@ -9,7 +9,6 @@
 
 #include <QObject>
 #include <QDomDocument>
-#include <QMap>
 #include <QVariant>
 #include "quazip/quazip.h"
 #include "../qhttpserver/qhttpresponse.h"

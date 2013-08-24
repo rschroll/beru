@@ -5,7 +5,6 @@
  */
 
 #include "epubreader.h"
-#include <QDomDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>

@@ -6,9 +6,6 @@
 
 Messaging = {
     handlers: Object(),
-    four: 4,
-    prototype: Object(),
-    func: function () {return 4},
 
     registerHandler: function (name, handler) {
         this.handlers[name] = handler;

@@ -113,10 +113,7 @@ Page {
         running: false
         triggeredOnStart: false
         
-        onTriggered: {
-            console.log("Timer expired")
-            localBooks.listBooks()
-        }
+        onTriggered: localBooks.listBooks()
     }
     
     ListModel {

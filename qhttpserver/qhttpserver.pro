@@ -9,6 +9,7 @@ QT += qml
 QT -= gui
 
 CONFIG += dll debug
+DEFINES += QT_NO_DEBUG_OUTPUT
 
 INCLUDEPATH += http-parser
 
