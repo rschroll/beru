@@ -12,7 +12,7 @@ the GPL. See the file COPYING for full details.
 
 <script src=".monocle/scripts/monocore.js"></script>
 <script src=".monocle/scripts/monoctrl.js"></script>
-<script src=".loadbook.js"></script>
+<script src=".bookdata.js"></script>
 <script src=".messaging.js"></script>
 <script>
 function createReader(bookData) {
@@ -49,7 +49,7 @@ function createReader(bookData) {
 }
 
 window.onload = function () {
-    var epub = new Epub(createReader);
+    createReader(bookData);
 }
 </script>
 

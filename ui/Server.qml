@@ -6,8 +6,7 @@
 
 import QtQuick 2.0
 import HttpServer 1.0
-
-import "../jszip/jszip.js" as JsZip
+import Epub 1.0
 
 
 HttpServer {
@@ -20,11 +19,12 @@ HttpServer {
             port += 1
     }
     
-    property var zipfile
+    property var epub: EpubReader {
+        id: epub
+    }
 
     function loadFile(filename) {
-        var file = filereader.read_b64(filename)
-        zipfile = new JsZip.JSZip(file, {base64: true})
+        epub.load(filename)
     }
     
     function static_file(path, response) {
@@ -35,19 +35,13 @@ HttpServer {
         response.end()
     }
     
-    function component(path, response) {
-        var file = zipfile.file(path.slice(1))
-        //response.setHeader("Content-Type", "text/plain")
-        response.writeHead(200)
-        response.write_b64(file.asBase64())
-        response.end()
-    }
-    
     onNewRequest: { // request, response
         if (request.path == "/")
             return static_file("index.html", response)
+        if (request.path == "/.bookdata.js")
+            return epub.serveBookData(response)
         if (request.path[1] == ".")
             return static_file(request.path.slice(2), response)
-        return component(request.path, response)
+        return epub.serveComponent(request.path.slice(1), response)
     }
 }
