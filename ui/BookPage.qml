@@ -165,8 +165,8 @@ Page {
 
     Component.onCompleted: {
         Messaging.registerHandler("ExternalLink", onExternalLink)
-        Messaging.registerHandler("Contents", parseContents)
         Messaging.registerHandler("Jumping", onJumping)
         Messaging.registerHandler("ChapterSrc", setChapterSrc)
+        server.epub.contentsReady.connect(parseContents)
     }
 }

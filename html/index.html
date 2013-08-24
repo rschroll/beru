@@ -29,7 +29,6 @@ function createReader(bookData) {
             reader.addControl(placeSaver);
         }
     );
-    Messaging.sendMessage("Contents", bookData.getContents());
     Messaging.registerHandler("NavigateChapter", function (src) {
         reader.skipToChapter(src);
     });

@@ -22,6 +22,9 @@ public:
     Q_INVOKABLE void serveBookData(QHttpResponse *response);
     Q_INVOKABLE void serveComponent(const QString &filename, QHttpResponse *response);
 
+signals:
+    void contentsReady(QVariantList contents);
+
 private:
     QDomDocument *getFileAsDom(const QString &filename);
     bool parseOPF();

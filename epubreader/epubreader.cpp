@@ -152,9 +152,9 @@ bool EpubReader::parseOPF()
 }
 
 QVariantList EpubReader::getContents() {
-    if (this->navhref != "")
-        return this->parseNav();
-    return this->parseNCX();
+    QVariantList res = (this->navhref != "") ? this->parseNav() : this->parseNCX();
+    emit contentsReady(res);
+    return res;
 }
 
 QVariantList EpubReader::parseNav() {
