@@ -15,7 +15,7 @@ INCLUDEPATH += http-parser
 
 PRIVATE_HEADERS += http-parser/http_parser.h qhttpconnection.h
 
-PUBLIC_HEADERS += qhttpserver.h qhttprequest.h qhttpresponse.h httpserverplugin.h
+PUBLIC_HEADERS += qhttpserver.h qhttprequest.h qhttpresponse.h httpserverplugin.h fileserver.h
 
 HEADERS = $$PRIVATE_HEADERS $$PUBLIC_HEADERS
 SOURCES = *.cpp http-parser/http_parser.c

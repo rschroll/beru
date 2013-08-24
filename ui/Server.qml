@@ -23,16 +23,17 @@ HttpServer {
         id: epub
     }
 
+    property var fileserver: FileServer {
+        id: fileserver
+    }
+
     function loadFile(filename) {
         epub.load(filename)
     }
     
     function static_file(path, response) {
         // Need to strip off leading "file://"
-        var file = filereader.read_b64(Qt.resolvedUrl("../html/" + path).slice(7))
-        response.writeHead(200)
-        response.write_b64(file)
-        response.end()
+        fileserver.serve(Qt.resolvedUrl("../html/" + path).slice(7), response)
     }
     
     onNewRequest: { // request, response

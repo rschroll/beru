@@ -21,6 +21,7 @@
  */
 
 #include "httpserverplugin.h"
+#include "fileserver.h"
 #include "qhttpserver.h"
 #include "qhttprequest.h"
 #include "qhttpresponse.h"
@@ -29,6 +30,7 @@
 void HttpServerPlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<QHttpServer>(uri, 1, 0, "HttpServer");
+    qmlRegisterType<FileServer>(uri, 1, 0, "FileServer");
     qmlRegisterUncreatableType<QHttpRequest>(uri, 1, 0, "HttpRequest", "Do not create HttpRequest directly");
     qmlRegisterUncreatableType<QHttpResponse>(uri, 1, 0, "HttpResponse", "Do not create HttpResponse directly");
 }
