@@ -19,10 +19,18 @@ Page {
     title: i18n.tr("Books")
     property int sort: 0
     property bool needsort: false
+    property bool firststart: false
     onSortChanged: listBooks()
     
+    function onFirstStart(db) {
+        db.changeVersion(db.version, "1")
+        firststart = true
+        PopupUtils.open(firstStart)
+    }
+
     function openDatabase() {
-        return LocalStorage.openDatabaseSync("BeruLocalBooks", "1", "Books on the local device", 1000000)
+        return LocalStorage.openDatabaseSync("BeruLocalBooks", "1", "Books on the local device",
+                                             1000000, onFirstStart);
     }
     
     function fileToTitle(filename) {
@@ -117,7 +125,10 @@ Page {
             tx.executeSql("CREATE TABLE IF NOT EXISTS LocalBooks(filename TEXT UNIQUE, " +
                           "title TEXT, author TEXT, cover BLOB, lastread TEXT)")
         })
-        loadTimer.start()
+        if (!firststart) {
+            folderRepeater.model = folderModel
+            loadTimer.start()
+        }
     }
 
     // If we need to resort, do it when hiding or showing this page
@@ -141,9 +152,9 @@ Page {
     }
     
     // We use the repeater to iterate through the folderModel
+    // The model is set after load, to avoid freezing the GUI
     Repeater {
         id: folderRepeater
-        model: folderModel
         
         Component {
             Item {
@@ -169,6 +180,7 @@ Page {
         
         onTriggered: {
             localBooks.listBooks()
+            firststart = false
             coverTimer.start()
         }
     }
@@ -261,6 +273,48 @@ Page {
                     property int sort: 2
                 }
             }
+        }
+    }
+
+    Component {
+        id: firstStart
+
+        Dialog {
+            id: firstStartDialog
+            title: i18n.tr("Welcome to Beru")
+            text: i18n.tr("Right now, Beru is looking through ~/Books and adding all the Epub " +
+                          "files it finds to your Library.  Any files you add to this folder " +
+                          "will be added to the Library the next time you start Beru.\n\n" +
+                          "Additionally, any file you open with Beru will be added to your " +
+                          "library, regardless of where it is located.")
+
+            Button {
+                id: closeButton
+                text: "OK"
+                color: firststart ? UbuntuColors.coolGrey : UbuntuColors.orange
+                onClicked: {
+                    if (!firststart)
+                        PopupUtils.close(firstStartDialog)
+                }
+            }
+
+            onVisibleChanged: {
+                if (visible)
+                    startTimer.start()
+            }
+        }
+    }
+
+    Timer {
+        id: startTimer
+        interval: 100
+        repeat: false
+        running: false
+        triggeredOnStart: false
+
+        onTriggered: {
+            folderRepeater.model = folderModel
+            loadTimer.start()
         }
     }
 }
