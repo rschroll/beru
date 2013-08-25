@@ -54,9 +54,8 @@ Page {
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
                 if (filereader.exists(item.filename))
-                    // For some reason, we need to explicitly call toString on the cover.
                     bookModel.append({filename: item.filename, title: item.title,
-                                      author: item.author, cover: item.cover.toString()})
+                                      author: item.author, cover: item.cover})
             }
         })
         localBooks.needsort = false
@@ -102,7 +101,7 @@ Page {
                     if (book.filename == res.rows.item(0).filename) {
                         book.title = title
                         book.author = author
-                        book.cover = cover.toString()
+                        book.cover = cover
                         break
                     }
                 }

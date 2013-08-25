@@ -321,6 +321,6 @@ QVariantMap EpubReader::getCoverInfo(int guscale)
     QByteArray byteArray;
     QBuffer buffer(&byteArray);
     coverimg.scaledToWidth(5*guscale, Qt::SmoothTransformation).save(&buffer, "PNG");
-    res["cover"] = "data:image/png;base64," + byteArray.toBase64();
+    res["cover"] = "data:image/png;base64," + QString(byteArray.toBase64());
     return res;
 }
