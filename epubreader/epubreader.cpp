@@ -287,7 +287,7 @@ QVariantMap EpubReader::getCoverInfo(int guscale)
         return res;
 
     res["title"] = this->metadata.contains("title") ? this->metadata["title"] : "ZZZnone";
-    res["author"] = this->metadata.contains("creator") ? this->metadata["creator"] : "ZZZnone";
+    res["author"] = this->metadata.contains("creator") ? this->metadata["creator"] : "zzznone";
     res["cover"] = "ZZZnone";
 
     QDomDocument* coverdoc = this->getFileAsDom(this->coverhtml);

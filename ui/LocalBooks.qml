@@ -34,8 +34,8 @@ Page {
         db.transaction(function (tx) {
             // New items are given a lastread time of now, since these are probably
             // interesting for a user to see.
-            tx.executeSql("INSERT OR IGNORE INTO LocalBooks(filename, title, cover, lastread)" +
-                          " VALUES(?, ?, 'ZZZnone', datetime('now'))", [filePath, fileToTitle(fileName)])
+            tx.executeSql("INSERT OR IGNORE INTO LocalBooks(filename, title, author, cover, lastread)" +
+                          " VALUES(?, ?, 'zzznull', 'ZZZnone', datetime('now'))", [filePath, fileToTitle(fileName)])
         })
     }
     
@@ -75,7 +75,7 @@ Page {
     function updateBookCover() {
         var db = openDatabase()
         db.transaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title FROM LocalBooks WHERE author IS NULL")
+            var res = tx.executeSql("SELECT filename, title FROM LocalBooks WHERE author == 'zzznull'")
             if (res.rows.length == 0)
                 return
 
@@ -90,7 +90,7 @@ Page {
                 cover = coverinfo.cover
             } else {
                 title = res.rows.item(0).title
-                author = i18n.tr("Could not open this book.")
+                author = "zzzzerror" + i18n.tr("Could not open this book.")
                 cover = "ZZZerror"
             }
             tx.executeSql("UPDATE LocalBooks SET title=?, author=?, cover=? WHERE filename=?",
@@ -177,9 +177,6 @@ Page {
     
     ListModel {
         id: bookModel
-        property string title
-        property string author
-        property string cover
     }
     
     ListView {
@@ -189,7 +186,13 @@ Page {
         model: bookModel
         delegate: Subtitled {
             text: model.title
-            subText: (model.author == null || model.author == "ZZZnone") ? "" : model.author
+            subText: {
+                if (model.author == "zzznull" || model.author == "zzznone")
+                    return ""
+                if (model.author.match(/^zzzzerror/))
+                    return model.author.slice(9)
+                return model.author
+            }
             icon: {
                 if (model.cover == "ZZZnone")
                     return Qt.resolvedUrl("images/default_cover.png")
