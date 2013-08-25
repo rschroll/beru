@@ -6,6 +6,7 @@
 
 #include "fileserver.h"
 #include <QFile>
+#include <../mimetype/mimetype.h>
 
 void FileServer::serve(const QString &filename, QHttpResponse *response)
 {
@@ -16,6 +17,7 @@ void FileServer::serve(const QString &filename, QHttpResponse *response)
         return;
     }
 
+    response->setHeader("Content-Type", guessMimeType(filename));
     response->writeHead(200);
     response->write(file.readAll());
     response->end();

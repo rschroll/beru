@@ -14,6 +14,7 @@
 #include "quazip/quazip.h"
 #include "quazip/quazipfile.h"
 #include "../qhttpserver/qhttpresponse.h"
+#include "../mimetype/mimetype.h"
 
 QString resolveRelativePath(QString relto, QString path)
 {
@@ -87,6 +88,7 @@ void EpubReader::serveComponent(const QString &filename, QHttpResponse *response
         response->end("Could not find \"" + filename + "\" in epub file");
     }
 
+    response->setHeader("Content-Type", guessMimeType(filename));
     response->writeHead(200);
     // Important -- use write instead of end, so binary data doesn't get messed up!
     response->write(zfile.readAll());
@@ -266,6 +268,7 @@ void EpubReader::serveBookData(QHttpResponse *response)
         return;
     }
 
+    response->setHeader("Content-Type", guessMimeType("js"));
     response->writeHead(200);
     QJsonDocument spine(QJsonArray::fromStringList(this->spine));
     QJsonDocument contents(QJsonArray::fromVariantList(this->getContents()));
