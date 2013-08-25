@@ -28,7 +28,7 @@ HttpServer {
     }
 
     function loadFile(filename) {
-        epub.load(filename)
+        return epub.load(filename)
     }
     
     function static_file(path, response) {

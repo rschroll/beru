@@ -65,7 +65,7 @@ Page {
     function updateRead(filename) {
         var db = openDatabase()
         db.transaction(function (tx) {
-            tx.executeSql("UPDATE LocalBooks SET lastread=datetime('now') WHERE filename=?",
+            tx.executeSql("UPDATE OR IGNORE LocalBooks SET lastread=datetime('now') WHERE filename=?",
                           [filename])
         })
         if (localBooks.sort == 0)

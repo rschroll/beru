@@ -6,6 +6,7 @@
 
 import QtQuick 2.0
 import Ubuntu.Components 0.1
+import Ubuntu.Components.Popups 0.1
 import File 1.0
 
 
@@ -42,14 +43,33 @@ MainView {
         }
     }
 
+    Component {
+        id: errorOpen
+        Dialog {
+            id: errorOpenDialog
+            title: i18n.tr("Error Opening File")
+            text: i18n.tr("Beru could not open this file.\n\n" +
+                          "Remember, Beru can only open Epub files without DRM.")
+            Button {
+                text: i18n.tr("OK")
+                color: UbuntuColors.orange
+                onClicked: PopupUtils.close(errorOpenDialog)
+            }
+        }
+    }
+
     Server {
         id: server
     }
 
     function loadFile(filename) {
-        server.loadFile(filename)
-        pageStack.push(bookPage, {url: "http://127.0.0.1:" + server.port})
-        localBooks.updateRead(filename)
+        if (server.loadFile(filename)) {
+            pageStack.push(bookPage, {url: "http://127.0.0.1:" + server.port})
+            localBooks.updateRead(filename)
+            return true
+        }
+        PopupUtils.open(errorOpen)
+        return false
     }
 
     Arguments {
@@ -66,8 +86,8 @@ MainView {
         var filePath = filereader.canonicalFilePath(args.values.appargs)
         if (filePath !== "") {
             var fileName = filePath.split("/").pop()
-            localBooks.addFile(filePath, fileName)
-            loadFile(fileName)
+            if (loadFile(filePath))
+                localBooks.addFile(filePath, fileName)
         }
     }
 }
