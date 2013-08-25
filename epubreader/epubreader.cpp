@@ -29,8 +29,10 @@ EpubReader::EpubReader(QObject *parent) :
 
 bool EpubReader::load(const QString &filename)
 {
-    if (this->zip != NULL)
+    if (this->zip != NULL) {
         delete this->zip;
+        this->zip = NULL;
+    }
     this->navhref = "";
     this->ncxhref = "";
     this->coverhtml = "";
@@ -40,10 +42,12 @@ bool EpubReader::load(const QString &filename)
     this->zip = new QuaZip(filename);
     if (!this->zip->open(QuaZip::mdUnzip)) {
         delete this->zip;
+        this->zip = NULL;
         return false;
     }
     if (!this->parseOPF()) {
         delete this->zip;
+        this->zip = NULL;
         return false;
     }
     return true;
@@ -259,6 +263,7 @@ void EpubReader::serveBookData(QHttpResponse *response)
     if (!this->zip || !this->zip->isOpen()) {
         response->writeHead(500);
         response->end("Epub file not open for reading");
+        return;
     }
 
     response->writeHead(200);
