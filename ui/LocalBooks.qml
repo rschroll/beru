@@ -95,6 +95,19 @@ Page {
             }
             tx.executeSql("UPDATE LocalBooks SET title=?, author=?, cover=? WHERE filename=?",
                           [title, author, cover, res.rows.item(0).filename])
+
+            if (localBooks.visible) {
+                for (var i=0; i<bookModel.count; i++) {
+                    var book = bookModel.get(i)
+                    if (book.filename == res.rows.item(0).filename) {
+                        book.title = title
+                        book.author = author
+                        book.cover = cover.toString()
+                        break
+                    }
+                }
+            }
+
             coverTimer.start()
         })
     }
