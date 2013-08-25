@@ -8,9 +8,19 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QtGui/QImage>
+#include <QBuffer>
+#include <QDir>
 #include "quazip/quazip.h"
 #include "quazip/quazipfile.h"
 #include "../qhttpserver/qhttpresponse.h"
+
+QString resolveRelativePath(QString relto, QString path)
+{
+    int reldirlen = relto.lastIndexOf('/');
+    QString reldir = (reldirlen > 0) ? relto.left(reldirlen+1) : "";
+    return QDir::cleanPath(reldir + path);
+}
 
 EpubReader::EpubReader(QObject *parent) :
     QObject(parent)
@@ -23,6 +33,7 @@ bool EpubReader::load(const QString &filename)
         delete this->zip;
     this->navhref = "";
     this->ncxhref = "";
+    this->coverhtml = "";
     this->spine.clear();
     this->metadata.clear();
 
@@ -51,8 +62,10 @@ QDomDocument* EpubReader::getFileAsDom(const QString &filename)
     QDomDocument* doc = new QDomDocument();
     if (!doc->setContent(&zfile)) {
         delete doc;
+        zfile.close();
         return NULL;
     }
+    zfile.close();
     return doc;
 }
 
@@ -74,6 +87,7 @@ void EpubReader::serveComponent(const QString &filename, QHttpResponse *response
     // Important -- use write instead of end, so binary data doesn't get messed up!
     response->write(zfile.readAll());
     response->end();
+    zfile.close();
 }
 
 bool EpubReader::parseOPF()
@@ -84,7 +98,7 @@ bool EpubReader::parseOPF()
         return false;
 
     // Find out where the OPF file lives.
-    QString contentsfn, contentsdir;
+    QString contentsfn;
     QDomNodeList nodes = container->elementsByTagName("rootfile");
     for (int i=0; i<nodes.length(); i++) {
         QDomElement element = nodes.item(i).toElement();
@@ -93,12 +107,6 @@ bool EpubReader::parseOPF()
             break;
         }
     }
-
-    int pathlen = contentsfn.lastIndexOf('/');
-    if (pathlen > 0)
-        contentsdir = contentsfn.left(pathlen+1);
-    else
-        contentsdir = "";
 
     // Open the OPF file.
     QDomDocument* contents = this->getFileAsDom(contentsfn);
@@ -114,7 +122,7 @@ bool EpubReader::parseOPF()
     nodes = manifest.elementsByTagName("item");
     for (int i=0; i<nodes.length(); i++) {
         QDomElement item = nodes.item(i).toElement();
-        idmap[item.attribute("id")] = contentsdir + item.attribute("href");
+        idmap[item.attribute("id")] = resolveRelativePath(contentsfn, item.attribute("href"));
         if (item.attribute("properties").split(" ").contains("nav"))
             this->navhref = idmap[item.attribute("id")];
     }
@@ -148,23 +156,35 @@ bool EpubReader::parseOPF()
     if (this->navhref == "")
         this->ncxhref = idmap[spine.attribute("toc")];
 
+    // Look for the HTML file that contains the cover image
+    nodes = contents->elementsByTagName("guide");
+    if (!nodes.isEmpty()) {
+        QDomElement guide = nodes.item(0).toElement();
+        nodes = guide.childNodes();
+        for (int i=0; i<nodes.length(); i++) {
+            QDomElement reference = nodes.item(i).toElement();
+            if (!reference.isNull() && reference.attribute("type") == "cover") {
+                this->coverhtml = resolveRelativePath(contentsfn, reference.attribute("href"));
+                break;
+            }
+        }
+    }
+    // If it's not in the guide, guess the first element of the spine
+    if (this->coverhtml == "")
+        this->coverhtml = this->spine.first();
+
     return true;
 }
 
-QVariantList EpubReader::getContents() {
+QVariantList EpubReader::getContents()
+{
     QVariantList res = (this->navhref != "") ? this->parseNav() : this->parseNCX();
     emit contentsReady(res);
     return res;
 }
 
-QVariantList EpubReader::parseNav() {
-    int pathlen = this->navhref.lastIndexOf('/');
-    QString navdir;
-    if (pathlen > 0)
-        navdir = this->navhref.left(pathlen+1);
-    else
-        navdir = "";
-
+QVariantList EpubReader::parseNav()
+{
     QDomDocument* navdoc = this->getFileAsDom(this->navhref);
     QDomNodeList nodes = navdoc->elementsByTagName("nav");
     for (int i=0; i<nodes.length(); i++) {
@@ -172,13 +192,13 @@ QVariantList EpubReader::parseNav() {
         if (nav.attribute("epub:type") == "toc") {
             QDomNodeList ols = nav.elementsByTagName("ol");
             if (!ols.isEmpty())
-                return this->parseNavList(ols.item(0).toElement(), navdir);
+                return this->parseNavList(ols.item(0).toElement());
         }
     }
     return QVariantList();
 }
 
-QVariantList EpubReader::parseNavList(QDomElement element, QString navdir)
+QVariantList EpubReader::parseNavList(QDomElement element)
 {
     QVariantList children;
     QDomNodeList nodes = element.childNodes();
@@ -191,10 +211,10 @@ QVariantList EpubReader::parseNavList(QDomElement element, QString navdir)
             QDomElement link = links.item(0).toElement();
             QVariantMap entry;
             entry["title"] = link.firstChild().nodeValue();
-            entry["src"] = navdir + link.attribute("href");
+            entry["src"] = resolveRelativePath(this->navhref, link.attribute("href"));
             QDomNodeList olist = item.elementsByTagName("ol");
             if (!olist.isEmpty())
-                entry["children"] = this->parseNavList(olist.item(0).toElement(), navdir);
+                entry["children"] = this->parseNavList(olist.item(0).toElement());
             children.append(entry);
         }
     }
@@ -203,21 +223,14 @@ QVariantList EpubReader::parseNavList(QDomElement element, QString navdir)
 
 QVariantList EpubReader::parseNCX()
 {
-    int pathlen = this->ncxhref.lastIndexOf('/');
-    QString navdir;
-    if (pathlen > 0)
-        navdir = this->ncxhref.left(pathlen+1);
-    else
-        navdir = "";
-
     QDomDocument* ncxdoc = this->getFileAsDom(this->ncxhref);
     QDomNodeList nodes = ncxdoc->elementsByTagName("navMap");
     if (nodes.isEmpty())
         return QVariantList();
-    return this->parseNCXChildren(nodes.item(0).toElement(), navdir);
+    return this->parseNCXChildren(nodes.item(0).toElement());
 }
 
-QVariantList EpubReader::parseNCXChildren(QDomElement element, QString navdir)
+QVariantList EpubReader::parseNCXChildren(QDomElement element)
 {
     QVariantList children;
     QDomNodeList nodes = element.childNodes();
@@ -230,8 +243,9 @@ QVariantList EpubReader::parseNCXChildren(QDomElement element, QString navdir)
                 entry["title"] = labels.item(0).firstChild().nodeValue();
             QDomNodeList contents = node.elementsByTagName("content");
             if (!contents.isEmpty())
-                entry["src"] = navdir + contents.item(0).toElement().attribute("src");
-            QVariantList child_nav = this->parseNCXChildren(node, navdir);
+                entry["src"] = resolveRelativePath(this->ncxhref,
+                                                   contents.item(0).toElement().attribute("src"));
+            QVariantList child_nav = this->parseNCXChildren(node);
             if (!child_nav.isEmpty())
                 entry["children"] = child_nav;
             children.append(entry);
@@ -259,4 +273,49 @@ void EpubReader::serveBookData(QHttpResponse *response)
     response->write(res.arg(QString(spine.toJson()), QString(contents.toJson()),
                             QString(metadata.toJson())));
     response->end();
+}
+
+QVariantMap EpubReader::getCoverInfo(int guscale)
+{
+    QVariantMap res;
+    if (!this->zip || !this->zip->isOpen())
+        return res;
+
+    res["title"] = this->metadata.contains("title") ? this->metadata["title"] : "ZZZnone";
+    res["author"] = this->metadata.contains("creator") ? this->metadata["creator"] : "ZZZnone";
+    res["cover"] = "ZZZnone";
+
+    QDomDocument* coverdoc = this->getFileAsDom(this->coverhtml);
+    if (coverdoc == NULL)
+        return res;
+
+    QString coversrc;
+    QDomNodeList images = coverdoc->elementsByTagName("img");
+    if (!images.isEmpty()) {
+        coversrc = images.item(0).toElement().attribute("src");
+    } else {
+        // Image inside a SVG element
+        images = coverdoc->elementsByTagName("image");
+        if (!images.isEmpty())
+            coversrc = images.item(0).toElement().attribute("xlink:href");
+    }
+    if (coversrc.isEmpty())
+        return res;
+
+    this->zip->setCurrentFile(resolveRelativePath(this->coverhtml, coversrc));
+    QuaZipFile zfile(this->zip);
+    if (!zfile.open(QIODevice::ReadOnly))
+        return res;
+
+    QImage coverimg;
+    if (!coverimg.loadFromData(zfile.readAll())) {
+        zfile.close();
+        return res;
+    }
+    zfile.close();
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    coverimg.scaledToWidth(5*guscale, Qt::SmoothTransformation).save(&buffer, "PNG");
+    res["cover"] = "data:image/png;base64," + byteArray.toBase64();
+    return res;
 }

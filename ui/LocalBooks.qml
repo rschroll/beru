@@ -10,6 +10,7 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
 import org.nemomobile.folderlistmodel 1.0
+import Epub 1.0
 
 
 Page {
@@ -17,6 +18,7 @@ Page {
     visible: false
     title: i18n.tr("Books")
     property int sort: 0
+    property bool needsort: false
     onSortChanged: listBooks()
     
     function openDatabase() {
@@ -32,8 +34,8 @@ Page {
         db.transaction(function (tx) {
             // New items are given a lastread time of now, since these are probably
             // interesting for a user to see.
-            tx.executeSql("INSERT OR IGNORE INTO LocalBooks(filename, title, lastread)" +
-                          " VALUES(?, ?, datetime('now'))", [filePath, fileToTitle(fileName)])
+            tx.executeSql("INSERT OR IGNORE INTO LocalBooks(filename, title, cover, lastread)" +
+                          " VALUES(?, ?, 'ZZZnone', datetime('now'))", [filePath, fileToTitle(fileName)])
         })
     }
     
@@ -50,10 +52,14 @@ Page {
             var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
                                     "ORDER BY " + sort);
             for (var i=0; i<res.rows.length; i++) {
-                if (filereader.exists(res.rows.item(i).filename))
-                    bookModel.append(res.rows.item(i))
+                var item = res.rows.item(i)
+                if (filereader.exists(item.filename))
+                    // For some reason, we need to explicitly call toString on the cover.
+                    bookModel.append({filename: item.filename, title: item.title,
+                                      author: item.author, cover: item.cover.toString()})
             }
         })
+        localBooks.needsort = false
     }
     
     function updateRead(filename) {
@@ -65,6 +71,33 @@ Page {
         if (localBooks.sort == 0)
             listBooks()
     }
+
+    function updateBookCover() {
+        var db = openDatabase()
+        db.transaction(function (tx) {
+            var res = tx.executeSql("SELECT filename, title FROM LocalBooks WHERE author IS NULL")
+            if (res.rows.length == 0)
+                return
+
+            localBooks.needsort = true
+            var title, author, cover
+            if (coverReader.load(res.rows.item(0).filename)) {
+                var coverinfo = coverReader.getCoverInfo(units.gu(1))
+                title = coverinfo.title
+                if (title == "ZZZnone")
+                    title = res.rows.item(0).title
+                author = coverinfo.author
+                cover = coverinfo.cover
+            } else {
+                title = res.rows.item(0).title
+                author = i18n.tr("Could not open this book.")
+                cover = "ZZZerror"
+            }
+            tx.executeSql("UPDATE LocalBooks SET title=?, author=?, cover=? WHERE filename=?",
+                          [title, author, cover, res.rows.item(0).filename])
+            coverTimer.start()
+        })
+    }
     
     Component.onCompleted: {
         var db = openDatabase()
@@ -73,6 +106,12 @@ Page {
                           "title TEXT, author TEXT, cover BLOB, lastread TEXT)")
         })
         loadTimer.start()
+    }
+
+    // If we need to resort, do it when hiding or showing this page
+    onVisibleChanged: {
+        if (needsort)
+            listBooks()
     }
     
     // This will list all files in "~/Books"
@@ -113,11 +152,31 @@ Page {
         running: false
         triggeredOnStart: false
         
-        onTriggered: localBooks.listBooks()
+        onTriggered: {
+            localBooks.listBooks()
+            coverTimer.start()
+        }
+    }
+
+    EpubReader {
+        id: coverReader
+    }
+
+    Timer {
+        id: coverTimer
+        interval: 1000
+        repeat: false
+        running: false
+        triggeredOnStart: false
+
+        onTriggered: localBooks.updateBookCover()
     }
     
     ListModel {
         id: bookModel
+        property string title
+        property string author
+        property string cover
     }
     
     ListView {
@@ -127,7 +186,15 @@ Page {
         model: bookModel
         delegate: Subtitled {
             text: model.title
-            subText: model.author || ""
+            subText: (model.author == null || model.author == "ZZZnone") ? "" : model.author
+            icon: {
+                if (model.cover == "ZZZnone")
+                    return Qt.resolvedUrl("images/default_cover.png")
+                if (model.cover == "ZZZerror")
+                    return Qt.resolvedUrl("images/error_cover.png")
+                return model.cover
+            }
+            iconFrame: true
             progression: true
             onClicked: loadFile(model.filename)
         }

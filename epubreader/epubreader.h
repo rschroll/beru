@@ -21,6 +21,7 @@ public:
     Q_INVOKABLE bool load(const QString &filename);
     Q_INVOKABLE void serveBookData(QHttpResponse *response);
     Q_INVOKABLE void serveComponent(const QString &filename, QHttpResponse *response);
+    Q_INVOKABLE QVariantMap getCoverInfo(int guscale);
 
 signals:
     void contentsReady(QVariantList contents);
@@ -30,13 +31,14 @@ private:
     bool parseOPF();
     QVariantList getContents();
     QVariantList parseNav();
-    QVariantList parseNavList(QDomElement element, QString navdir);
+    QVariantList parseNavList(QDomElement element);
     QVariantList parseNCX();
-    QVariantList parseNCXChildren(QDomElement element, QString navdir);
+    QVariantList parseNCXChildren(QDomElement element);
 
     QuaZip* zip;
     QString navhref;
     QString ncxhref;
+    QString coverhtml;
     QStringList spine;
     QVariantMap metadata;
 
