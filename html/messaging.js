@@ -8,14 +8,14 @@ Messaging = {
     handlers: Object(),
 
     registerHandler: function (name, handler) {
-        this.handlers[name] = handler;
+        Messaging.handlers[name] = handler;
     },
 
     handleMessage: function (message) {
         var command = JSON.parse(message);
-        var handler = this.handlers[command[0]];
+        var handler = Messaging.handlers[command[0]];
         if (handler === undefined)
-            this.sendMessage("Log", "WebView: No handler for " + command[0]);
+            Messaging.sendMessage("Log", "WebView: No handler for " + command[0]);
         else
             handler(command[1]);
     },
