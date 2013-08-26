@@ -91,6 +91,15 @@ Page {
                 onTriggered: PopupUtils.open(contentsComponent, contentsButton)
             }
         }
+
+        ToolbarButton {
+            id: settingsButton
+            action: Action {
+                text: i18n.tr("Settings")
+                iconSource: Qt.resolvedUrl("")
+                onTriggered: PopupUtils.open(stylesComponent, settingsButton)
+            }
+        }
     }
 
     Component {
@@ -125,6 +134,154 @@ Page {
                             positionViewAtIndex(i, ListView.Center)
                     }
                 }
+            }
+        }
+    }
+
+    Item {
+        id: bookStyles
+        property bool loading: false
+
+        property string textColor
+        property string fontFamily
+        property var lineHeight
+        property real fontScale
+        property string background
+        property real margin
+
+        //onTextColorChanged: update()  // This is always updated with background
+        onFontFamilyChanged: update()
+        onLineHeightChanged: update()
+        onFontScaleChanged: update()
+        onBackgroundChanged: update()
+        onMarginChanged: update()
+
+        function load(styles) {
+            loading = true
+            textColor = styles.textColor
+            fontFamily = styles.fontFamily
+            lineHeight = styles.lineHeight
+            fontScale = styles.fontScale
+            background = styles.background
+            margin = styles.marginLeft
+            loading = false
+        }
+
+        function update() {
+            if (loading)
+                return
+
+            var ratio = mainView.width / mainView.height
+            Messaging.sendMessage("Styles", {
+                                      textColor: textColor,
+                                      fontFamily: fontFamily,
+                                      lineHeight: lineHeight,
+                                      fontScale: fontScale,
+                                      background: background,
+                                      marginTop: margin * ratio,
+                                      marginRight: margin,
+                                      marginBottom: margin * ratio * 2,
+                                      marginLeft: margin
+                                  })
+        }
+    }
+
+    Component {
+        id: stylesComponent
+
+        Dialog {
+            id: stylesDialog
+            property real labelwidth: units.gu(11)
+
+            ValueSelector {
+                text: i18n.tr("Colors")
+                values: [i18n.tr("Black on White"), i18n.tr("Dark on Texture"),
+                    i18n.tr("Light on Texture"), i18n.tr("White on Black")]
+                property var textColors: ["black", "#222", "#999", "white"]
+                selectedIndex: textColors.indexOf(bookStyles.textColor)
+                onSelectedIndexChanged: {
+                    bookStyles.textColor = textColors[selectedIndex]
+                    bookStyles.background = ["white",
+                                             "url(.background_paper@30.png)",
+                                             "url(.background_paper_invert@30.png)",
+                                             "black"][selectedIndex]
+                }
+            }
+
+            ValueSelector {
+                text: i18n.tr("Font")
+                values: ["Default", "Bitstream Charter", "Nimbus Roman No9 L", "Nimbus Sans L",
+                    "Ubuntu", "URW Bookman L", "URW Gothic L"]
+                selectedIndex: values.indexOf(bookStyles.fontFamily)
+                onSelectedIndexChanged: bookStyles.fontFamily = values[selectedIndex]
+            }
+
+            Row {
+                Label {
+                    text: i18n.tr("Font Scaling")
+                    verticalAlignment: Text.AlignVCenter
+                    width: labelwidth
+                    height: fontScaleSlider.height
+                }
+
+                Slider {
+                    id: fontScaleSlider
+                    width: parent.width - labelwidth
+                    minimumValue: 0
+                    maximumValue: 12
+                    function formatValue(v) {
+                        return [0.5, 0.59, 0.7, 0.84, 1, 1.2, 1.4, 1.7, 2, 2.4, 2.8, 3.4, 4][Math.round(v)]
+                    }
+                    value: 4 + 4 * Math.LOG2E * Math.log(bookStyles.fontScale)
+                    onValueChanged: bookStyles.fontScale = formatValue(value)
+                }
+            }
+
+            Row {
+                Label {
+                    text: i18n.tr("Line Height")
+                    verticalAlignment: Text.AlignVCenter
+                    width: labelwidth
+                    height: lineHeightSlider.height
+                }
+
+                Slider {
+                    id: lineHeightSlider
+                    width: parent.width - labelwidth
+                    minimumValue: 0.8
+                    maximumValue: 2
+                    function formatValue(v) {
+                        if (v < 0.95)
+                            return "Default"
+                        return v.toFixed(1)
+                    }
+                    value: (bookStyles.lineHeight == "Default") ? 0.8 : bookStyles.lineHeight
+                    onValueChanged: bookStyles.lineHeight = formatValue(value)
+                }
+            }
+
+            Row {
+                Label {
+                    text: i18n.tr("Margins")
+                    verticalAlignment: Text.AlignVCenter
+                    width: labelwidth
+                    height: marginSlider.height
+                }
+
+                Slider {
+                    id: marginSlider
+                    width: parent.width - labelwidth
+                    minimumValue: 0
+                    maximumValue: 30
+                    function formatValue(v) { return Math.round(v) + "%" }
+                    value: bookStyles.margin
+                    onValueChanged: bookStyles.margin = value
+                }
+            }
+
+            Button {
+                text: i18n.tr("Close")
+                onClicked: PopupUtils.close(stylesDialog)
             }
         }
     }
@@ -167,6 +324,7 @@ Page {
         Messaging.registerHandler("ExternalLink", onExternalLink)
         Messaging.registerHandler("Jumping", onJumping)
         Messaging.registerHandler("ChapterSrc", setChapterSrc)
+        Messaging.registerHandler("Styles", bookStyles.load)
         server.epub.contentsReady.connect(parseContents)
     }
 }

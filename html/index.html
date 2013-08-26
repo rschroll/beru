@@ -14,6 +14,7 @@ the GPL. See the file COPYING for full details.
 <script src=".monocle/scripts/monoctrl.js"></script>
 <script src=".bookdata.js"></script>
 <script src=".messaging.js"></script>
+<script src=".styling.js"></script>
 <script>
 function createReader(bookData) {
     // Make sure each book saves its place to different cookies
@@ -21,12 +22,15 @@ function createReader(bookData) {
         bookData.getMetaData("title").toLowerCase().replace(/[^a-z0-9]/g, '') + ".";
     Monocle.Controls.PlaceSaver.COOKIE_EXPIRES_IN_DAYS = 365;
     var placeSaver = new Monocle.Controls.PlaceSaver("reader");
+    var styleInfo = styleManager.init(bookData.getMetaData("title"));
     var reader = Monocle.Reader("reader", bookData,
-        { panels: Monocle.Panels.TwoPane, place: placeSaver.savedPlace() },
+        { panels: Monocle.Panels.TwoPane, place: placeSaver.savedPlace(),
+          stylesheet: styleInfo.stylesheet, fontScale: styleInfo.fontScale},
         function (reader) {
             var stencil = new Monocle.Controls.Stencil(reader);
             reader.addControl(stencil);
             reader.addControl(placeSaver);
+            styleManager.reader = reader;
         }
     );
     Messaging.registerHandler("NavigateChapter", function (src) {
@@ -35,6 +39,7 @@ function createReader(bookData) {
     Messaging.registerHandler("GotoLocus", function(locus) {
         reader.moveTo(locus);
     });
+    Messaging.registerHandler("Styles", styleManager.updateStyles);
 
     reader.listen("monocle:link:external", function(event) {
         Messaging.sendMessage("ExternalLink", event.m.href.external);
@@ -67,6 +72,7 @@ div.monelem_page {
     right: 0;
 }
 </style>
+<style type="text/css" id="appliedStyles"> </style>
 </head>
 
 <body>

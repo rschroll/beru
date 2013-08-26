@@ -13,6 +13,7 @@ import File 1.0
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
+    id: mainView
     
     // Note! applicationName needs to match the .desktop filename
     applicationName: "beru"
