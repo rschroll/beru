@@ -1,8 +1,9 @@
 Basic Epub Reader for Ubuntu
 ============================
-Beru will be an epub reader for Ubuntu Touch.  Right now, it runs,
-but it's not particularly pretty or crash-free.  Watch the progress
-at http://rschroll.github.io/beru/ to see when it becomes useable.
+Beru is an epub reader for Ubuntu Touch.  Right now, it runs and
+generally behaves itself.  But it is still very much alpha software
+and rough edges certainly exists.  Watch the progress at
+http://rschroll.github.io/beru/.
 
 Building
 --------
@@ -17,19 +18,27 @@ Hopefully, everything will work.
 
 Running
 -------
-Launch Beru with the shell script `beru`.  Right now, it must be run
-from the same directory its in; this is one of many things to fix.
+Launch Beru with the shell script `beru`.
 
-Beru lists and lets you read books in `~/Books`.  If that directory
-doesn't exist, Beru opens a hole in the spacetime continuum.  This
-is another thing to fix.
+Beru keeps a library of epub files.  On every start, the folder
+`~/Books` is searched and all epubs in it are included in the
+library.  You may also pass a epub file to `beru` as an argument.
+This will open the file and add it to your library.
+
+The Library is stored in a local database.  While I won't be
+cavalier about changing the database format, it may happen.  If
+you're getting database errors after upgrading, delete the database
+and reload your files.  The database is one of the ones in
+`~/.local/share/Qt Project/QtQmlViewer/QML/OfflineStorage/Databases`;
+read the `.ini` files to find the one with `Name=BeruLocalBooks`.
 
 Known Problems
 --------------
-Certain files in certain Epubs cause Beru to hang while trying to
-read them.
-
 Everything is ugly and clunky.
+
+Sometimes the display gets messed up, resulting in two partial
+columns of text visible.  A repeatable test case would be helpful in
+fixing this.
 
 Please [submit bugs][2] that you find!
 
