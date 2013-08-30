@@ -93,7 +93,14 @@ Page {
                 title = coverinfo.title
                 if (title == "ZZZnone")
                     title = res.rows.item(0).title
-                author = coverinfo.author
+                author = coverinfo.author.trim()
+                if (author.indexOf(",") == -1) {
+                    var ls = author.lastIndexOf(" ")
+                    if (ls > -1) {
+                        author = author.slice(ls + 1) + ", " + author.slice(0, ls)
+                        author = author.trim()
+                    }
+                }
                 cover = coverinfo.cover
             } else {
                 title = res.rows.item(0).title
@@ -215,7 +222,13 @@ Page {
                     return ""
                 if (model.author.match(/^zzzzerror/))
                     return model.author.slice(9)
-                return model.author
+
+                var author = model.author
+                var lc = author.lastIndexOf(",")
+                // If there is exactly one comma in the author, assume "Last, First"
+                if (lc != -1 && author.indexOf(",") == lc)
+                    author = author.slice(lc + 1).trim() + " " + author.slice(0, lc).trim()
+                return author
             }
             icon: {
                 if (model.cover == "ZZZnone")
