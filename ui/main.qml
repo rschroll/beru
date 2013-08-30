@@ -53,7 +53,6 @@ MainView {
                           "Remember, Beru can only open Epub files without DRM.")
             Button {
                 text: i18n.tr("OK")
-                color: UbuntuColors.orange
                 onClicked: PopupUtils.close(errorOpenDialog)
             }
         }

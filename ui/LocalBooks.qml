@@ -290,8 +290,8 @@ Page {
 
             Button {
                 id: closeButton
-                text: "OK"
-                color: firststart ? UbuntuColors.coolGrey : UbuntuColors.orange
+                text: firststart ? i18n.tr("One moment please...") : i18n.tr("OK")
+                gradient: firststart ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
                 onClicked: {
                     if (!firststart)
                         PopupUtils.close(firstStartDialog)
