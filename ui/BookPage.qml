@@ -119,7 +119,8 @@ Page {
 
                 model: contentsListModel
                 delegate: Standard {
-                    text: (new Array(model.level + 1)).join("    ") + model.title.replace("\n", "")
+                    text: (new Array(model.level + 1)).join("    ") +
+                          model.title.replace(/(\n| )+/g, " ")
                     selected: bookPage.currentChapter == model.src
                     onClicked: {
                         Messaging.sendMessage("NavigateChapter", model.src)
