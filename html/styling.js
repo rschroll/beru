@@ -4,15 +4,6 @@
  * the GPL. See the file COPYING for full details.
  */
 
-DEFAULT_STYLES = {
-    textColor: "#222",
-    fontFamily: "Default",
-    lineHeight: "Default",
-    fontScale: 1,
-    background: "url(.background_paper@30.png)",
-    margin: 0
-}
-
 styleManager = {
     cookieName: "",
     reader: null,
@@ -40,7 +31,9 @@ styleManager = {
     updateOuter: function (styles) {
         var outerCSS = "div.monelem_page { background: " + styles.background + "; } " +
                 "div.monelem_sheaf { left: -webkit-calc(1em + " + styles.margin + "%); " +
-                "right: -webkit-calc(1em + " + styles.margin + "%); }"
+                "right: -webkit-calc(1em + " + styles.margin + "%); " +
+                "top: -webkit-calc(1em + " + DEFAULT_STYLES.marginv + "%); " +
+                "bottom: -webkit-calc(1em + " + 2*DEFAULT_STYLES.marginv + "%); }";
         var styleElement = document.getElementById("appliedStyles");
         styleElement.replaceChild(document.createTextNode(outerCSS), styleElement.firstChild);
     },
