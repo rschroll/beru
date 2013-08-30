@@ -10,10 +10,7 @@ DEFAULT_STYLES = {
     lineHeight: "Default",
     fontScale: 1,
     background: "url(.background_paper@30.png)",
-    marginTop: 5,
-    marginRight: 5,
-    marginBottom: 10,
-    marginLeft: 5
+    margin: 0
 }
 
 styleManager = {
@@ -42,17 +39,17 @@ styleManager = {
 
     updateOuter: function (styles) {
         var outerCSS = "div.monelem_page { background: " + styles.background + "; } " +
-                "div.monelem_sheaf { top: " + styles.marginTop + "%; right: " + styles.marginRight +
-                "%; bottom: " + styles.marginBottom + "%; left: " + styles.marginLeft + "%; }";
+                "div.monelem_sheaf { left: -webkit-calc(1em + " + styles.margin + "%); " +
+                "right: -webkit-calc(1em + " + styles.margin + "%); }"
         var styleElement = document.getElementById("appliedStyles");
         styleElement.replaceChild(document.createTextNode(outerCSS), styleElement.firstChild);
     },
 
     updateStyles: function (styles) {
+        styleManager.updateOuter(styles);
         styleManager.reader.formatting.updatePageStyles(styleManager.reader.formatting.properties.initialStyles,
                                                         styleManager.iframeCSS(styles), true);
         styleManager.reader.formatting.setFontScale(styles.fontScale, true);
-        styleManager.updateOuter(styles);
 
         styleManager.saveCookie(styles);
     },

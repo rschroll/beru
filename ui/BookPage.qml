@@ -158,12 +158,12 @@ Page {
 
         function load(styles) {
             loading = true
-            textColor = styles.textColor
-            fontFamily = styles.fontFamily
-            lineHeight = styles.lineHeight
-            fontScale = styles.fontScale
-            background = styles.background
-            margin = styles.marginLeft
+            textColor = styles.textColor || "#222"
+            fontFamily = styles.fontFamily || "Default"
+            lineHeight = styles.lineHeight || "Default"
+            fontScale = styles.fontScale || 1
+            background = styles.background || "url(.background_paper@30.png)"
+            margin = styles.margin || 0
             loading = false
         }
 
@@ -171,17 +171,13 @@ Page {
             if (loading)
                 return
 
-            var ratio = mainView.width / mainView.height
             Messaging.sendMessage("Styles", {
                                       textColor: textColor,
                                       fontFamily: fontFamily,
                                       lineHeight: lineHeight,
                                       fontScale: fontScale,
                                       background: background,
-                                      marginTop: margin * ratio,
-                                      marginRight: margin,
-                                      marginBottom: margin * ratio * 2,
-                                      marginLeft: margin
+                                      margin: margin
                                   })
         }
     }
