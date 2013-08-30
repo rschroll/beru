@@ -56,7 +56,7 @@ Page {
             action: Action {
                 text: i18n.tr("Back")
                 visible: false
-                iconSource: Qt.resolvedUrl("")
+                iconSource: mobileIcon("go-previous")
                 onTriggered: {
                     var locus = history.goBackward()
                     if (locus !== null) {
@@ -72,7 +72,7 @@ Page {
             action: Action {
                 text: i18n.tr("Forward")
                 visible: false
-                iconSource: Qt.resolvedUrl("")
+                iconSource: mobileIcon("go-next")
                 onTriggered: {
                     var locus = history.goForward()
                     if (locus !== null) {
@@ -87,7 +87,7 @@ Page {
             id: contentsButton
             action: Action {
                 text: i18n.tr("Contents")
-                iconSource: Qt.resolvedUrl("")
+                iconSource: Qt.resolvedUrl("images/toc.svg")
                 onTriggered: PopupUtils.open(contentsComponent, contentsButton)
             }
         }
@@ -96,7 +96,7 @@ Page {
             id: settingsButton
             action: Action {
                 text: i18n.tr("Settings")
-                iconSource: Qt.resolvedUrl("")
+                iconSource: mobileIcon("settings")
                 onTriggered: PopupUtils.open(stylesComponent, settingsButton)
             }
         }

@@ -73,6 +73,10 @@ MainView {
         return false
     }
 
+    function mobileIcon(name) {
+        return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
+    }
+
     Arguments {
         id: args
 

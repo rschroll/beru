@@ -237,7 +237,7 @@ Page {
             id: sortButton
             action: Action {
                 text: i18n.tr("Sort")
-                iconSource: Qt.resolvedUrl("")
+                iconSource: mobileIcon("filter")
                 onTriggered: PopupUtils.open(sortComponent, sortButton)
             }
         }
