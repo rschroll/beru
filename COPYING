@@ -11,12 +11,6 @@ made to these portions.
 
 These components include:
 
-JSZip, in jszip/
-Copyright 2009-2012 Stuart Knightley, David Duponchel, Franz
-                    Buchinger, António Afonso
-Dual licensed under the MIT license or the GPLv3 license.
-http://stuk.github.io/jszip/
-
 Monocle, in html/monocle/
 Copyright 2012 Joseph Pearson
 Licensed under the MIT license.
@@ -30,3 +24,12 @@ https://github.com/nikhilm/qhttpserver
 HTTP Parser, in qhttpserver/http-parser
 Copyright Igor Sysoev, Joyent, Inc, and others
 Licensed under the MIT license.
+
+QuaZip, in epubreader/quazip
+Copyright 2005-2012 Sergey A. Tachenov
+Licensed under the LGPLv2 or later.
+http://quazip.sourceforge.net/
+
+Several components of the Ubuntu SDK, in ui/components
+Copyright 2012 Canonical Ltd.
+Licensed under the LGPLv3.
