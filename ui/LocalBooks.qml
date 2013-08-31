@@ -242,6 +242,11 @@ Page {
             onClicked: loadFile(model.filename)
         }
     }
+
+    Scrollbar {
+        flickableItem: listview
+        align: Qt.AlignTrailing
+    }
     
     tools: ToolbarItems {
         id: localBooksToolbar
