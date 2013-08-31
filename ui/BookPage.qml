@@ -11,6 +11,8 @@ import Ubuntu.Components.Popups 0.1
 import QtWebKit 3.0
 import QtWebKit.experimental 1.0
 
+import "components"
+
 import "qmlmessaging.js" as Messaging
 import "historystack.js" as History
 
@@ -190,22 +192,21 @@ Page {
             id: stylesDialog
             property real labelwidth: units.gu(11)
 
-            ValueSelector {
+            ColorSelector {
                 text: i18n.tr("Colors")
                 values: [i18n.tr("Black on White"), i18n.tr("Dark on Texture"),
                     i18n.tr("Light on Texture"), i18n.tr("White on Black")]
-                property var textColors: ["black", "#222", "#999", "white"]
-                selectedIndex: textColors.indexOf(bookStyles.textColor)
+                foregrounds: ["black", "#222", "#999", "white"]
+                backgrounds: ["white", "url(.background_paper@30.png)",
+                    "url(.background_paper_invert@30.png)", "black"]
+                selectedIndex: foregrounds.indexOf(bookStyles.textColor)
                 onSelectedIndexChanged: {
-                    bookStyles.textColor = textColors[selectedIndex]
-                    bookStyles.background = ["white",
-                                             "url(.background_paper@30.png)",
-                                             "url(.background_paper_invert@30.png)",
-                                             "black"][selectedIndex]
+                    bookStyles.textColor = foregrounds[selectedIndex]
+                    bookStyles.background = backgrounds[selectedIndex]
                 }
             }
 
-            ValueSelector {
+            FontSelector {
                 text: i18n.tr("Font")
                 values: ["Default", "Bitstream Charter", "Nimbus Roman No9 L", "Nimbus Sans L",
                     "Ubuntu", "URW Bookman L", "URW Gothic L"]
