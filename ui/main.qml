@@ -89,9 +89,8 @@ MainView {
     Component.onCompleted: {
         var filePath = filereader.canonicalFilePath(args.values.appargs)
         if (filePath !== "") {
-            var fileName = filePath.split("/").pop()
             if (loadFile(filePath))
-                localBooks.addFile(filePath, fileName)
+                localBooks.addFile(filePath)
         }
     }
 }

@@ -37,13 +37,26 @@ Page {
         return filename.replace(/\.epub$/, "").replace(/_/g, " ")
     }
     
-    function addFile(filePath, fileName) {
+    // New items are given a lastread time of now, since these are probably
+    // interesting for a user to see.
+    property string addFileSQL: "INSERT OR IGNORE INTO LocalBooks(filename, title, author, " +
+                                "cover, lastread) VALUES(?, ?, 'zzznull', 'ZZZnone', datetime('now'))"
+
+    function addFile(filePath) {
+        var fileName = filePath.split("/").pop()
         var db = openDatabase()
         db.transaction(function (tx) {
-            // New items are given a lastread time of now, since these are probably
-            // interesting for a user to see.
-            tx.executeSql("INSERT OR IGNORE INTO LocalBooks(filename, title, author, cover, lastread)" +
-                          " VALUES(?, ?, 'zzznull', 'ZZZnone', datetime('now'))", [filePath, fileToTitle(fileName)])
+            tx.executeSql(addFileSQL, [filePath, fileToTitle(fileName)])
+        })
+    }
+
+    function addFolder() {
+        var db = openDatabase()
+        db.transaction(function (tx) {
+            for (var i=0; i<folderRepeater.count; i++) {
+                var item = folderRepeater.itemAt(i)
+                tx.executeSql(addFileSQL, [item.filepath, fileToTitle(item.filename)])
+            }
         })
     }
     
@@ -125,6 +138,10 @@ Page {
             coverTimer.start()
         })
     }
+
+    function setPath() {
+        folderModel.path = folderModel.homePath() + "/Books"
+    }
     
     Component.onCompleted: {
         var db = openDatabase()
@@ -132,10 +149,11 @@ Page {
             tx.executeSql("CREATE TABLE IF NOT EXISTS LocalBooks(filename TEXT UNIQUE, " +
                           "title TEXT, author TEXT, cover BLOB, lastread TEXT)")
         })
-        if (!firststart) {
-            folderRepeater.model = folderModel
-            loadTimer.start()
-        }
+        // setPath() will trigger the loading of all files in the default directory
+        // into the library.  Since this can cause a freeze, on the first start, we
+        // throw up a dialog to hide it.  The dialog calls setPath once it's ready.
+        if (!firststart)
+            setPath()
     }
 
     // If we need to resort, do it when hiding or showing this page
@@ -150,48 +168,34 @@ Page {
     // This will list all files in "~/Books"
     FolderListModel {
         id: folderModel
-        //readsMediaMetadata: true
         isRecursive: true
         showDirectories: true
         filterDirectories: false
-        path: homePath() + "/Books"
         nameFilters: ["*.epub"] // file types supported.
+        onAwaitingResultsChanged: {
+            if (!awaitingResults) {
+                addFolder()
+                listBooks()
+                firststart = false
+                coverTimer.start()
+            }
+        }
     }
     
     // We use the repeater to iterate through the folderModel
     // The model is set after load, to avoid freezing the GUI
     Repeater {
         id: folderRepeater
+        model: folderModel
         
         Component {
             Item {
-                Component.onCompleted: {
-                    loadTimer.stop()
-                    localBooks.addFile(filePath, fileName)
-                    loadTimer.start()
-                }
+                property var filepath: filePath
+                property var filename: fileName
             }
         }
     }
     
-    // When we're finished making sure all the files in ~/Books are
-    // in the database, we read out the database into our ListModel.
-    // This timer is to ensure that the loading runs only after all
-    // those files have been checked.
-    Timer {
-        id: loadTimer
-        interval: 100
-        repeat: false
-        running: false
-        triggeredOnStart: false
-        
-        onTriggered: {
-            localBooks.listBooks()
-            firststart = false
-            coverTimer.start()
-        }
-    }
-
     EpubReader {
         id: coverReader
     }
@@ -316,23 +320,15 @@ Page {
                 }
             }
 
-            onVisibleChanged: {
-                if (visible)
-                    startTimer.start()
+            // Just waiting for onCompleted isn't enough to ensure this dialog
+            // gets shown, so we start a brief timer before calling setPath().
+            Timer {
+                interval: 100
+                repeat: false
+                running: true
+                triggeredOnStart: false
+                onTriggered: setPath()
             }
-        }
-    }
-
-    Timer {
-        id: startTimer
-        interval: 100
-        repeat: false
-        running: false
-        triggeredOnStart: false
-
-        onTriggered: {
-            folderRepeater.model = folderModel
-            loadTimer.start()
         }
     }
 }
