@@ -251,6 +251,43 @@ Page {
         flickableItem: listview
         align: Qt.AlignTrailing
     }
+
+    Item {
+        anchors.fill: parent
+        visible: bookModel.count == 0
+
+        Column {
+            anchors.centerIn: parent
+            spacing: units.gu(2)
+            width: Math.min(units.gu(30), parent.width)
+
+            Label {
+                text: i18n.tr("No Books in Library")
+                fontSize: "large"
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Label {
+                text: i18n.tr("Beru could not find any books for your library.  Beru will " +
+                              "find all epub files in ~/Books automatically.  Additionally, " +
+                              "any book opened with Beru will be added to the library.")
+                wrapMode: Text.Wrap
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Button {
+                text: i18n.tr("Search Again")
+                width: parent.width
+                onClicked: {
+                    // Refresh isn't enough if folder was created in the meantime.
+                    folderModel.path = ""
+                    setPath()
+                }
+            }
+        }
+    }
     
     tools: ToolbarItems {
         id: localBooksToolbar
