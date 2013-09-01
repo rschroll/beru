@@ -51,6 +51,15 @@ styleManager = {
         Messaging.sendMessage("Styles", styles);
     },
 
+    resetToDefault: function () {
+        styleManager.updateStyles(DEFAULT_STYLES);
+        styleManager.sendStyles(DEFAULT_STYLES);
+    },
+
+    setDefault: function (styles) {
+        DEFAULT_STYLES = styles;
+    },
+
     loadCookie: function() {
         if (!document.cookie)
             return null;

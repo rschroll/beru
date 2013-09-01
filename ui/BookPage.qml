@@ -144,6 +144,7 @@ Page {
     Item {
         id: bookStyles
         property bool loading: false
+        property bool atdefault: false
 
         property string textColor
         property string fontFamily
@@ -151,6 +152,7 @@ Page {
         property real fontScale
         property string background
         property real margin
+        property real marginv
 
         //onTextColorChanged: update()  // This is always updated with background
         onFontFamilyChanged: update()
@@ -167,21 +169,33 @@ Page {
             fontScale = styles.fontScale || 1
             background = styles.background || "url(.background_paper@30.png)"
             margin = styles.margin || 0
+            marginv = styles.marginv || 0
             loading = false
+        }
+
+        function asObject() {
+            return {
+                textColor: textColor,
+                fontFamily: fontFamily,
+                lineHeight: lineHeight,
+                fontScale: fontScale,
+                background: background,
+                margin: margin,
+                marginv: marginv
+            }
         }
 
         function update() {
             if (loading)
                 return
 
-            Messaging.sendMessage("Styles", {
-                                      textColor: textColor,
-                                      fontFamily: fontFamily,
-                                      lineHeight: lineHeight,
-                                      fontScale: fontScale,
-                                      background: background,
-                                      margin: margin
-                                  })
+            Messaging.sendMessage("Styles", asObject())
+            atdefault = false
+        }
+
+        function saveAsDefault() {
+            setSetting("defaultBookStyle", JSON.stringify(asObject()))
+            Messaging.sendMessage("SetDefaultStyles", asObject())
         }
     }
 
@@ -193,13 +207,13 @@ Page {
             property real labelwidth: units.gu(11)
 
             ColorSelector {
+                id: colorSelector
                 text: i18n.tr("Colors")
                 values: [i18n.tr("Black on White"), i18n.tr("Dark on Texture"),
                     i18n.tr("Light on Texture"), i18n.tr("White on Black")]
                 foregrounds: ["black", "#222", "#999", "white"]
                 backgrounds: ["white", "url(.background_paper@30.png)",
                     "url(.background_paper_invert@30.png)", "black"]
-                selectedIndex: foregrounds.indexOf(bookStyles.textColor)
                 onSelectedIndexChanged: {
                     bookStyles.textColor = foregrounds[selectedIndex]
                     bookStyles.background = backgrounds[selectedIndex]
@@ -207,10 +221,10 @@ Page {
             }
 
             FontSelector {
+                id: fontSelector
                 text: i18n.tr("Font")
                 values: ["Default", "Bitstream Charter", "Nimbus Roman No9 L", "Nimbus Sans L",
                     "Ubuntu", "URW Bookman L", "URW Gothic L"]
-                selectedIndex: values.indexOf(bookStyles.fontFamily)
                 onSelectedIndexChanged: bookStyles.fontFamily = values[selectedIndex]
             }
 
@@ -230,7 +244,6 @@ Page {
                     function formatValue(v) {
                         return [0.5, 0.59, 0.7, 0.84, 1, 1.2, 1.4, 1.7, 2, 2.4, 2.8, 3.4, 4][Math.round(v)]
                     }
-                    value: 4 + 4 * Math.LOG2E * Math.log(bookStyles.fontScale)
                     onValueChanged: bookStyles.fontScale = formatValue(value)
                 }
             }
@@ -253,7 +266,6 @@ Page {
                             return "Default"
                         return v.toFixed(1)
                     }
-                    value: (bookStyles.lineHeight == "Default") ? 0.8 : bookStyles.lineHeight
                     onValueChanged: bookStyles.lineHeight = formatValue(value)
                 }
             }
@@ -272,7 +284,6 @@ Page {
                     minimumValue: 0
                     maximumValue: 30
                     function formatValue(v) { return Math.round(v) + "%" }
-                    value: bookStyles.margin
                     onValueChanged: bookStyles.margin = value
                 }
             }
@@ -280,6 +291,59 @@ Page {
             Button {
                 text: i18n.tr("Close")
                 onClicked: PopupUtils.close(stylesDialog)
+            }
+
+            Item {
+                height: children[0].height
+                Button {
+                    text: i18n.tr("Make Default")
+                    width: parent.width/2 - units.gu(1)
+                    anchors {
+                        left: parent.left
+                        top: parent.top
+                        //width: parent.width / 2
+                    }
+                    gradient: bookStyles.atdefault ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
+                    onClicked: {
+                        bookStyles.saveAsDefault()
+                        bookStyles.atdefault = true
+                    }
+                }
+                Button {
+                    text: i18n.tr("Load Defaults")
+                    width: parent.width/2 - units.gu(1)
+                    anchors {
+                        right: parent.right
+                        top: parent.top
+                    }
+                    gradient: bookStyles.atdefault ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
+                    onClicked: {
+                        Messaging.sendMessage("ResetStylesToDefault")
+                        bookStyles.atdefault = true
+                    }
+                }
+            }
+
+            function setValues() {
+                colorSelector.selectedIndex = colorSelector.foregrounds.indexOf(bookStyles.textColor)
+                fontSelector.selectedIndex = fontSelector.values.indexOf(bookStyles.fontFamily)
+                fontScaleSlider.value = 4 + 4 * Math.LOG2E * Math.log(bookStyles.fontScale)
+                lineHeightSlider.value = (bookStyles.lineHeight == "Default") ? 0.8 : bookStyles.lineHeight
+                marginSlider.value = bookStyles.margin
+            }
+
+            function onLoadingChanged() {
+                if (bookStyles.loading == false)
+                    setValues()
+            }
+
+            Component.onCompleted: {
+                setValues()
+                bookStyles.onLoadingChanged.connect(onLoadingChanged)
+            }
+
+            Component.onDestruction: {
+                bookStyles.onLoadingChanged.disconnect(onLoadingChanged)
             }
         }
     }

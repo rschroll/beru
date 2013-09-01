@@ -5,6 +5,7 @@
  */
 
 import QtQuick 2.0
+import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import File 1.0
@@ -76,6 +77,28 @@ MainView {
         return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
     }
 
+    function openSettingsDatabase() {
+        return LocalStorage.openDatabaseSync("BeruSettings", "1", "Books on the local device", 10000)
+    }
+
+    function getSetting(key) {
+        var db = openSettingsDatabase()
+        var retval = null
+        db.readTransaction(function (tx) {
+            var res = tx.executeSql("SELECT value FROM Settings WHERE key=?", [key])
+            if (res.rows.length > 0)
+                retval = res.rows.item(0).value
+        })
+        return retval
+    }
+
+    function setSetting(key, value) {
+        var db = openSettingsDatabase()
+        db.transaction(function (tx) {
+            tx.executeSql("INSERT OR REPLACE INTO Settings(key, value) VALUES(?, ?)", [key, value])
+        })
+    }
+
     Arguments {
         id: args
 
@@ -87,6 +110,11 @@ MainView {
     }
 
     Component.onCompleted: {
+        var db = openSettingsDatabase()
+        db.transaction(function (tx) {
+            tx.executeSql("CREATE TABLE IF NOT EXISTS Settings(key TEXT UNIQUE, value TEXT)")
+        })
+
         var filePath = filereader.canonicalFilePath(args.values.appargs)
         if (filePath !== "") {
             if (loadFile(filePath))

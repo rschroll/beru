@@ -37,25 +37,36 @@ HttpServer {
     }
 
     function defaultStyle(response) {
+        var savedval = getSetting("defaultBookStyle")
+        var defaults = {}
+        if (savedval != null)
+            defaults = JSON.parse(savedval)
+
         var targetwidth = 60
         var widthgu = width/units.gu(1)
+
         var marginh = 0
-        var marginv = 0
-        if (widthgu > targetwidth) {
+        if (defaults.margin != undefined)
+            marginh = defaults.margin
+        else if (widthgu > targetwidth)
             // Set the margins to give us the target width, but no more than 30%.
-            var marginh = Math.round(Math.min(50 * (1 - targetwidth/widthgu), 30))
-            // Set the vertical margins to be the same, but no more than 5%.
-            var marginv = Math.min(marginh, 5)
-        }
+            marginh = Math.round(Math.min(50 * (1 - targetwidth/widthgu), 30))
+
+        var marginv = 0
+        if (defaults.marginv != undefined)
+            marginv = defaults.marginv
+        else if (widthgu > targetwidth)
+            // Set the vertical margins to be the same as the horizontal, but no more than 5%.
+            marginv = Math.min(marginh, 5)
 
         response.setHeader("Content-Type", "text/css")
         response.writeHead(200)
         response.write("DEFAULT_STYLES = {\n" +
-                       "    textColor: '#222',\n" +
-                       "    fontFamily: 'Default',\n" +
-                       "    lineHeight: 'Default',\n" +
-                       "    fontScale: 1,\n" +
-                       "    background: 'url(.background_paper@30.png)',\n" +
+                       "    textColor: '" + (defaults.textColor || "#222") + "',\n" +
+                       "    fontFamily: '" + (defaults.fontFamily || "Default") + "',\n" +
+                       "    lineHeight: '" + (defaults.lineHeight || "Default") + "',\n" +
+                       "    fontScale: " + (defaults.fontScale || "1") + ",\n" +
+                       "    background: '" + (defaults.background || "url(.background_paper@30.png)") + "',\n" +
                        "    margin: " + marginh + ",\n" +
                        "    marginv: " + marginv + "\n}")
         response.end()
