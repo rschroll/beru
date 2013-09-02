@@ -32,6 +32,7 @@ Page {
             // Reset things for the next time this page is opened
             history.clear()
             url = ""
+            bookWebView.visible = false
         }
     }
 
@@ -42,6 +43,7 @@ Page {
     WebView {
         id: bookWebView
         anchors.fill: parent
+        visible: false
         
         onTitleChanged: Messaging.handleMessage(title)
     }
@@ -384,11 +386,16 @@ Page {
                                   percent: location.percent })
     }
 
+    function onReady() {
+        bookWebView.visible = true
+    }
+
     Component.onCompleted: {
         Messaging.registerHandler("ExternalLink", onExternalLink)
         Messaging.registerHandler("Jumping", onJumping)
         Messaging.registerHandler("PageChange", onPageChange)
         Messaging.registerHandler("Styles", bookStyles.load)
+        Messaging.registerHandler("Ready", onReady)
         server.epub.contentsReady.connect(parseContents)
     }
 }

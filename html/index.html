@@ -27,6 +27,7 @@ function createReader(bookData) {
             var stencil = new Monocle.Controls.Stencil(reader);
             reader.addControl(stencil);
             styleManager.reader = reader;
+            Messaging.sendMessage("Ready");
         }
     );
     Messaging.registerHandler("NavigateChapter", function (src) {
