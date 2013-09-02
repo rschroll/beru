@@ -36,44 +36,42 @@ HttpServer {
         fileserver.serve(Qt.resolvedUrl("../html/" + path).slice(7), response)
     }
 
-    function defaultStyle(response) {
-        var savedval = getSetting("defaultBookStyle")
-        var defaults = {}
-        if (savedval != null)
-            defaults = JSON.parse(savedval)
-
+    function defaults(response) {
+        var defaults = {
+            textColor: "#222",
+            fontFamily: "Default",
+            lineHeight: "Default",
+            fontScale: 1,
+            background: "url(.background_paper@30.png)",
+            margin: 0,
+            marginv: 0
+        }
         var targetwidth = 60
         var widthgu = width/units.gu(1)
-
-        var marginh = 0
-        if (defaults.margin != undefined)
-            marginh = defaults.margin
-        else if (widthgu > targetwidth)
+        if (widthgu > targetwidth)
             // Set the margins to give us the target width, but no more than 30%.
-            marginh = Math.round(Math.min(50 * (1 - targetwidth/widthgu), 30))
+            defaults.margin = Math.round(Math.min(50 * (1 - targetwidth/widthgu), 30))
 
-        var marginv = 0
-        if (defaults.marginv != undefined)
-            marginv = defaults.marginv
-        else if (widthgu > targetwidth)
+        var saveddefault = getSetting("defaultBookStyle")
+        var savedvals = {}
+        if (saveddefault != null)
+            savedvals = JSON.parse(saveddefault)
+        for (var prop in savedvals)
+            if (prop in defaults)
+                defaults[prop] = savedvals[prop]
+
+        if (savedvals.marginv == undefined && widthgu > targetwidth)
             // Set the vertical margins to be the same as the horizontal, but no more than 5%.
             marginv = Math.min(marginh, 5)
 
-        response.setHeader("Content-Type", "text/css")
+        response.setHeader("Content-Type", "application/javascript")
         response.writeHead(200)
-        response.write("DEFAULT_STYLES = {\n" +
-                       "    textColor: '" + (defaults.textColor || "#222") + "',\n" +
-                       "    fontFamily: '" + (defaults.fontFamily || "Default") + "',\n" +
-                       "    lineHeight: '" + (defaults.lineHeight || "Default") + "',\n" +
-                       "    fontScale: " + (defaults.fontScale || "1") + ",\n" +
-                       "    background: '" + (defaults.background || "url(.background_paper@30.png)") + "',\n" +
-                       "    margin: " + marginh + ",\n" +
-                       "    marginv: " + marginv + "\n}")
+        response.write("DEFAULT_STYLES = " + JSON.stringify(defaults) + ";\n")
 
         var locus = getBookSettings("locus")
         if (locus == undefined)
             locus = null
-        response.write("\nSAVED_PLACE = " + JSON.stringify(locus))
+        response.write("SAVED_PLACE = " + JSON.stringify(locus) + ";\n")
 
         response.end()
     }
@@ -84,7 +82,7 @@ HttpServer {
         if (request.path == "/.bookdata.js")
             return epub.serveBookData(response)
         if (request.path == "/.defaults.js")
-            return defaultStyle(response)
+            return defaults(response)
         if (request.path[1] == ".")
             return static_file(request.path.slice(2), response)
         return epub.serveComponent(request.path.slice(1), response)
