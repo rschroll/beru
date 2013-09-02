@@ -48,6 +48,7 @@ Page {
         db.transaction(function (tx) {
             tx.executeSql(addFileSQL, [filePath, fileToTitle(fileName)])
         })
+        localBooks.needsort = true
     }
 
     function addFolder() {
@@ -58,6 +59,7 @@ Page {
                 tx.executeSql(addFileSQL, [item.filepath, fileToTitle(item.filename)])
             }
         })
+        localBooks.needsort = true
     }
     
     function listBooks() {
@@ -173,12 +175,20 @@ Page {
         filterDirectories: false
         nameFilters: ["*.epub"] // file types supported.
         onAwaitingResultsChanged: {
+            console.log("Awaiting: " + awaitingResults)
             if (!awaitingResults) {
                 addFolder()
                 listBooks()
                 firststart = false
                 coverTimer.start()
             }
+        }
+        onError: {
+            // No folder (Should we try to create it?)
+            // We can load the rest of the library anyway.
+            listBooks()
+            firststart = false
+            coverTimer.start()
         }
     }
     
