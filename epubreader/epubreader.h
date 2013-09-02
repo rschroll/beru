@@ -16,8 +16,10 @@
 class EpubReader : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(QString hash READ hash);
 public:
     explicit EpubReader(QObject *parent = 0);
+    QString hash();
     Q_INVOKABLE bool load(const QString &filename);
     Q_INVOKABLE void serveBookData(QHttpResponse *response);
     Q_INVOKABLE void serveComponent(const QString &filename, QHttpResponse *response);
@@ -36,6 +38,7 @@ private:
     QVariantList parseNCXChildren(QDomElement element);
 
     QuaZip* zip;
+    QString _hash;
     QString navhref;
     QString ncxhref;
     QString coverhtml;

@@ -378,14 +378,16 @@ Page {
             history.add(locuses[0], locuses[1])
     }
 
-    function setChapterSrc(src) {
-        currentChapter = src
+    function onPageChange(location) {
+        currentChapter = location.chapterSrc
+        setBookSetting("locus", { componentId: location.componentId,
+                                  percent: location.percent })
     }
 
     Component.onCompleted: {
         Messaging.registerHandler("ExternalLink", onExternalLink)
         Messaging.registerHandler("Jumping", onJumping)
-        Messaging.registerHandler("ChapterSrc", setChapterSrc)
+        Messaging.registerHandler("PageChange", onPageChange)
         Messaging.registerHandler("Styles", bookStyles.load)
         server.epub.contentsReady.connect(parseContents)
     }

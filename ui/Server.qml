@@ -69,6 +69,12 @@ HttpServer {
                        "    background: '" + (defaults.background || "url(.background_paper@30.png)") + "',\n" +
                        "    margin: " + marginh + ",\n" +
                        "    marginv: " + marginv + "\n}")
+
+        var locus = getBookSettings("locus")
+        if (locus == undefined)
+            locus = null
+        response.write("\nSAVED_PLACE = " + JSON.stringify(locus))
+
         response.end()
     }
     
@@ -77,7 +83,7 @@ HttpServer {
             return static_file("index.html", response)
         if (request.path == "/.bookdata.js")
             return epub.serveBookData(response)
-        if (request.path == "/.defaultstyle.js")
+        if (request.path == "/.defaults.js")
             return defaultStyle(response)
         if (request.path[1] == ".")
             return static_file(request.path.slice(2), response)

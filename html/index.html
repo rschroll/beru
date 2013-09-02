@@ -14,23 +14,18 @@ the GPL. See the file COPYING for full details.
 <script src=".monocle/scripts/monoctrl.js"></script>
 <script src=".bookdata.js"></script>
 <script src=".messaging.js"></script>
-<script src=".defaultstyle.js"></script>
+<script src=".defaults.js"></script>
 <script src=".styling.js"></script>
 <script>
 function createReader(bookData) {
     // Make sure each book saves its place to different cookies
-    Monocle.Controls.PlaceSaver.COOKIE_NAMESPACE +=
-        bookData.getMetaData("title").toLowerCase().replace(/[^a-z0-9]/g, '') + ".";
-    Monocle.Controls.PlaceSaver.COOKIE_EXPIRES_IN_DAYS = 365;
-    var placeSaver = new Monocle.Controls.PlaceSaver("reader");
     var styleInfo = styleManager.init(bookData.getMetaData("title"));
     var reader = Monocle.Reader("reader", bookData,
-        { panels: Monocle.Panels.TwoPane, place: placeSaver.savedPlace(),
+        { panels: Monocle.Panels.TwoPane, place: SAVED_PLACE,
           stylesheet: styleInfo.stylesheet, fontScale: styleInfo.fontScale},
         function (reader) {
             var stencil = new Monocle.Controls.Stencil(reader);
             reader.addControl(stencil);
-            reader.addControl(placeSaver);
             styleManager.reader = reader;
         }
     );
@@ -51,7 +46,10 @@ function createReader(bookData) {
         Messaging.sendMessage("Jumping", [reader.getPlace().getLocus(), event.m.locus]);
     });
     reader.listen("monocle:pagechange", function(event) {
-        Messaging.sendMessage("ChapterSrc", reader.getPlace().chapterSrc());
+        var place = reader.getPlace();
+        Messaging.sendMessage("PageChange", { chapterSrc: place.chapterSrc(),
+                                              componentId: place.componentId(),
+                                              percent: place.percentageThrough() });
     });
 }
 

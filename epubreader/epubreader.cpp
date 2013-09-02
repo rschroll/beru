@@ -34,6 +34,7 @@ bool EpubReader::load(const QString &filename)
         delete this->zip;
         this->zip = NULL;
     }
+    this->_hash = "";
     this->navhref = "";
     this->ncxhref = "";
     this->coverhtml = "";
@@ -52,6 +53,23 @@ bool EpubReader::load(const QString &filename)
         return false;
     }
     return true;
+}
+
+QString EpubReader::hash() {
+    if (this->_hash != "")
+        return this->_hash;
+
+    if (!this->zip || !this->zip->isOpen())
+        return this->_hash;
+
+    QByteArray CRCarray;
+    QDataStream CRCstream(&CRCarray, QIODevice::WriteOnly);
+    QList<QuaZipFileInfo> fileList = this->zip->getFileInfoList();
+    foreach (const QuaZipFileInfo info, fileList) {
+        CRCstream << info.crc;
+    }
+    this->_hash = QString(CRCarray.toHex());
+    return this->_hash;
 }
 
 QDomDocument* EpubReader::getFileAsDom(const QString &filename)

@@ -8,6 +8,7 @@ import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
+import U1db 1.0 as U1db
 import File 1.0
 
 
@@ -97,6 +98,33 @@ MainView {
         db.transaction(function (tx) {
             tx.executeSql("INSERT OR REPLACE INTO Settings(key, value) VALUES(?, ?)", [key, value])
         })
+    }
+
+    U1db.Database {
+        id: bookSettingsDatabase
+        path: "BeruBookSettings"
+    }
+
+    function getBookSettings(key) {
+        if (server.epub.hash == "")
+            return undefined
+
+        var settings = bookSettingsDatabase.getDoc(server.epub.hash)
+        if (settings == undefined)
+            return undefined
+        return settings[key]
+    }
+
+    function setBookSetting(key, value) {
+        if (server.epub.hash == "")
+            return false
+
+        var settings = bookSettingsDatabase.getDoc(server.epub.hash)
+        if (settings == undefined)
+            settings = {}
+        settings[key] = value
+        bookSettingsDatabase.putDoc(settings, server.epub.hash)
+        return true
     }
 
     Arguments {
