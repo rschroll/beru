@@ -305,7 +305,8 @@ Page {
                         top: parent.top
                         //width: parent.width / 2
                     }
-                    gradient: bookStyles.atdefault ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
+                    gradient: UbuntuColors.greyGradient
+                    enabled: !bookStyles.atdefault
                     onClicked: {
                         bookStyles.saveAsDefault()
                         bookStyles.atdefault = true
@@ -318,7 +319,8 @@ Page {
                         right: parent.right
                         top: parent.top
                     }
-                    gradient: bookStyles.atdefault ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
+                    gradient: UbuntuColors.greyGradient
+                    enabled: !bookStyles.atdefault
                     onClicked: {
                         Messaging.sendMessage("ResetStylesToDefault")
                         bookStyles.atdefault = true

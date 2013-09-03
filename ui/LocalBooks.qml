@@ -175,7 +175,6 @@ Page {
         filterDirectories: false
         nameFilters: ["*.epub"] // file types supported.
         onAwaitingResultsChanged: {
-            console.log("Awaiting: " + awaitingResults)
             if (!awaitingResults) {
                 addFolder()
                 listBooks()
@@ -361,6 +360,7 @@ Page {
                 id: closeButton
                 text: firststart ? i18n.tr("One moment please...") : i18n.tr("OK")
                 gradient: firststart ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
+                enabled: !firststart
                 onClicked: {
                     if (!firststart)
                         PopupUtils.close(firstStartDialog)
