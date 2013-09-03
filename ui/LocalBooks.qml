@@ -29,7 +29,7 @@ Page {
     }
 
     function openDatabase() {
-        return LocalStorage.openDatabaseSync("BeruLocalBooks", "1", "Books on the local device",
+        return LocalStorage.openDatabaseSync("BeruLocalBooks", "", "Books on the local device",
                                              1000000, onFirstStart);
     }
     
@@ -39,8 +39,8 @@ Page {
     
     // New items are given a lastread time of now, since these are probably
     // interesting for a user to see.
-    property string addFileSQL: "INSERT OR IGNORE INTO LocalBooks(filename, title, author, " +
-                                "cover, lastread) VALUES(?, ?, 'zzznull', 'ZZZnone', datetime('now'))"
+    property string addFileSQL: "INSERT OR IGNORE INTO LocalBooks(filename, title, author, authorsort, " +
+                                "cover, lastread) VALUES(?, ?, '', 'zzznull', 'ZZZnone', datetime('now'))"
 
     function addFile(filePath) {
         var fileName = filePath.split("/").pop()
@@ -63,7 +63,7 @@ Page {
     }
     
     function listBooks() {
-        var sort = ["lastread DESC, title ASC", "title ASC", "author ASC, title ASC"][localBooks.sort]
+        var sort = ["lastread DESC, title ASC", "title ASC", "authorsort ASC, title ASC"][localBooks.sort]
         if (sort === undefined) {
             console.log("Error: Undefined sorting: " + localBooks.sort)
             return
@@ -97,33 +97,48 @@ Page {
     function updateBookCover() {
         var db = openDatabase()
         db.transaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title FROM LocalBooks WHERE author == 'zzznull'")
+            var res = tx.executeSql("SELECT filename, title FROM LocalBooks WHERE authorsort == 'zzznull'")
             if (res.rows.length == 0)
                 return
 
             localBooks.needsort = true
-            var title, author, cover
+            var title, author, authorsort, cover
             if (coverReader.load(res.rows.item(0).filename)) {
                 var coverinfo = coverReader.getCoverInfo(units.gu(1))
                 title = coverinfo.title
                 if (title == "ZZZnone")
                     title = res.rows.item(0).title
+
                 author = coverinfo.author.trim()
-                if (author.indexOf(",") == -1) {
-                    var ls = author.lastIndexOf(" ")
-                    if (ls > -1) {
-                        author = author.slice(ls + 1) + ", " + author.slice(0, ls)
-                        author = author.trim()
+                authorsort = coverinfo.authorsort.trim()
+                if (authorsort == "zzznone" && author != "") {
+                    // No sort information, so let's do our best to fix it:
+                    authorsort = author
+                    var lc = author.lastIndexOf(",")
+                    if (lc == -1) {
+                        // If no commas, assume "First Last"
+                        var ls = author.lastIndexOf(" ")
+                        if (ls > -1) {
+                            authorsort = author.slice(ls + 1) + ", " + author.slice(0, ls)
+                            authorsort = authorsort.trim()
+                        }
+                    } else if (author.indexOf(",") == lc) {
+                        // If there is exactly one comma in the author, assume "Last, First".
+                        // Thus, authorsort is correct and we have to fix author.
+                        author = author.slice(lc + 1).trim() + " " + author.slice(0, lc).trim()
                     }
                 }
+
                 cover = coverinfo.cover
             } else {
                 title = res.rows.item(0).title
-                author = "zzzzerror" + i18n.tr("Could not open this book.")
+                author = i18n.tr("Could not open this book.")
+                authorsort = "zzzzerror"
                 cover = "ZZZerror"
             }
-            tx.executeSql("UPDATE LocalBooks SET title=?, author=?, cover=? WHERE filename=?",
-                          [title, author, cover, res.rows.item(0).filename])
+            tx.executeSql("UPDATE LocalBooks SET title=?, author=?, authorsort=?, cover=? " +
+                          "WHERE filename=?",
+                          [title, author, authorsort, cover, res.rows.item(0).filename])
 
             if (localBooks.visible) {
                 for (var i=0; i<bookModel.count; i++) {
@@ -151,6 +166,15 @@ Page {
             tx.executeSql("CREATE TABLE IF NOT EXISTS LocalBooks(filename TEXT UNIQUE, " +
                           "title TEXT, author TEXT, cover BLOB, lastread TEXT)")
         })
+        // NOTE: db.version is not updated live!  We will get the change only the next time
+        // we run, so here we must keep track of what's been happening.  onFirstStart() has
+        // already run, so we're at version 1, even if db.version is empty.
+        if (db.version == "" || db.version == "1") {
+            db.changeVersion(db.version, "2", function (tx) {
+                tx.executeSql("ALTER TABLE LocalBooks ADD authorsort TEXT NOT NULL DEFAULT 'zzznull'")
+            })
+        }
+
         // setPath() will trigger the loading of all files in the default directory
         // into the library.  Since this can cause a freeze, on the first start, we
         // throw up a dialog to hide it.  The dialog calls setPath once it's ready.
@@ -230,19 +254,7 @@ Page {
         model: bookModel
         delegate: Subtitled {
             text: model.title
-            subText: {
-                if (model.author == "zzznull" || model.author == "zzznone")
-                    return ""
-                if (model.author.match(/^zzzzerror/))
-                    return model.author.slice(9)
-
-                var author = model.author
-                var lc = author.lastIndexOf(",")
-                // If there is exactly one comma in the author, assume "Last, First"
-                if (lc != -1 && author.indexOf(",") == lc)
-                    author = author.slice(lc + 1).trim() + " " + author.slice(0, lc).trim()
-                return author
-            }
+            subText: model.author
             icon: {
                 if (model.cover == "ZZZnone")
                     return Qt.resolvedUrl("images/default_cover.png")

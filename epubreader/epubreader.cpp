@@ -40,6 +40,7 @@ bool EpubReader::load(const QString &filename)
     this->coverhtml = "";
     this->spine.clear();
     this->metadata.clear();
+    this->sortmetadata.clear();
 
     this->zip = new QuaZip(filename);
     if (!this->zip->open(QuaZip::mdUnzip)) {
@@ -171,7 +172,13 @@ bool EpubReader::parseOPF()
     for (int i=0; i<nodes.length(); i++) {
         QDomElement item = nodes.item(i).toElement();
         if (!item.isNull() && !item.firstChild().isNull()) {
-            this->metadata[item.nodeName().split(":").last()] = item.firstChild().nodeValue();
+            QString name = item.nodeName().split(":").last();
+            this->metadata[name] = item.firstChild().nodeValue();
+            // This should work, but doesn't:
+            //QString fileas = item.attributeNS("http://www.idpf.org/2007/opf", "file-as");
+            QString fileas = item.attribute("opf:file-as");
+            if (!fileas.isEmpty())
+                this->sortmetadata[name] = fileas;
         }
     }
 
@@ -308,7 +315,8 @@ QVariantMap EpubReader::getCoverInfo(int guscale)
         return res;
 
     res["title"] = this->metadata.contains("title") ? this->metadata["title"] : "ZZZnone";
-    res["author"] = this->metadata.contains("creator") ? this->metadata["creator"] : "zzznone";
+    res["author"] = this->metadata.contains("creator") ? this->metadata["creator"] : "";
+    res["authorsort"] = this->sortmetadata.contains("creator") ? this->sortmetadata["creator"] : "zzznone";
     res["cover"] = "ZZZnone";
 
     QDomDocument* coverdoc = this->getFileAsDom(this->coverhtml);

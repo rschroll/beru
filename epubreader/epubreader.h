@@ -44,6 +44,7 @@ private:
     QString coverhtml;
     QStringList spine;
     QVariantMap metadata;
+    QVariantMap sortmetadata;
 
 };
 
