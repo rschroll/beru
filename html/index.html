@@ -18,7 +18,6 @@ the GPL. See the file COPYING for full details.
 <script src=".styling.js"></script>
 <script>
 function createReader(bookData) {
-    // Make sure each book saves its place to different cookies
     var styleInfo = styleManager.init(bookData.getMetaData("title"));
     var reader = Monocle.Reader("reader", bookData,
         { panels: Monocle.Panels.TwoPane, place: SAVED_PLACE,
@@ -27,6 +26,7 @@ function createReader(bookData) {
             var stencil = new Monocle.Controls.Stencil(reader);
             reader.addControl(stencil);
             styleManager.reader = reader;
+            Monocle.Browser.env.supportsTransform3d = false;  // Fix for paging backwards
             Messaging.sendMessage("Ready");
         }
     );
