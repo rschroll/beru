@@ -263,12 +263,25 @@ Page {
                     width: parent.width - labelwidth
                     minimumValue: 0.8
                     maximumValue: 2
-                    function formatValue(v) {
+                    function formatValue(v, untranslated) {
                         if (v < 0.95)
-                            return "Default"
+                            return untranslated ? "Default" : i18n.tr("Auto")
                         return v.toFixed(1)
                     }
-                    onValueChanged: bookStyles.lineHeight = formatValue(value)
+                    function setThumbColor() {
+                        __styleInstance.thumb.color = (value < 0.95) ?
+                                    UbuntuColors.warmGrey : Theme.palette.selected.foreground
+                    }
+                    onValueChanged: {
+                        bookStyles.lineHeight = formatValue(value, true)
+                        setThumbColor()
+                    }
+                    onPressedChanged: {
+                        if (pressed)
+                            __styleInstance.thumb.color = Theme.palette.selected.foreground
+                        else
+                            setThumbColor()
+                    }
                 }
             }
 
