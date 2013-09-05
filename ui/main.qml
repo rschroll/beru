@@ -119,12 +119,39 @@ MainView {
         if (server.epub.hash == "")
             return false
 
-        var settings = bookSettingsDatabase.getDoc(server.epub.hash)
-        if (settings == undefined)
-            settings = {}
-        settings[key] = value
-        bookSettingsDatabase.putDoc(settings, server.epub.hash)
+        if (databaseTimer.hash != null &&
+                (databaseTimer.hash != server.epub.hash || databaseTimer.key != key))
+            databaseTimer.trigger()
+
+        databaseTimer.stop()
+        databaseTimer.hash = server.epub.hash
+        databaseTimer.key = key
+        databaseTimer.value = value
+        databaseTimer.start()
+
         return true
+    }
+
+    Timer {
+        id: databaseTimer
+        interval: 1000
+        repeat: false
+        running: false
+        triggeredOnStart: false
+        property var hash: null
+        property var key
+        property var value
+        onTriggered: {
+            if (hash == null)
+                return
+
+            var settings = bookSettingsDatabase.getDoc(hash)
+            if (settings == undefined)
+                settings = {}
+            settings[key] = value
+            bookSettingsDatabase.putDoc(settings, hash)
+            hash = null
+        }
     }
 
     Arguments {
