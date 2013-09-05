@@ -51,15 +51,15 @@ Page {
     tools: ToolbarItems {
         id: bookPageToolbar
         onOpenedChanged: {
-            backButton.visible = history.canBackward()
-            forwardButton.visible = history.canForward()
+            backButton.enabled = history.canBackward()
+            forwardButton.enabled = history.canForward()
         }
 
         ToolbarButton {
             id: backButton
+            enabled: false
             action: Action {
                 text: i18n.tr("Back")
-                visible: false
                 iconSource: mobileIcon("go-previous")
                 onTriggered: {
                     var locus = history.goBackward()
@@ -73,9 +73,9 @@ Page {
 
         ToolbarButton {
             id: forwardButton
+            enabled: false
             action: Action {
                 text: i18n.tr("Forward")
-                visible: false
                 iconSource: mobileIcon("go-next")
                 onTriggered: {
                     var locus = history.goForward()
@@ -366,8 +366,8 @@ Page {
     }
 
     function updateNavButtons(back, forward) {
-        backButton.visible = back
-        forwardButton.visible = forward
+        backButton.enabled = back
+        forwardButton.enabled = forward
     }
 
     function onExternalLink(href) {
