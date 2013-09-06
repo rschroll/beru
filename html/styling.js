@@ -20,7 +20,7 @@ styleManager = {
     },
 
     iframeCSS: function (styles) {
-        var res = "body { color: " + styles.textColor + "; ";
+        var res = "body { color: " + styles.textColor + "; background: transparent; ";
         if (styles.fontFamily != "Default")
             res += "font-family: '" + styles.fontFamily + "'; ";
         if (styles.lineHeight != "Default")
