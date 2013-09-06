@@ -19,7 +19,6 @@ import "historystack.js" as History
 
 Page {
     id: bookPage
-    visible: false
     //flickable: null
     
     property alias url: bookWebView.url

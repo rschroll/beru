@@ -35,14 +35,34 @@ MainView {
 
     PageStack {
         id: pageStack
-        Component.onCompleted: push(localBooks)
+        Component.onCompleted: push(tabs)
 
-        LocalBooks {
-            id: localBooks
+        Tabs {
+            id: tabs
+
+            Tab {
+                title: i18n.tr("Library")
+                page: LocalBooks {
+                    id: localBooks
+                }
+            }
+
+            Tab {
+                title: i18n.tr("Get Books")
+                page: BookSources {
+                    id: bookSources
+                }
+            }
         }
 
         BookPage {
             id: bookPage
+            visible: false
+        }
+
+        BrowserPage {
+            id: browserPage
+            visible: false
         }
     }
 

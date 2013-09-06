@@ -15,7 +15,6 @@ import Epub 1.0
 
 Page {
     id: localBooks
-    visible: false
     title: i18n.tr("Books")
     property int sort: 0
     property bool needsort: false
@@ -42,13 +41,15 @@ Page {
     property string addFileSQL: "INSERT OR IGNORE INTO LocalBooks(filename, title, author, authorsort, " +
                                 "cover, lastread) VALUES(?, ?, '', 'zzznull', 'ZZZnone', datetime('now'))"
 
-    function addFile(filePath) {
+    function addFile(filePath, startCoverTimer) {
         var fileName = filePath.split("/").pop()
         var db = openDatabase()
         db.transaction(function (tx) {
             tx.executeSql(addFileSQL, [filePath, fileToTitle(fileName)])
         })
         localBooks.needsort = true
+        if (startCoverTimer)
+            coverTimer.start()
     }
 
     function addFolder() {

@@ -18,6 +18,9 @@ public:
     Q_INVOKABLE QString read_b64(const QString &filename);
     Q_INVOKABLE bool exists(const QString &filename);
     Q_INVOKABLE QString canonicalFilePath(const QString &filename);
+    Q_INVOKABLE QString homePath() const;
+    Q_INVOKABLE bool ensureDirInHome(const QString &dirname);
+    Q_INVOKABLE QString getDataDir(const QString &dirInHome);
 };
 
 #endif // FILEREADER_H
