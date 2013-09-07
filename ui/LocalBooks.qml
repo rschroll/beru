@@ -16,10 +16,14 @@ import Epub 1.0
 Page {
     id: localBooks
     title: i18n.tr("Books")
+    flickable: listview
     property int sort: 0
     property bool needsort: false
     property bool firststart: false
-    onSortChanged: listBooks()
+    onSortChanged: {
+        listBooks()
+        adjustViews(false)
+    }
     
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
@@ -64,27 +68,51 @@ Page {
     }
     
     function listBooks() {
-        var sort = ["lastread DESC, title ASC", "title ASC", "authorsort ASC, title ASC"][localBooks.sort]
+        // We only need to GROUP BY in the author sort, but this lets us use the same
+        // SQL logic for all three cases.
+        var sort = ["GROUP BY filename ORDER BY lastread DESC, title ASC",
+                    "GROUP BY filename ORDER BY title ASC",
+                    "GROUP BY authorsort ORDER BY authorsort ASC"][localBooks.sort]
         if (sort === undefined) {
             console.log("Error: Undefined sorting: " + localBooks.sort)
             return
         }
-        
+
+        listview.delegate = (localBooks.sort == 2) ? authorDelegate : titleDelegate
+
         bookModel.clear()
         var db = openDatabase()
         db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
-                                    "ORDER BY " + sort);
+            var res = tx.executeSql("SELECT filename, title, author, cover, authorsort, count(*) " +
+                                    "FROM LocalBooks " + sort)
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
                 if (filereader.exists(item.filename))
                     bookModel.append({filename: item.filename, title: item.title,
-                                      author: item.author, cover: item.cover})
+                                      author: item.author, cover: item.cover,
+                                      authorsort: item.authorsort, count: item["count(*)"]})
             }
         })
         localBooks.needsort = false
     }
-    
+
+    function listAuthorBooks(authorsort) {
+        perAuthorModel.clear()
+        var db = openDatabase()
+        db.readTransaction(function (tx) {
+            var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
+                                    "WHERE authorsort=? ORDER BY title ASC", [authorsort])
+            for (var i=0; i<res.rows.length; i++) {
+                var item = res.rows.item(i)
+                if (filereader.exists(item.filename))
+                    perAuthorModel.append({filename: item.filename, title: item.title,
+                                           author: item.author, cover: item.cover})
+            }
+            perAuthorModel.append({filename: "ZZZback", title: i18n.tr("Back"),
+                                   author: "", cover: ""})
+        })
+    }
+
     function updateRead(filename) {
         var db = openDatabase()
         db.transaction(function (tx) {
@@ -159,6 +187,13 @@ Page {
 
     function setPath() {
         folderModel.path = folderModel.homePath() + "/Books"
+    }
+
+    function adjustViews(toAuthor) {
+        perAuthorListView.visible = toAuthor
+        listview.visible = !toAuthor
+        scrollbar.flickableItem = toAuthor ? perAuthorListView : listview
+        localBooks.flickable = toAuthor ? perAuthorListView : listview
     }
     
     Component.onCompleted: {
@@ -247,29 +282,81 @@ Page {
     ListModel {
         id: bookModel
     }
-    
-    ListView {
-        id: listview
-        anchors.fill: parent
-        
-        model: bookModel
-        delegate: Subtitled {
+
+    ListModel {
+        id: perAuthorModel
+    }
+
+    Component {
+        id: titleDelegate
+        Subtitled {
             text: model.title
             subText: model.author
             icon: {
+                if (model.filename == "ZZZback")
+                    return mobileIcon("back")
                 if (model.cover == "ZZZnone")
                     return Qt.resolvedUrl("images/default_cover.png")
                 if (model.cover == "ZZZerror")
                     return Qt.resolvedUrl("images/error_cover.png")
                 return model.cover
             }
-            iconFrame: true
-            progression: true
-            onClicked: loadFile(model.filename)
+            iconFrame: model.filename != "ZZZback"
+            progression: false
+            onClicked: {
+                if (model.filename == "ZZZback")
+                    adjustViews(false)
+                else
+                    loadFile(model.filename)
+            }
         }
     }
 
+    Component {
+        id: authorDelegate
+        Subtitled {
+            text: model.author || i18n.tr("Unknown Author")
+            subText: (model.count > 1) ? i18n.tr("%1 Books").arg(model.count) : model.title
+            icon: {
+                if (model.count > 1)
+                    return mobileIcon("contact")
+                if (model.cover == "ZZZnone")
+                    return Qt.resolvedUrl("images/default_cover.png")
+                if (model.cover == "ZZZerror")
+                    return Qt.resolvedUrl("images/error_cover.png")
+                return model.cover
+            }
+            iconFrame: model.count == 1
+            progression: model.count > 1
+            onClicked: {
+                if (model.count > 1) {
+                    listAuthorBooks(model.authorsort)
+                    adjustViews(true)
+                } else {
+                    loadFile(model.filename)
+                }
+            }
+        }
+    }
+
+    ListView {
+        id: listview
+        anchors.fill: parent
+
+        model: bookModel
+    }
+
+    ListView {
+        id: perAuthorListView
+        anchors.fill: parent
+        visible: false
+
+        model: perAuthorModel
+        delegate: titleDelegate
+    }
+
     Scrollbar {
+        id: scrollbar
         flickableItem: listview
         align: Qt.AlignTrailing
     }
