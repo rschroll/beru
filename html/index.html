@@ -39,6 +39,9 @@ function createReader(bookData) {
     Messaging.registerHandler("Styles", styleManager.updateStyles);
     Messaging.registerHandler("ResetStylesToDefault", styleManager.resetToDefault);
     Messaging.registerHandler("SetDefaultStyles", styleManager.setDefault);
+    Messaging.registerHandler("WindowSizeChanged", function () {
+        reader.resized();
+    });
 
     reader.listen("monocle:link:external", function(event) {
         Messaging.sendMessage("ExternalLink", event.m.href.external);

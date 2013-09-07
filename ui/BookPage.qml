@@ -404,6 +404,10 @@ Page {
         bookWebView.visible = true
     }
 
+    function windowSizeChanged() {
+        Messaging.sendMessage("WindowSizeChanged")
+    }
+
     Component.onCompleted: {
         Messaging.registerHandler("ExternalLink", onExternalLink)
         Messaging.registerHandler("Jumping", onJumping)
@@ -411,5 +415,7 @@ Page {
         Messaging.registerHandler("Styles", bookStyles.load)
         Messaging.registerHandler("Ready", onReady)
         server.epub.contentsReady.connect(parseContents)
+        onWidthChanged.connect(windowSizeChanged)
+        onHeightChanged.connect(windowSizeChanged)
     }
 }
