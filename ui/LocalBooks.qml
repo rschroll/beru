@@ -26,7 +26,11 @@ Page {
         perAuthorModel.clear()
         adjustViews(false)
     }
-    onWideChanged: adjustViews(true)  // True to allow author's list if necessary
+    onWidthChanged: {
+        widthAnimation.enabled = false
+        adjustViews(true)  // True to allow author's list if necessary
+        widthAnimation.enabled = true
+    }
     
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
@@ -197,18 +201,13 @@ Page {
             showAuthor = false  // Don't need to show authors' list
 
         if (!wide || sort != 2) {
-            listview.anchors.right = localBooks.right
-            listview.visible = !showAuthor
-            perAuthorListView.anchors.left = localBooks.left
-            perAuthorListView.visible = showAuthor
-            localBooks.flickable = showAuthor ? perAuthorListView : listview
+            listview.width = localBooks.width
+            listview.x = showAuthor ? -localBooks.width : 0
         } else {
-            listview.anchors.right = localBooks.horizontalCenter
-            listview.visible = true
-            perAuthorListView.anchors.left = listview.right
-            perAuthorListView.visible = true
-            localBooks.flickable = showAuthor ? perAuthorListView : listview
+            listview.width = localBooks.width / 2
+            listview.x = 0
         }
+        localBooks.flickable = showAuthor ? perAuthorListView : listview
     }
     
     Component.onCompleted: {
@@ -300,6 +299,7 @@ Page {
 
     ListModel {
         id: perAuthorModel
+        property bool needsclear: false
     }
 
     Component {
@@ -321,8 +321,8 @@ Page {
             progression: false
             onClicked: {
                 if (model.filename == "ZZZback") {
+                    perAuthorModel.needsclear = true
                     adjustViews(false)
-                    perAuthorModel.clear()
                 } else {
                     loadFile(model.filename)
                 }
@@ -359,14 +359,27 @@ Page {
 
     ListView {
         id: listview
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-        }
+        x: 0
+        anchors.top: parent.top
+        width: parent.width
         height: parent.height
 
         model: bookModel
+
+        Behavior on x {
+            id: widthAnimation
+            NumberAnimation {
+                duration: UbuntuAnimation.BriskDuration
+                easing: UbuntuAnimation.StandardEasing
+
+                onRunningChanged: {
+                    if (!running && perAuthorModel.needsclear) {
+                        perAuthorModel.clear()
+                        perAuthorModel.needsclear = false
+                    }
+                }
+            }
+        }
     }
 
     Scrollbar {
@@ -377,12 +390,11 @@ Page {
     ListView {
         id: perAuthorListView
         anchors {
-            left: parent.left
-            right: parent.right
+            left: listview.right
             top: parent.top
         }
+        width: wide ? parent.width / 2 : parent.width
         height: parent.height
-        visible: false
 
         model: perAuthorModel
         delegate: titleDelegate
