@@ -20,10 +20,13 @@ Page {
     property int sort: 0
     property bool needsort: false
     property bool firststart: false
+    property bool wide: width >= units.gu(80)
     onSortChanged: {
         listBooks()
+        perAuthorModel.clear()
         adjustViews(false)
     }
+    onWideChanged: adjustViews(true)  // True to allow author's list if necessary
     
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
@@ -189,11 +192,23 @@ Page {
         folderModel.path = folderModel.homePath() + "/Books"
     }
 
-    function adjustViews(toAuthor) {
-        perAuthorListView.visible = toAuthor
-        listview.visible = !toAuthor
-        scrollbar.flickableItem = toAuthor ? perAuthorListView : listview
-        localBooks.flickable = toAuthor ? perAuthorListView : listview
+    function adjustViews(showAuthor) {
+        if (sort != 2 || perAuthorModel.count == 0)
+            showAuthor = false  // Don't need to show authors' list
+
+        if (!wide || sort != 2) {
+            listview.anchors.right = localBooks.right
+            listview.visible = !showAuthor
+            perAuthorListView.anchors.left = localBooks.left
+            perAuthorListView.visible = showAuthor
+            localBooks.flickable = showAuthor ? perAuthorListView : listview
+        } else {
+            listview.anchors.right = localBooks.horizontalCenter
+            listview.visible = true
+            perAuthorListView.anchors.left = listview.right
+            perAuthorListView.visible = true
+            localBooks.flickable = showAuthor ? perAuthorListView : listview
+        }
     }
     
     Component.onCompleted: {
@@ -302,12 +317,15 @@ Page {
                 return model.cover
             }
             iconFrame: model.filename != "ZZZback"
+            visible: model.filename != "ZZZback" || !wide
             progression: false
             onClicked: {
-                if (model.filename == "ZZZback")
+                if (model.filename == "ZZZback") {
                     adjustViews(false)
-                else
+                    perAuthorModel.clear()
+                } else {
                     loadFile(model.filename)
+                }
             }
         }
     }
@@ -341,14 +359,29 @@ Page {
 
     ListView {
         id: listview
-        anchors.fill: parent
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+        }
+        height: parent.height
 
         model: bookModel
     }
 
+    Scrollbar {
+        flickableItem: listview
+        align: Qt.AlignTrailing
+    }
+
     ListView {
         id: perAuthorListView
-        anchors.fill: parent
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+        }
+        height: parent.height
         visible: false
 
         model: perAuthorModel
@@ -356,8 +389,7 @@ Page {
     }
 
     Scrollbar {
-        id: scrollbar
-        flickableItem: listview
+        flickableItem: perAuthorListView
         align: Qt.AlignTrailing
     }
 
