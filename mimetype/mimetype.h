@@ -12,6 +12,7 @@ StringHash initMimeTypes()
 {
     StringHash hash;
     hash["html"] = "text/html";
+    hash["htm"] = "text/html";
     hash["xhtml"] = "application/xhtml+xml";
     hash["xml"] = "application/xml";
     hash["png"] = "image/png";
