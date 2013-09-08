@@ -203,11 +203,12 @@ Page {
         if (!wide || sort != 2) {
             listview.width = localBooks.width
             listview.x = showAuthor ? -localBooks.width : 0
+            localBooks.flickable = showAuthor ? perAuthorListView : listview
         } else {
             listview.width = localBooks.width / 2
             listview.x = 0
+            localBooks.flickable = listview
         }
-        localBooks.flickable = showAuthor ? perAuthorListView : listview
     }
     
     Component.onCompleted: {
@@ -360,7 +361,6 @@ Page {
     ListView {
         id: listview
         x: 0
-        anchors.top: parent.top
         width: parent.width
         height: parent.height
 
@@ -391,7 +391,6 @@ Page {
         id: perAuthorListView
         anchors {
             left: listview.right
-            top: parent.top
         }
         width: wide ? parent.width / 2 : parent.width
         height: parent.height
