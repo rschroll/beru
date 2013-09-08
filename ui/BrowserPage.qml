@@ -91,6 +91,12 @@ Page {
             item.onUrlChanged.connect(function () {
                 addressField.text = item.url
             })
+            item.onLoadingChanged.connect(function () {
+                loadProgressBar.visible = item.loading
+            })
+            item.onLoadProgressChanged.connect(function () {
+                loadProgressBar.value = item.loadProgress
+            })
             item.experimental.onDownloadRequested.connect(function (downloadItem) {
                 download.done = false
                 download.target = downloadItem
@@ -135,6 +141,19 @@ Page {
                     PopupUtils.open(downloadComponent, browserPage, downloadargs)
             })
         }
+    }
+
+    ProgressBar {
+        id: loadProgressBar
+        minimumValue: 0
+        maximumValue: 100
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+        height: units.gu(2)
+        visible: false
     }
 
     Component {
