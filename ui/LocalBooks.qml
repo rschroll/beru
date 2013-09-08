@@ -311,12 +311,12 @@ Page {
                 if (model.filename == "ZZZback")
                     return mobileIcon("back")
                 if (model.cover == "ZZZnone")
-                    return Qt.resolvedUrl("images/default_cover.png")
+                    return Qt.resolvedUrl("images/default_cover.svg")
                 if (model.cover == "ZZZerror")
-                    return Qt.resolvedUrl("images/error_cover.png")
+                    return Qt.resolvedUrl("images/error_cover.svg")
                 return model.cover
             }
-            iconFrame: model.filename != "ZZZback"
+            iconFrame: model.filename != "ZZZback" && model.cover != "ZZZerror"
             visible: model.filename != "ZZZback" || !wide
             progression: false
             onClicked: {
@@ -339,12 +339,12 @@ Page {
                 if (model.count > 1)
                     return mobileIcon("contact")
                 if (model.cover == "ZZZnone")
-                    return Qt.resolvedUrl("images/default_cover.png")
+                    return Qt.resolvedUrl("images/default_cover.svg")
                 if (model.cover == "ZZZerror")
-                    return Qt.resolvedUrl("images/error_cover.png")
+                    return Qt.resolvedUrl("images/error_cover.svg")
                 return model.cover
             }
-            iconFrame: model.count == 1
+            iconFrame: model.count == 1 && model.cover != "ZZZerror"
             progression: model.count > 1
             onClicked: {
                 if (model.count > 1) {
