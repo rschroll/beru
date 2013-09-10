@@ -1,0 +1,15 @@
+{
+    "description": "The Basic Epub Reader for Ubuntu",
+    "framework": "ubuntu-sdk-13.10",
+    "hooks": {
+        "beru": {
+            "apparmor": "apparmor/beru.json",
+            "desktop": "beru.desktop"
+        }
+    },
+    "maintainer": "Robert Schroll",
+    "name": "com.ubuntu.developer.rschroll.beru",
+    "title": "Beru",
+    "version": "0.1"
+}
+
