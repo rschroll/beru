@@ -205,9 +205,11 @@ Page {
             listview.x = showAuthor ? -localBooks.width : 0
             localBooks.flickable = showAuthor ? perAuthorListView : listview
         } else {
+            localBooks.flickable = null
             listview.width = localBooks.width / 2
             listview.x = 0
-            localBooks.flickable = listview
+            listview.topMargin = 0
+            perAuthorListView.topMargin = 0
         }
     }
     
@@ -363,6 +365,7 @@ Page {
         x: 0
         width: parent.width
         height: parent.height
+        clip: true
 
         model: bookModel
 
@@ -394,6 +397,7 @@ Page {
         }
         width: wide ? parent.width / 2 : parent.width
         height: parent.height
+        clip: true
 
         model: perAuthorModel
         delegate: titleDelegate
