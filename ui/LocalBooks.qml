@@ -423,7 +423,9 @@ Page {
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
                               "find all epub files in ~/Books automatically.  Additionally, " +
-                              "any book opened with Beru will be added to the library.")
+                              "any book opened with Beru will be added to the library.\n\n" +
+                              "You can also use the \"Get Books\" tab to download epubs from " +
+                              "the web into your library.")
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter

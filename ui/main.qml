@@ -99,7 +99,7 @@ MainView {
     }
 
     function openSettingsDatabase() {
-        return LocalStorage.openDatabaseSync("BeruSettings", "1", "Books on the local device", 10000)
+        return LocalStorage.openDatabaseSync("BeruSettings", "1", "Global settings for Beru", 10000)
     }
 
     function getSetting(key) {
