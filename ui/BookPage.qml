@@ -207,26 +207,80 @@ Page {
             id: stylesDialog
             property real labelwidth: units.gu(11)
 
-            ColorSelector {
+            OptionSelector {
                 id: colorSelector
-                text: i18n.tr("Colors")
-                values: [i18n.tr("Black on White"), i18n.tr("Dark on Texture"),
-                    i18n.tr("Light on Texture"), i18n.tr("White on Black")]
-                foregrounds: ["black", "#222", "#999", "white"]
-                backgrounds: ["white", "url(.background_paper@30.png)",
-                    "url(.background_paper_invert@30.png)", "black"]
                 onSelectedIndexChanged: {
-                    bookStyles.textColor = foregrounds[selectedIndex]
-                    bookStyles.background = backgrounds[selectedIndex]
+                    bookStyles.textColor = model.get(selectedIndex).foreground
+                    bookStyles.background = model.get(selectedIndex).background
+                }
+                model: colorModel
+
+                delegate: StylableOptionSelectorDelegate {
+                    text: name
+                    Component.onCompleted: {
+                        textLabel.color = foreground
+                        if (background.slice(0, 5) == "url(.") {
+                            var filename = Qt.resolvedUrl("../html/" + background.slice(5, -1))
+                            backgroundImage.source = filename
+                        } else {
+                            backgroundShape.color = background
+                        }
+                    }
+
+                    UbuntuShape {
+                        id: backgroundShape
+                        anchors {
+                            leftMargin: units.gu(1)
+                            rightMargin: units.gu(1)
+                            fill: parent
+                        }
+                        z: -1
+                        image: Image {
+                            id: backgroundImage
+                            fillMode: Image.Tile
+                        }
+                    }
                 }
             }
 
-            FontSelector {
+            ListModel {
+                id: colorModel
+                ListElement {
+                    name: "Black on White"
+                    foreground: "black"
+                    background: "white"
+                }
+                ListElement {
+                    name: "Dark on Texture"
+                    foreground: "#222"
+                    background: "url(.background_paper@30.png)"
+                }
+                ListElement {
+                    name: "Light on Texture"
+                    foreground: "#999"
+                    background: "url(.background_paper_invert@30.png)"
+                }
+                ListElement {
+                    name: "White on Black"
+                    foreground: "white"
+                    background: "black"
+                }
+            }
+
+            OptionSelector {
                 id: fontSelector
-                text: i18n.tr("Font")
-                values: ["Default", "Bitstream Charter", "Nimbus Roman No9 L", "Nimbus Sans L",
+                onSelectedIndexChanged: bookStyles.fontFamily = model[selectedIndex]
+
+                model: ["Default", "Bitstream Charter", "Nimbus Roman No9 L", "Nimbus Sans L",
                     "Ubuntu", "URW Bookman L", "URW Gothic L"]
-                onSelectedIndexChanged: bookStyles.fontFamily = values[selectedIndex]
+
+                delegate: StylableOptionSelectorDelegate {
+                    text: (modelData == "Default") ? i18n.tr("Default Font") : modelData
+                    Component.onCompleted: {
+                        if (modelData != "Default")
+                            textLabel.font.family = modelData
+                    }
+                }
             }
 
             Row {
@@ -341,8 +395,13 @@ Page {
             }
 
             function setValues() {
-                colorSelector.selectedIndex = colorSelector.foregrounds.indexOf(bookStyles.textColor)
-                fontSelector.selectedIndex = fontSelector.values.indexOf(bookStyles.fontFamily)
+                for (var i=0; i<colorModel.count; i++) {
+                    if (colorModel.get(i).foreground == bookStyles.textColor) {
+                        colorSelector.selectedIndex = i
+                        break
+                    }
+                }
+                fontSelector.selectedIndex = fontSelector.model.indexOf(bookStyles.fontFamily)
                 fontScaleSlider.value = 4 + 4 * Math.LOG2E * Math.log(bookStyles.fontScale)
                 lineHeightSlider.value = (bookStyles.lineHeight == "Default") ? 0.8 : bookStyles.lineHeight
                 marginSlider.value = bookStyles.margin
