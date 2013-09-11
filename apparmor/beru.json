@@ -1,6 +1,6 @@
 {
     "policy_groups": ["networking"],
     "policy_version": 1.0,
-    "read_path": ["~/Books/"],
-    "write_path": ["~/Books/"]
+    "read_path": ["@{HOME}/Books/"],
+    "write_path": ["@{HOME}/Books/"]
 }

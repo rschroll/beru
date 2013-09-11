@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Beru
 Comment=The Basic Epub Reader for Ubuntu
-Exec=./beru $@
-Icon=./ui/images/beru-color.svg
+Exec=qmlscene -I ./ ui/main.qml --appargs="$*"
+Icon=beru.svg
 Terminal=false
 Type=Application
 X-Ubuntu-Touch=true
