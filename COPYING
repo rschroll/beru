@@ -33,3 +33,7 @@ http://quazip.sourceforge.net/
 Several components of the Ubuntu SDK, in ui/components
 Copyright 2012 Canonical Ltd.
 Licensed under the LGPLv3.
+
+If you received Beru as a click package, you may not have received
+the sources to these components.  All are available at
+https://github.com/rschroll/beru
