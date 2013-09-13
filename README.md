@@ -19,7 +19,9 @@ To build, do
 $ qmake
 $ make
 ```
-Hopefully, everything will work.
+Note that you need to be using Qt5 for this.  If you also have a Qt4
+installation, you may need to use the `-qt` flag to qmake to specify
+the version.  (Use `qtchooser --list-versions` to see your options.)
 
 Running
 -------
