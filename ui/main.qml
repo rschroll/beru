@@ -122,7 +122,7 @@ MainView {
 
     U1db.Database {
         id: bookSettingsDatabase
-        path: "BeruBookSettings"
+        path: "BeruBookSettings.db"
     }
 
     function getBookSettings(key) {
