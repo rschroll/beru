@@ -10,6 +10,7 @@ import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
 import QtWebKit 3.0
 import QtWebKit.experimental 1.0
+import FontList 1.0
 
 import "components"
 
@@ -205,6 +206,38 @@ Page {
         }
     }
 
+    FontLister {
+        id: fontLister
+
+        property var fontList: ["Default", "Bitstream Charter", "Ubuntu", "URW Bookman L", "URW Gothic L"]
+
+        Component.onCompleted: {
+            var familyList = families()
+            var possibleFamilies = [["Droid Serif", "Nimbus Roman No9 L", "FreeSerif"],
+                                    ["Droid Sans", "Nimbus Sans L", "FreeSans"]]
+            for (var j=0; j<possibleFamilies.length; j++) {
+                for (var i=0; i<possibleFamilies[j].length; i++) {
+                    if (familyList.indexOf(possibleFamilies[j][i]) >= 0) {
+                        fontList.splice(2, 0, possibleFamilies[j][i])
+                        break
+                    }
+                }
+            }
+        }
+    }
+
+    FontLoader {
+        source: Qt.resolvedUrl("../html/fonts/Bitstream Charter.ttf")
+    }
+
+    FontLoader {
+        source: Qt.resolvedUrl("../html/fonts/URW Bookman L.ttf")
+    }
+
+    FontLoader {
+        source: Qt.resolvedUrl("../html/fonts/URW Gothic L.ttf")
+    }
+
     Component {
         id: stylesComponent
 
@@ -276,8 +309,7 @@ Page {
                 id: fontSelector
                 onSelectedIndexChanged: bookStyles.fontFamily = model[selectedIndex]
 
-                model: ["Default", "Bitstream Charter", "Nimbus Roman No9 L", "Nimbus Sans L",
-                    "Ubuntu", "URW Bookman L", "URW Gothic L"]
+                model: fontLister.fontList
 
                 delegate: StylableOptionSelectorDelegate {
                     text: (modelData == "Default") ? i18n.tr("Default Font") : modelData

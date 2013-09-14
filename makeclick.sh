@@ -2,7 +2,7 @@
 
 rm -r click/
 mkdir click
-for dir in Epub File HttpServer html ui apparmor
+for dir in Epub File FontList HttpServer html ui apparmor
 do
     cp -r $dir click/
 done

@@ -34,6 +34,17 @@ Several components of the Ubuntu SDK, in ui/components
 Copyright 2012 Canonical Ltd.
 Licensed under the LGPLv3.
 
+URW fonts, in html/fonts
+Copyright URW++ (?) and others
+Licensed under the GPL v2 with font exception.
+ftp://ftp.izmiran.rssi.ru/pub/fonts/urw/
+
+Bitstream Charter font, in html/fonts
+Copyright 1989-1992 Bitstream Inc.
+Licensed under a MIT-like license (see html/fonts/license.charter.txt).
+http://practicaltypography.com/fonts/charter.zip
+
+
 If you received Beru as a click package, you may not have received
 the sources to these components.  All are available at
 https://github.com/rschroll/beru

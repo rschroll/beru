@@ -2,6 +2,7 @@ TEMPLATE = subdirs
 SUBDIRS += filereader \
     qhttpserver \
     epubreader \
+    fontlister \
     html \
     ui
 

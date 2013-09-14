@@ -25,7 +25,7 @@ styleManager = {
             res += "font-family: '" + styles.fontFamily + "'; ";
         if (styles.lineHeight != "Default")
             res += "line-height: " + styles.lineHeight + "; ";
-        return res + "}";
+        return styleManager.fontFaces() + res + "}";
     },
 
     updateOuter: function (styles) {
@@ -76,5 +76,23 @@ styleManager = {
         var value = encodeURIComponent(JSON.stringify(styles))
         document.cookie = styleManager.cookieName + "=" + value +
                 "; expires=" + d.toGMTString() + "; path=/";
+    },
+
+    fontFaces: function() {
+        var res = "";
+        var families = ["Bitstream Charter", "URW Bookman L", "URW Gothic L"];
+        for (var k=0; k<families.length; k++) {
+            var family = families[k];
+            for (var i=0; i<2; i++) {
+                for (var b=0; b<2; b++) {
+                    var fontname = family + (b ? " Bold": "") + (i ? " Italic" : "");
+                    res += "@font-face { font-family: '" + family + "'; " +
+                            "font-style: " + (i ? "italic" : "normal") +"; " +
+                            "font-weight: " + (b ? "bold" : "normal") + "; " +
+                            "src: local('" + fontname + "'), url('/.fonts/" + fontname + ".ttf'); }\n"
+                }
+            }
+        }
+        return res;
     }
 }
