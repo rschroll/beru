@@ -15,8 +15,8 @@ Second, Beru can now be built into a "click" package, the new format for distrib
 
 Anyway, Beru is basically ready for the masses now.  All it needs is testing, particularly on a real Ubuntu Touch device.  That's where you come in.  Whether you have a phone-like device or not, please download Beru, run it, and let me know what works or doesn't.  You can either clone the [git repository]() or you can install it as a click package:
 
-* [amd64 click package]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.1_amd64.click)
-* [arm click package]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.1_arm.click)
+* [<del>amd64 click package</del>]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.1_amd64.click) [v0.1.2 amd64 click package]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.1.2_amd64.click)
+* [<del>arm click package</del>]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.1_arm.click) [v0.1.2 arm click package]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.1.2_arm.click)
 
 (Be sure to choose the right architecture.)  You can install the click package with `sudo click install --force-missing-framework --user=$USER *.click`.
 
