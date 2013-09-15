@@ -98,6 +98,7 @@ void EpubReader::serveComponent(const QString &filename, QHttpResponse *response
     if (!this->zip || !this->zip->isOpen()) {
         response->writeHead(500);
         response->end("Epub file not open for reading");
+        return;
     }
 
     this->zip->setCurrentFile(filename);
@@ -105,6 +106,7 @@ void EpubReader::serveComponent(const QString &filename, QHttpResponse *response
     if (!zfile.open(QIODevice::ReadOnly)) {
         response->writeHead(404);
         response->end("Could not find \"" + filename + "\" in epub file");
+        return;
     }
 
     response->setHeader("Content-Type", guessMimeType(filename));
