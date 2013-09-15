@@ -426,7 +426,8 @@ Page {
 
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
-                              "find all epub files in ~/Books automatically.  Additionally, " +
+                              "automatically find all epub files in the \"Books\" folder of " +
+                              "your home directory.  Additionally, " +
                               "any book opened with Beru will be added to the library.\n\n" +
                               "You can also use the \"Get Books\" tab to download epubs from " +
                               "the web into your library.")
@@ -499,7 +500,8 @@ Page {
         Dialog {
             id: firstStartDialog
             title: i18n.tr("Welcome to Beru")
-            text: i18n.tr("Right now, Beru is looking through ~/Books and adding all the Epub " +
+            text: i18n.tr("Right now, Beru is looking through the \"Books\" folder of your home" +
+                          "directory and adding all the Epub " +
                           "files it finds to your Library.  Any files you add to this folder " +
                           "will be added to the Library the next time you start Beru.\n\n" +
                           "Additionally, any file you open with Beru will be added to your " +
