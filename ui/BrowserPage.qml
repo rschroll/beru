@@ -111,7 +111,7 @@ Page {
                 var addText = ""
                 if (dir != filereader.homePath() + "/Books")
                     var addText = i18n.tr("\n\nPlease note that the ebook is being downloaded to %1. " +
-                                          "Beru would prefer to download ebooks to a folder named" +
+                                          "Beru would prefer to download ebooks to a folder named " +
                                           "\"Books\" in your home directory, but it is unable to do " +
                                           "so because that directory " +
                                           "does not exist or is not writable.  If you are able to " +
@@ -131,7 +131,7 @@ Page {
 
                 var downloadargs = {
                     text: i18n.tr("This book will be added to your library as soon as the " +
-                                  "download is complete.") + addText
+                                  "download is complete.") + addText.arg(dir + filename)
                 }
                 if (ext != "epub")
                     PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
