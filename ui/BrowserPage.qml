@@ -121,10 +121,8 @@ Page {
 
                 var downloadargs = {
                     text: i18n.tr("This book will be added to your library as soon as the " +
-                                  "download is complete.\n\nShould you wish to access this book, " +
-                                  "note that is is being saved as %1.  (Apologies for the ugly " +
-                                  "filename, but restrictions prevent us frome saving files in " +
-                                  "your home directory.)").arg(dir + filename)
+                                  "download is complete."),
+                    details: i18n.tr("This book is being saved as %1").arg(dir + filename)
                 }
                 if (ext != "epub")
                     PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
@@ -156,6 +154,67 @@ Page {
         Dialog {
             id: downloadDialog
             title: i18n.tr("Downloading Ebook")
+            property string details
+
+            UbuntuShape {
+                height: detailsLabel.height + units.gu(4)
+                        + (expanded ? moreDetailsLabel.height + units.gu(2) : 0 )
+                clip: true
+                property bool expanded: false
+
+                Behavior on height {
+                    UbuntuNumberAnimation {}
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: parent.expanded = !parent.expanded
+                }
+
+                Label {
+                    id: detailsLabel
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: parent.top
+                        leftMargin: units.gu(3)
+                        rightMargin: units.gu(3)
+                        topMargin: units.gu(2)
+                    }
+                    text: "Details"
+                }
+
+                Image {
+                    width: units.gu(2)
+                    height: units.gu(2)
+                    rotation: parent.expanded ? -90 : 90
+                    source: mobileIcon("go-to")
+                    anchors {
+                        right: parent.right
+                        rightMargin: units.gu(3)
+                        verticalCenter: detailsLabel.verticalCenter
+                    }
+
+                    Behavior on rotation {
+                        UbuntuNumberAnimation {}
+                    }
+                }
+
+                Label {
+                    id: moreDetailsLabel
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: detailsLabel.bottom
+                        leftMargin: units.gu(3)
+                        rightMargin: units.gu(3)
+                        topMargin: units.gu(2)
+                    }
+                    text: downloadDialog.details
+                    fontSize: "small"
+                    wrapMode: Text.Wrap
+                }
+            }
 
             ProgressBar {
                 id: downloadProgress

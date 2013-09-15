@@ -34,8 +34,7 @@ Page {
     
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
-        firststart = true
-        PopupUtils.open(firstStart)
+        noBooksLabel.text = i18n.tr("Welcome to Beru")
     }
 
     function openDatabase() {
@@ -194,7 +193,6 @@ Page {
 
     function setPath() {
         folderModel.path = filereader.getDataDir("Books")
-        console.log(folderModel.path)
     }
 
     function adjustViews(showAuthor) {
@@ -233,8 +231,7 @@ Page {
         // into the library.  Since this can cause a freeze, on the first start, we
         // throw up a dialog to hide it.  The dialog calls setPath once it's ready.
         filereader.setOrgAndApp("", "com.ubuntu.developer.rschroll.beru")
-        if (!firststart)
-            setPath()
+        setPath()
     }
 
     // If we need to resort, do it when hiding or showing this page
@@ -420,6 +417,7 @@ Page {
             width: Math.min(units.gu(30), parent.width)
 
             Label {
+                id: noBooksLabel
                 text: i18n.tr("No Books in Library")
                 fontSize: "large"
                 width: parent.width
@@ -428,9 +426,8 @@ Page {
 
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
-                              "automatically find all epub files in %1.  (Apologies for the " +
-                              "ugly path, but restrictions prevent us from searching your home " +
-                              "directory.)").arg(folderModel.path)
+                              "automatically find all epub files in %1.  (It's a mouthful, " +
+                              "we know.)").arg(folderModel.path)
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
