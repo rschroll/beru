@@ -101,21 +101,11 @@ Page {
                 download.done = false
                 download.target = downloadItem
 
-                // Check if ~/Books exists; try to make it if possible.  If not fall back to
-                // XDG_DATA_HOME.  See https://lists.launchpad.net/ubuntu-phone/msg03861.html
                 var dir = filereader.getDataDir("Books")
                 if (dir == "") {
                     PopupUtils.open(errorComponent)
                     return
                 }
-                var addText = ""
-                if (dir != filereader.homePath() + "/Books")
-                    var addText = i18n.tr("\n\nPlease note that the ebook is being downloaded to %1. " +
-                                          "Beru would prefer to download ebooks to a folder named " +
-                                          "\"Books\" in your home directory, but it is unable to do " +
-                                          "so because that directory " +
-                                          "does not exist or is not writable.  If you are able to " +
-                                          "fix this manually, Beru will use it in the future.")
                 dir += "/"
 
                 var components = downloadItem.suggestedFilename.split("/").pop().split(".")
@@ -131,7 +121,10 @@ Page {
 
                 var downloadargs = {
                     text: i18n.tr("This book will be added to your library as soon as the " +
-                                  "download is complete.") + addText.arg(dir + filename)
+                                  "download is complete.\n\nShould you wish to access this book, " +
+                                  "note that is is being saved as %1.  (Apologies for the ugly " +
+                                  "filename, but restrictions prevent us frome saving files in " +
+                                  "your home directory.)").arg(dir + filename)
                 }
                 if (ext != "epub")
                     PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,

@@ -193,7 +193,8 @@ Page {
     }
 
     function setPath() {
-        folderModel.path = folderModel.homePath() + "/Books"
+        folderModel.path = filereader.getDataDir("Books")
+        console.log(folderModel.path)
     }
 
     function adjustViews(showAuthor) {
@@ -231,6 +232,7 @@ Page {
         // setPath() will trigger the loading of all files in the default directory
         // into the library.  Since this can cause a freeze, on the first start, we
         // throw up a dialog to hide it.  The dialog calls setPath once it's ready.
+        filereader.setOrgAndApp("", "com.ubuntu.developer.rschroll.beru")
         if (!firststart)
             setPath()
     }
@@ -426,11 +428,11 @@ Page {
 
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
-                              "automatically find all epub files in the \"Books\" folder of " +
-                              "your home directory.  Additionally, " +
-                              "any book opened with Beru will be added to the library.\n\n" +
+                              "automatically find all epub files in %1.  (Apologies for the " +
+                              "ugly path, but restrictions prevent us from searching your home " +
+                              "directory.)\n\n" +
                               "You can also use the \"Get Books\" tab to download epubs from " +
-                              "the web into your library.")
+                              "the web into your library.").arg(folderModel.path)
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
@@ -500,12 +502,11 @@ Page {
         Dialog {
             id: firstStartDialog
             title: i18n.tr("Welcome to Beru")
-            text: i18n.tr("Right now, Beru is looking through the \"Books\" folder of your home" +
-                          "directory and adding all the Epub " +
+            text: i18n.tr("Right now, Beru is looking through %1 and adding all the Epub " +
                           "files it finds to your Library.  Any files you add to this folder " +
                           "will be added to the Library the next time you start Beru.\n\n" +
                           "Additionally, any file you open with Beru will be added to your " +
-                          "library, regardless of where it is located.")
+                          "library, regardless of where it is located.").arg(folderModel.path)
 
             Button {
                 id: closeButton

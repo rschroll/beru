@@ -9,6 +9,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QStandardPaths>
+#include <QCoreApplication>
 
 QByteArray FileReader::read(const QString &filename)
 {
@@ -39,7 +40,7 @@ QString FileReader::homePath() const
 {
     return QDir::homePath();
 }
-#include <QDebug>
+
 bool FileReader::ensureDirInHome(const QString &dirname)
 {
     QDir home = QDir::home();
@@ -50,6 +51,12 @@ bool FileReader::ensureDirInHome(const QString &dirname)
     return info.isWritable();
 }
 
+void FileReader::setOrgAndApp(const QString &orgName, const QString &appName)
+{
+    QCoreApplication::setOrganizationName(orgName);
+    QCoreApplication::setApplicationName(appName);
+}
+
 /*
  * Try to find or make a directory for writing data.  We start with ~/dirInHome, but
  * fall back to the relevant XDG_DATA_HOME if that's not working.  Return the path of
@@ -57,10 +64,10 @@ bool FileReader::ensureDirInHome(const QString &dirname)
  */
 QString FileReader::getDataDir(const QString &dirInHome)
 {
-    if (this->ensureDirInHome(dirInHome))
-        return QDir::homePath() + "/" + dirInHome;
+    /*if (this->ensureDirInHome(dirInHome))
+        return QDir::homePath() + "/" + dirInHome;*/
 
-    QString XDG_data = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    QString XDG_data = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + dirInHome;
     QDir dir("");
     if (!dir.mkpath(XDG_data))
         return QString();
