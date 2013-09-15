@@ -42,12 +42,7 @@ Page {
     
     WebView {
         id: bookWebView
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-        }
-        height: mainView.height
+        anchors.fill: parent
         visible: false
         
         onTitleChanged: Messaging.handleMessage(title)
