@@ -430,12 +430,16 @@ Page {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
                               "automatically find all epub files in %1.  (Apologies for the " +
                               "ugly path, but restrictions prevent us from searching your home " +
-                              "directory.)\n\n" +
-                              "You can also use the \"Get Books\" tab to download epubs from " +
-                              "the web into your library.").arg(folderModel.path)
+                              "directory.)").arg(folderModel.path)
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
+            }
+
+            Button {
+                text: i18n.tr("Download Books")
+                width: parent.width
+                onClicked: tabs.selectedTabIndex = 1
             }
 
             Button {
