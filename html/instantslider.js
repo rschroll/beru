@@ -1,4 +1,4 @@
-Monocle.Flippers.Slider = function (reader) {
+Monocle.Flippers.InstantSlider = function (reader) {
 
   var API = { constructor: Monocle.Flippers.Slider }
   var k = API.constants = API.constructor;
@@ -165,8 +165,9 @@ Monocle.Flippers.Slider = function (reader) {
     p.turnData.releasing = true;
 
     if (dir == k.FORWARDS) {
-      if (
-        p.turnData.points.tap ||
+      if (p.turnData.points.tap) {
+        afterGoingForward();
+      } else if (
         p.turnData.points.start - boxPointX > 60 ||
         p.turnData.points.min >= boxPointX
       ) {
@@ -177,8 +178,9 @@ Monocle.Flippers.Slider = function (reader) {
         slideIn(afterCancellingForward);
       }
     } else if (dir == k.BACKWARDS) {
-      if (
-        p.turnData.points.tap ||
+      if (p.turnData.points.tap) {
+        jumpIn(upperPage(), afterGoingBackward);
+      } else if (
         boxPointX - p.turnData.points.start > 60 ||
         p.turnData.points.max <= boxPointX
       ) {
@@ -290,8 +292,6 @@ Monocle.Flippers.Slider = function (reader) {
     if (releaseArgs) {
       p.turnData.releaseArgs = null;
       release(releaseArgs[0], releaseArgs[1]);
-    } else if (x) {
-      slideToCursor(x);
     }
   }
 
@@ -463,7 +463,7 @@ Monocle.Flippers.Slider = function (reader) {
 
 
 // Constants
-Monocle.Flippers.Slider.DEFAULT_PANELS_CLASS = Monocle.Panels.TwoPane;
-Monocle.Flippers.Slider.FORWARDS = 1;
-Monocle.Flippers.Slider.BACKWARDS = -1;
-Monocle.Flippers.Slider.FOLLOW_DURATION = 100;
+Monocle.Flippers.InstantSlider.DEFAULT_PANELS_CLASS = Monocle.Panels.TwoPane;
+Monocle.Flippers.InstantSlider.FORWARDS = 1;
+Monocle.Flippers.InstantSlider.BACKWARDS = -1;
+Monocle.Flippers.InstantSlider.FOLLOW_DURATION = 100;
