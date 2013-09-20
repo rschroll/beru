@@ -12,6 +12,7 @@ the GPL. See the file COPYING for full details.
 
 <script src=".monocle/scripts/monocore.js"></script>
 <script src=".monocle/scripts/monoctrl.js"></script>
+<script src=".instantslider.js"></script>
 <script src=".bookdata.js"></script>
 <script src=".messaging.js"></script>
 <script src=".defaults.js"></script>
@@ -20,7 +21,7 @@ the GPL. See the file COPYING for full details.
 function createReader(bookData) {
     var styleInfo = styleManager.init(bookData.getMetaData("title"));
     var reader = Monocle.Reader("reader", bookData,
-        { panels: Monocle.Panels.TwoPane, place: SAVED_PLACE,
+        { panels: Monocle.Panels.TwoPane, flipper: Monocle.Flippers.InstantSlider, place: SAVED_PLACE,
           stylesheet: styleInfo.stylesheet, fontScale: styleInfo.fontScale},
         function (reader) {
             var stencil = new Monocle.Controls.Stencil(reader);
