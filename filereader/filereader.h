@@ -20,7 +20,6 @@ public:
     Q_INVOKABLE QString canonicalFilePath(const QString &filename);
     Q_INVOKABLE QString homePath() const;
     Q_INVOKABLE bool ensureDirInHome(const QString &dirname);
-    Q_INVOKABLE void setOrgAndApp(const QString &orgName, const QString &appName);
     Q_INVOKABLE QString getDataDir(const QString &dirInHome);
 };
 

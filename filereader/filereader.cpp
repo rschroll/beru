@@ -9,7 +9,6 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QStandardPaths>
-#include <QCoreApplication>
 
 QByteArray FileReader::read(const QString &filename)
 {
@@ -49,12 +48,6 @@ bool FileReader::ensureDirInHome(const QString &dirname)
 
     QFileInfo info(home, dirname);
     return info.isWritable();
-}
-
-void FileReader::setOrgAndApp(const QString &orgName, const QString &appName)
-{
-    QCoreApplication::setOrganizationName(orgName);
-    QCoreApplication::setApplicationName(appName);
 }
 
 /*

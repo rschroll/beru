@@ -230,7 +230,6 @@ Page {
         // setPath() will trigger the loading of all files in the default directory
         // into the library.  Since this can cause a freeze, on the first start, we
         // throw up a dialog to hide it.  The dialog calls setPath once it's ready.
-        filereader.setOrgAndApp("", "com.ubuntu.developer.rschroll.beru")
         setPath()
     }
 
