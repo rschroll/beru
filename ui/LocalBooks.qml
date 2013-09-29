@@ -36,6 +36,7 @@ Page {
         db.changeVersion(db.version, "1")
         firststart = true
         PopupUtils.open(firstStart)
+        noBooksLabel.text = i18n.tr("Welcome to Beru")
     }
 
     function openDatabase() {
@@ -418,6 +419,7 @@ Page {
             width: Math.min(units.gu(30), parent.width)
 
             Label {
+                id: noBooksLabel
                 text: i18n.tr("No Books in Library")
                 fontSize: "large"
                 width: parent.width
@@ -516,6 +518,10 @@ Page {
                 enabled: !firststart
                 onClicked: {
                     if (!firststart)
+                        PopupUtils.close(firstStartDialog)
+                }
+                onEnabledChanged: {
+                    if (enabled && bookModel.count == 0)
                         PopupUtils.close(firstStartDialog)
                 }
             }
