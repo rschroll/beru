@@ -39,7 +39,7 @@ QString FileReader::homePath() const
 {
     return QDir::homePath();
 }
-#include <QDebug>
+
 bool FileReader::ensureDirInHome(const QString &dirname)
 {
     QDir home = QDir::home();
@@ -60,7 +60,7 @@ QString FileReader::getDataDir(const QString &dirInHome)
     if (this->ensureDirInHome(dirInHome))
         return QDir::homePath() + "/" + dirInHome;
 
-    QString XDG_data = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    QString XDG_data = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + dirInHome;
     QDir dir("");
     if (!dir.mkpath(XDG_data))
         return QString();

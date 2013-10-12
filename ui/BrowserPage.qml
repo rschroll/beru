@@ -108,14 +108,6 @@ Page {
                     PopupUtils.open(errorComponent)
                     return
                 }
-                var addText = ""
-                if (dir != filereader.homePath() + "/Books")
-                    var addText = i18n.tr("\n\nPlease note that the ebook is being downloaded to %1. " +
-                                          "Beru would prefer to download ebooks to a folder named " +
-                                          "\"Books\" in your home directory, but it is unable to do " +
-                                          "so because that directory " +
-                                          "does not exist or is not writable.  If you are able to " +
-                                          "fix this manually, Beru will use it in the future.")
                 dir += "/"
 
                 var components = downloadItem.suggestedFilename.split("/").pop().split(".")
@@ -131,7 +123,8 @@ Page {
 
                 var downloadargs = {
                     text: i18n.tr("This book will be added to your library as soon as the " +
-                                  "download is complete.") + addText.arg(dir + filename)
+                                  "download is complete."),
+                    details: i18n.tr("This book is being saved as %1").arg(dir + filename)
                 }
                 if (ext != "epub")
                     PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
@@ -163,6 +156,67 @@ Page {
         Dialog {
             id: downloadDialog
             title: i18n.tr("Downloading Ebook")
+            property string details
+
+            UbuntuShape {
+                height: detailsLabel.height + units.gu(4)
+                        + (expanded ? moreDetailsLabel.height + units.gu(2) : 0 )
+                clip: true
+                property bool expanded: false
+
+                Behavior on height {
+                    UbuntuNumberAnimation {}
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: parent.expanded = !parent.expanded
+                }
+
+                Label {
+                    id: detailsLabel
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: parent.top
+                        leftMargin: units.gu(3)
+                        rightMargin: units.gu(3)
+                        topMargin: units.gu(2)
+                    }
+                    text: "Details"
+                }
+
+                Image {
+                    width: units.gu(2)
+                    height: units.gu(2)
+                    rotation: parent.expanded ? -90 : 90
+                    source: mobileIcon("go-to")
+                    anchors {
+                        right: parent.right
+                        rightMargin: units.gu(3)
+                        verticalCenter: detailsLabel.verticalCenter
+                    }
+
+                    Behavior on rotation {
+                        UbuntuNumberAnimation {}
+                    }
+                }
+
+                Label {
+                    id: moreDetailsLabel
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: detailsLabel.bottom
+                        leftMargin: units.gu(3)
+                        rightMargin: units.gu(3)
+                        topMargin: units.gu(2)
+                    }
+                    text: downloadDialog.details
+                    fontSize: "small"
+                    wrapMode: Text.Wrap
+                }
+            }
 
             ProgressBar {
                 id: downloadProgress

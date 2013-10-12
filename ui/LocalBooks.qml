@@ -36,6 +36,7 @@ Page {
         db.changeVersion(db.version, "1")
         firststart = true
         PopupUtils.open(firstStart)
+        noBooksLabel.text = i18n.tr("Welcome to Beru")
     }
 
     function openDatabase() {
@@ -193,7 +194,7 @@ Page {
     }
 
     function setPath() {
-        folderModel.path = folderModel.homePath() + "/Books"
+        folderModel.path = filereader.getDataDir("Books")
     }
 
     function adjustViews(showAuthor) {
@@ -418,6 +419,7 @@ Page {
             width: Math.min(units.gu(30), parent.width)
 
             Label {
+                id: noBooksLabel
                 text: i18n.tr("No Books in Library")
                 fontSize: "large"
                 width: parent.width
@@ -426,14 +428,17 @@ Page {
 
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
-                              "automatically find all epub files in the \"Books\" folder of " +
-                              "your home directory.  Additionally, " +
-                              "any book opened with Beru will be added to the library.\n\n" +
-                              "You can also use the \"Get Books\" tab to download epubs from " +
-                              "the web into your library.")
+                              "automatically find all epub files in %1.  Additionally, any book " +
+                              "opened with Beru will be added to the library.").arg(folderModel.path)
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
+            }
+
+            Button {
+                text: i18n.tr("Download Books")
+                width: parent.width
+                onClicked: tabs.selectedTabIndex = 1
             }
 
             Button {
@@ -500,12 +505,11 @@ Page {
         Dialog {
             id: firstStartDialog
             title: i18n.tr("Welcome to Beru")
-            text: i18n.tr("Right now, Beru is looking through the \"Books\" folder of your home" +
-                          "directory and adding all the Epub " +
+            text: i18n.tr("Right now, Beru is looking through %1 and adding all the Epub " +
                           "files it finds to your Library.  Any files you add to this folder " +
                           "will be added to the Library the next time you start Beru.\n\n" +
                           "Additionally, any file you open with Beru will be added to your " +
-                          "library, regardless of where it is located.")
+                          "library, regardless of where it is located.").arg(folderModel.path)
 
             Button {
                 id: closeButton
@@ -514,6 +518,10 @@ Page {
                 enabled: !firststart
                 onClicked: {
                     if (!firststart)
+                        PopupUtils.close(firstStartDialog)
+                }
+                onEnabledChanged: {
+                    if (enabled && bookModel.count == 0)
                         PopupUtils.close(firstStartDialog)
                 }
             }
