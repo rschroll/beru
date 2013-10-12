@@ -17,8 +17,7 @@ MainView {
     objectName: "mainView"
     id: mainView
     
-    // Note! applicationName needs to match the .desktop filename
-    applicationName: "beru"
+    applicationName: "com.ubuntu.developer.rschroll.beru"
     
     /* 
      This property enables the application to change orientation 
