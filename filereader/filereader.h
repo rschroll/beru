@@ -8,6 +8,7 @@
 #define FILEREADER_H
 
 #include <QObject>
+#include <QStringList>
 
 class FileReader : public QObject
 {
@@ -21,6 +22,7 @@ public:
     Q_INVOKABLE QString homePath() const;
     Q_INVOKABLE bool ensureDirInHome(const QString &dirname);
     Q_INVOKABLE QString getDataDir(const QString &dirInHome);
+    Q_INVOKABLE QStringList listDir(const QString &dirname, const QStringList &filters);
 };
 
 #endif // FILEREADER_H

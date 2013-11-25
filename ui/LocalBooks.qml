@@ -9,7 +9,6 @@ import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
-import org.nemomobile.folderlistmodel 1.0
 import Epub 1.0
 
 
@@ -19,8 +18,8 @@ Page {
     flickable: listview
     property int sort: 0
     property bool needsort: false
-    property bool firststart: false
     property bool wide: width >= units.gu(80)
+    property string bookdir: filereader.getDataDir("Books")
     onSortChanged: {
         listBooks()
         perAuthorModel.clear()
@@ -62,12 +61,12 @@ Page {
             coverTimer.start()
     }
 
-    function addFolder() {
+    function addBookDir() {
         var db = openDatabase()
         db.transaction(function (tx) {
-            for (var i=0; i<folderRepeater.count; i++) {
-                var item = folderRepeater.itemAt(i)
-                tx.executeSql(addFileSQL, [item.filepath, fileToTitle(item.filename)])
+            var files = filereader.listDir(bookdir, ["*.epub"])
+            for (var i=0; i<files.length; i++) {
+                tx.executeSql(addFileSQL, [bookdir + "/" + files[i], fileToTitle(files[i])])
             }
         })
         localBooks.needsort = true
@@ -191,8 +190,10 @@ Page {
         })
     }
 
-    function setPath() {
-        folderModel.path = filereader.getDataDir("Books")
+    function readBookDir() {
+        addBookDir()
+        listBooks()
+        coverTimer.start()
     }
 
     function adjustViews(showAuthor) {
@@ -227,10 +228,9 @@ Page {
             })
         }
 
-        // setPath() will trigger the loading of all files in the default directory
-        // into the library.  Since this can cause a freeze, on the first start, we
-        // throw up a dialog to hide it.  The dialog calls setPath once it's ready.
-        setPath()
+        // readBookDir() will trigger the loading of all files in the default directory
+        // into the library.
+        readBookDir()
     }
 
     // If we need to resort, do it when hiding or showing this page
@@ -241,45 +241,7 @@ Page {
         if (visible && sort == 0)
             listview.positionViewAtBeginning()
     }
-    
-    // This will list all files in "~/Books"
-    FolderListModel {
-        id: folderModel
-        isRecursive: true
-        showDirectories: true
-        filterDirectories: false
-        nameFilters: ["*.epub"] // file types supported.
-        onAwaitingResultsChanged: {
-            if (!awaitingResults) {
-                addFolder()
-                listBooks()
-                firststart = false
-                coverTimer.start()
-            }
-        }
-        onError: {
-            // No folder (Should we try to create it?)
-            // We can load the rest of the library anyway.
-            listBooks()
-            firststart = false
-            coverTimer.start()
-        }
-    }
-    
-    // We use the repeater to iterate through the folderModel
-    // The model is set after load, to avoid freezing the GUI
-    Repeater {
-        id: folderRepeater
-        model: folderModel
-        
-        Component {
-            Item {
-                property var filepath: filePath
-                property var filename: fileName
-            }
-        }
-    }
-    
+
     EpubReader {
         id: coverReader
     }
@@ -426,7 +388,7 @@ Page {
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
                               "automatically find all epub files in %1.  (It's a mouthful, " +
-                              "we know.)").arg(folderModel.path)
+                              "we know.)").arg(bookdir)
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
@@ -441,11 +403,7 @@ Page {
             Button {
                 text: i18n.tr("Search Again")
                 width: parent.width
-                onClicked: {
-                    // Refresh isn't enough if folder was created in the meantime.
-                    folderModel.path = ""
-                    setPath()
-                }
+                onClicked: readBookDir()
             }
         }
     }
@@ -492,41 +450,6 @@ Page {
                     text: i18n.tr("Author")
                     property int sort: 2
                 }
-            }
-        }
-    }
-
-    Component {
-        id: firstStart
-
-        Dialog {
-            id: firstStartDialog
-            title: i18n.tr("Welcome to Beru")
-            text: i18n.tr("Right now, Beru is looking through %1 and adding all the Epub " +
-                          "files it finds to your Library.  Any files you add to this folder " +
-                          "will be added to the Library the next time you start Beru.\n\n" +
-                          "Additionally, any file you open with Beru will be added to your " +
-                          "library, regardless of where it is located.").arg(folderModel.path)
-
-            Button {
-                id: closeButton
-                text: firststart ? i18n.tr("One moment please...") : i18n.tr("OK")
-                gradient: firststart ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
-                enabled: !firststart
-                onClicked: {
-                    if (!firststart)
-                        PopupUtils.close(firstStartDialog)
-                }
-            }
-
-            // Just waiting for onCompleted isn't enough to ensure this dialog
-            // gets shown, so we start a brief timer before calling setPath().
-            Timer {
-                interval: 100
-                repeat: false
-                running: true
-                triggeredOnStart: false
-                onTriggered: setPath()
             }
         }
     }

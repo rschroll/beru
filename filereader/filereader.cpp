@@ -71,3 +71,9 @@ QString FileReader::getDataDir(const QString &dirInHome)
 
     return XDG_data;
 }
+
+QStringList FileReader::listDir(const QString &dirname, const QStringList &filters)
+{
+    QDir dir(dirname);
+    return dir.entryList(filters, QDir::Files | QDir::Readable);
+}
