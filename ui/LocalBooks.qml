@@ -190,6 +190,15 @@ Page {
         })
     }
 
+    function refreshCover(filename) {
+        var db = openDatabase()
+        db.transaction(function (tx) {
+            tx.executeSql("UPDATE LocalBooks SET authorsort='zzznull' WHERE filename=?", [filename])
+        })
+
+        coverTimer.start()
+    }
+
     function readBookDir() {
         addBookDir()
         listBooks()
@@ -287,7 +296,11 @@ Page {
                     perAuthorModel.needsclear = true
                     adjustViews(false)
                 } else {
-                    loadFile(model.filename)
+                    // Save copies now, since these get cleared by loadFile (somehow...)
+                    var filename = model.filename
+                    var pasterror = model.cover == "ZZZerror"
+                    if (loadFile(filename) && pasterror)
+                        refreshCover(filename)
                 }
             }
         }
@@ -314,7 +327,11 @@ Page {
                     listAuthorBooks(model.authorsort)
                     adjustViews(true)
                 } else {
-                    loadFile(model.filename)
+                    // Save copies now, since these get cleared by loadFile (somehow...)
+                    var filename = model.filename
+                    var pasterror = model.cover == "ZZZerror"
+                    if (loadFile(filename) && pasterror)
+                        refreshCover(filename)
                 }
             }
         }
