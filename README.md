@@ -8,11 +8,8 @@ Building
 --------
 You will need the [Ubuntu SDK][1].  Additionally, you need the QML
 bindings for U1DB (`qtdeclarative5-u1db1.0` in the Ubuntu
-repositories), the mobile icon set (`ubuntu-mobile-icons`), and the
-Nemo Mobile FolderListModel,
-(`qtdeclarative5-nemo-qml-plugin-folderlistmodel` in
-`ppa:ubuntu-sdk-team/ppa`). I believe all of these will be installed
-by default on the phone image.
+repositories) and the mobile icon set (`ubuntu-mobile-icons`). I
+believe all of these will be installed by default on the phone image.
 
 To build, do
 ```
@@ -28,15 +25,16 @@ Running
 Launch Beru with the shell script `beru`.
 
 Beru keeps a library of epub files.  On every start, the folder
-`~/Books` is searched and all epubs in it are included in the
-library.  You may also pass a epub file to `beru` as an argument.
-This will open the file and add it to your library.
+`~/.local/share/com.ubuntu.developer.rschroll.beru/Books` is
+searched and all epubs in it are included in the library.  You may
+also pass a epub file to `beru` as an argument. This will open the
+file and add it to your library.
 
 The Library is stored in a local database.  While I won't be
 cavalier about changing the database format, it may happen.  If
 you're getting database errors after upgrading, delete the database
 and reload your files.  The database is one of the ones in
-`~/.local/share/Qt Project/QtQmlViewer/QML/OfflineStorage/Databases`;
+`~/.local/share/com.ubuntu.developer.rschroll.beru/Databases`;
 read the `.ini` files to find the one with `Name=BeruLocalBooks`.
 
 Click Packages
