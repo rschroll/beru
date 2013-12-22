@@ -4,8 +4,8 @@
  * the GPL. See the file COPYING for full details.
  */
 
-#ifndef FILEREADER_H
-#define FILEREADER_H
+#ifndef FILESYSTEM_H
+#define FILESYSTEM_H
 
 #include <QObject>
 #include <QStringList>
@@ -21,4 +21,4 @@ public:
     Q_INVOKABLE QStringList listDir(const QString &dirname, const QStringList &filters);
 };
 
-#endif // FILEREADER_H
+#endif // FILESYSTEM_H

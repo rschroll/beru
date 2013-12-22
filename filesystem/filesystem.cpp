@@ -4,7 +4,7 @@
  * the GPL. See the file COPYING for full details.
  */
 
-#include "filereader.h"
+#include "filesystem.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>

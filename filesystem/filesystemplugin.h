@@ -4,8 +4,8 @@
  * the GPL. See the file COPYING for full details.
  */
 
-#ifndef FILEREADERPLUGIN_H
-#define FILEREADERPLUGIN_H
+#ifndef FILESYSTEMPLUGIN_H
+#define FILESYSTEMPLUGIN_H
 
 #include <QQmlExtensionPlugin>
 
@@ -18,4 +18,4 @@ public:
     void registerTypes(const char *uri);
 };
 
-#endif // FILEREADERPLUGIN_H
+#endif // FILESYSTEMPLUGIN_H

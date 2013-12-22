@@ -4,8 +4,8 @@
  * the GPL. See the file COPYING for full details.
  */
 
-#include "filereaderplugin.h"
-#include "filereader.h"
+#include "filesystemplugin.h"
+#include "filesystem.h"
 #include <qqml.h>
 
 void FileSystemPlugin::registerTypes(const char *uri)
