@@ -8,7 +8,7 @@
 #include "filereader.h"
 #include <qqml.h>
 
-void FileReaderPlugin::registerTypes(const char *uri)
+void FileSystemPlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<FileReader>(uri, 1, 0, "FileReader");
+    qmlRegisterType<FileSystem>(uri, 1, 0, "FileSystem");
 }

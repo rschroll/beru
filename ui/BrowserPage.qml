@@ -101,7 +101,7 @@ Page {
                 download.done = false
                 download.target = downloadItem
 
-                var dir = filereader.getDataDir("Books")
+                var dir = filesystem.getDataDir("Books")
                 if (dir == "") {
                     PopupUtils.open(errorComponent)
                     return
@@ -113,7 +113,7 @@ Page {
                 var basename = components.join(".")
                 var filename = basename + "." + ext
                 var i = 0
-                while (filereader.exists(dir + filename)) {
+                while (filesystem.exists(dir + filename)) {
                     i += 1
                     filename = basename + "(" + i + ")." + ext
                 }

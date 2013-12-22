@@ -9,7 +9,7 @@
 
 #include <QQmlExtensionPlugin>
 
-class FileReaderPlugin : public QQmlExtensionPlugin
+class FileSystemPlugin : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID "io.github.rschroll.FileReader")

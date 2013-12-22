@@ -19,7 +19,7 @@ Page {
     property int sort: 0
     property bool needsort: false
     property bool wide: width >= units.gu(80)
-    property string bookdir: filereader.getDataDir("Books")
+    property string bookdir: filesystem.getDataDir("Books")
     onSortChanged: {
         listBooks()
         perAuthorModel.clear()
@@ -64,7 +64,7 @@ Page {
     function addBookDir() {
         var db = openDatabase()
         db.transaction(function (tx) {
-            var files = filereader.listDir(bookdir, ["*.epub"])
+            var files = filesystem.listDir(bookdir, ["*.epub"])
             for (var i=0; i<files.length; i++) {
                 tx.executeSql(addFileSQL, [bookdir + "/" + files[i], fileToTitle(files[i])])
             }
@@ -92,7 +92,7 @@ Page {
                                     "FROM LocalBooks " + sort)
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
-                if (filereader.exists(item.filename))
+                if (filesystem.exists(item.filename))
                     bookModel.append({filename: item.filename, title: item.title,
                                       author: item.author, cover: item.cover,
                                       authorsort: item.authorsort, count: item["count(*)"]})
@@ -109,7 +109,7 @@ Page {
                                     "WHERE authorsort=? ORDER BY title ASC", [authorsort])
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
-                if (filereader.exists(item.filename))
+                if (filesystem.exists(item.filename))
                     perAuthorModel.append({filename: item.filename, title: item.title,
                                            author: item.author, cover: item.cover})
             }

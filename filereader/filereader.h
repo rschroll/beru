@@ -10,17 +10,13 @@
 #include <QObject>
 #include <QStringList>
 
-class FileReader : public QObject
+class FileSystem : public QObject
 {
     Q_OBJECT
 
 public:
-    Q_INVOKABLE QByteArray read(const QString &filename);
-    Q_INVOKABLE QString read_b64(const QString &filename);
     Q_INVOKABLE bool exists(const QString &filename);
     Q_INVOKABLE QString canonicalFilePath(const QString &filename);
-    Q_INVOKABLE QString homePath() const;
-    Q_INVOKABLE bool ensureDirInHome(const QString &dirname);
     Q_INVOKABLE QString getDataDir(const QString &dirInHome);
     Q_INVOKABLE QStringList listDir(const QString &dirname, const QStringList &filters);
 };

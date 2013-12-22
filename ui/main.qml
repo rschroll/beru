@@ -28,8 +28,8 @@ MainView {
     width: units.gu(50)
     height: units.gu(75)
 
-    FileReader {
-        id: filereader
+    FileSystem {
+        id: filesystem
     }
 
     PageStack {
@@ -189,7 +189,7 @@ MainView {
             tx.executeSql("CREATE TABLE IF NOT EXISTS Settings(key TEXT UNIQUE, value TEXT)")
         })
 
-        var filePath = filereader.canonicalFilePath(args.values.appargs)
+        var filePath = filesystem.canonicalFilePath(args.values.appargs)
         if (filePath !== "") {
             if (loadFile(filePath))
                 localBooks.addFile(filePath)

@@ -10,44 +10,15 @@
 #include <QDir>
 #include <QStandardPaths>
 
-QByteArray FileReader::read(const QString &filename)
-{
-    QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly))
-        return QByteArray();
-
-    return file.readAll();
-}
-
-QString FileReader::read_b64(const QString &filename)
-{
-    return this->read(filename).toBase64();
-}
-
-bool FileReader::exists(const QString &filename)
+bool FileSystem::exists(const QString &filename)
 {
     return QFile::exists(filename);
 }
 
-QString FileReader::canonicalFilePath(const QString &filename)
+QString FileSystem::canonicalFilePath(const QString &filename)
 {
     QFileInfo fileinfo(filename);
     return fileinfo.canonicalFilePath();
-}
-
-QString FileReader::homePath() const
-{
-    return QDir::homePath();
-}
-
-bool FileReader::ensureDirInHome(const QString &dirname)
-{
-    QDir home = QDir::home();
-    if (!home.mkpath(dirname))
-        return false;
-
-    QFileInfo info(home, dirname);
-    return info.isWritable();
 }
 
 /*
@@ -55,11 +26,8 @@ bool FileReader::ensureDirInHome(const QString &dirname)
  * fall back to the relevant XDG_DATA_HOME if that's not working.  Return the path of
  * the directory, or null if we failed.
  */
-QString FileReader::getDataDir(const QString &dirInHome)
+QString FileSystem::getDataDir(const QString &dirInHome)
 {
-    /*if (this->ensureDirInHome(dirInHome))
-        return QDir::homePath() + "/" + dirInHome;*/
-
     QString XDG_data = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + dirInHome;
     QDir dir("");
     if (!dir.mkpath(XDG_data))
@@ -72,7 +40,7 @@ QString FileReader::getDataDir(const QString &dirInHome)
     return XDG_data;
 }
 
-QStringList FileReader::listDir(const QString &dirname, const QStringList &filters)
+QStringList FileSystem::listDir(const QString &dirname, const QStringList &filters)
 {
     QDir dir(dirname);
     return dir.entryList(filters, QDir::Files | QDir::Readable);
