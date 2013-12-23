@@ -5,14 +5,20 @@
  */
 
 #include "filesystem.h"
-#include <QFile>
 #include <QFileInfo>
 #include <QDir>
 #include <QStandardPaths>
+#include <QTemporaryFile>
 
-bool FileSystem::exists(const QString &filename)
+/*
+ * Return 0 if file does not exist, 2 if file is directory, 1 otherwise.
+ */
+int FileSystem::exists(const QString &filename)
 {
-    return QFile::exists(filename);
+    QFileInfo fileinfo(filename);
+    if (!fileinfo.exists())
+        return 0;
+    return fileinfo.isDir() ? 2 : 1;
 }
 
 QString FileSystem::canonicalFilePath(const QString &filename)
@@ -21,14 +27,34 @@ QString FileSystem::canonicalFilePath(const QString &filename)
     return fileinfo.canonicalFilePath();
 }
 
-/*
- * Try to find or make a directory for writing data.  We start with ~/dirInHome, but
- * fall back to the relevant XDG_DATA_HOME if that's not working.  Return the path of
- * the directory, or null if we failed.
- */
-QString FileSystem::getDataDir(const QString &dirInHome)
+bool FileSystem::makeDir(const QString &path)
 {
-    QString XDG_data = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + dirInHome;
+    QDir dir("");
+    return dir.mkpath(path);
+}
+
+QString FileSystem::homePath() const
+{
+    return QDir::homePath();
+}
+
+bool FileSystem::writableHome()
+{
+    QTemporaryFile temp(QDir::homePath() + "/tmp");
+    if (!temp.open())
+        return false;
+    temp.write("test");
+    temp.seek(0);
+    return temp.readAll() == "test";
+}
+
+/*
+ * Get a subdirectory of XDG_DATA_HOME.  Return the path of the directory, or the empty string
+ * if something went wrong.
+ */
+QString FileSystem::getDataDir(const QString &subDir)
+{
+    QString XDG_data = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/" + subDir;
     QDir dir("");
     if (!dir.mkpath(XDG_data))
         return QString();

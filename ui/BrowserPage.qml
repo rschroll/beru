@@ -101,7 +101,7 @@ Page {
                 download.done = false
                 download.target = downloadItem
 
-                var dir = filesystem.getDataDir("Books")
+                var dir = localBooks.bookdir
                 if (dir == "") {
                     PopupUtils.open(errorComponent)
                     return

@@ -194,5 +194,7 @@ MainView {
             if (loadFile(filePath))
                 localBooks.addFile(filePath)
         }
+
+        localBooks.onMainCompleted()
     }
 }

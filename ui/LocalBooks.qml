@@ -18,8 +18,11 @@ Page {
     flickable: listview
     property int sort: 0
     property bool needsort: false
+    property bool firststart: false
     property bool wide: width >= units.gu(80)
-    property string bookdir: filesystem.getDataDir("Books")
+    property string bookdir: ""
+    property bool writablehome: false
+    property string defaultdirname: i18n.tr("Books")
     onSortChanged: {
         listBooks()
         perAuthorModel.clear()
@@ -34,6 +37,7 @@ Page {
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
         noBooksLabel.text = i18n.tr("Welcome to Beru")
+        firststart = true
     }
 
     function openDatabase() {
@@ -221,7 +225,23 @@ Page {
             perAuthorListView.topMargin = 0
         }
     }
-    
+
+    function loadBookDir() {
+        if (filesystem.writableHome()) {
+            writablehome = true
+            var storeddir = getSetting("bookdir")
+            bookdir = (storeddir == null) ? filesystem.getDataDir(defaultdirname) : storeddir
+        } else {
+            writablehome = false
+            bookdir = filesystem.getDataDir(defaultdirname)
+        }
+    }
+
+    function setBookDir(dir) {
+        bookdir = dir
+        setSetting("bookdir", dir)
+    }
+
     Component.onCompleted: {
         var db = openDatabase()
         db.transaction(function (tx) {
@@ -236,10 +256,25 @@ Page {
                 tx.executeSql("ALTER TABLE LocalBooks ADD authorsort TEXT NOT NULL DEFAULT 'zzznull'")
             })
         }
+    }
 
+    // We need to wait for main to be finished, so that the settings are available.
+    function onMainCompleted() {
         // readBookDir() will trigger the loading of all files in the default directory
         // into the library.
-        readBookDir()
+        if (!firststart) {
+            loadBookDir()
+            readBookDir()
+        } else {
+            writablehome = filesystem.writableHome()
+            if (writablehome) {
+                setBookDir(filesystem.homePath() + "/" + defaultdirname)
+                PopupUtils.open(settingsComponent)
+            } else {
+                setBookDir(filesystem.getDataDir(defaultdirname))
+                readBookDir()
+            }
+        }
     }
 
     // If we need to resort, do it when hiding or showing this page
@@ -404,8 +439,7 @@ Page {
 
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
-                              "automatically find all epub files in %1.  (It's a mouthful, " +
-                              "we know.)").arg(bookdir)
+                              "automatically find all epub files in %1.").arg(bookdir)
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
@@ -427,13 +461,108 @@ Page {
     
     tools: ToolbarItems {
         id: localBooksToolbar
-        
+
         ToolbarButton {
             id: sortButton
             action: Action {
                 text: i18n.tr("Sort")
                 iconSource: mobileIcon("filter")
                 onTriggered: PopupUtils.open(sortComponent, sortButton)
+            }
+        }
+
+        ToolbarButton {
+            id: settingsButton
+            action: Action {
+                text: i18n.tr("Settings")
+                iconSource: mobileIcon("settings")
+                onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent,
+                                                            settingsButton)
+            }
+        }
+    }
+
+    Component {
+        id: settingsComponent
+
+        Dialog {
+            id: settingsDialog
+            title: firststart ? i18n.tr("Welcome to Beru") : i18n.tr("Default Book Location")
+            text: i18n.tr("Enter the folder in your home directory where your ebooks are or " +
+                          "should be stored.")
+            property string homepath: filesystem.homePath() + "/"
+
+            TextField {
+                id: pathfield
+                text: {
+                    if (bookdir.substring(0, homepath.length) == homepath)
+                        return bookdir.substring(homepath.length)
+                    return bookdir
+                }
+                onTextChanged: {
+                    var status = filesystem.exists(homepath + pathfield.text)
+                    if (status == 0) {
+                        useButton.text = i18n.tr("Create Directory")
+                        useButton.enabled = true
+                    } else if (status == 1) {
+                        useButton.text = i18n.tr("File Exists")
+                        useButton.enabled = false
+                    } else if (status == 2) {
+                        useButton.text = i18n.tr("Use Directory")
+                        useButton.enabled = true
+                    }
+                }
+            }
+
+            Button {
+                id: useButton
+                onClicked: {
+                    var status = filesystem.exists(homepath + pathfield.text)
+                    if (status != 1) { // Should always be true
+                        if (status == 0)
+                            filesystem.makeDir(homepath + pathfield.text)
+                        setBookDir(homepath + pathfield.text)
+                        useButton.enabled = false
+                        useButton.text = i18n.tr("Please wait...")
+                        cancelButton.enabled = false
+                        unblocker.start()
+                    }
+                }
+            }
+
+            Timer {
+                id: unblocker
+                interval: 10
+                onTriggered: {
+                    readBookDir()
+                    PopupUtils.close(settingsDialog)
+                    firststart = false
+                }
+            }
+
+            Button {
+                id: cancelButton
+                text: i18n.tr("Cancel")
+                gradient: UbuntuColors.greyGradient
+                visible: !firststart
+                onClicked: PopupUtils.close(settingsDialog)
+            }
+        }
+    }
+
+    Component {
+        id: settingsDisabledComponent
+
+        Dialog {
+            id: settingsDisabledDialog
+            title: i18n.tr("Default Book Location")
+            text: i18n.tr("Beru seems to be operating under AppArmor restrictions that prevent it " +
+                              "from accessing most of your home directory.  Ebooks should be put in " +
+                              "'%1' for Beru to read them.").arg(bookdir)
+
+            Button {
+                text: i18n.tr("Close")
+                onClicked: PopupUtils.close(settingsDisabledDialog)
             }
         }
     }

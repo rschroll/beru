@@ -15,9 +15,12 @@ class FileSystem : public QObject
     Q_OBJECT
 
 public:
-    Q_INVOKABLE bool exists(const QString &filename);
+    Q_INVOKABLE int exists(const QString &filename);
     Q_INVOKABLE QString canonicalFilePath(const QString &filename);
-    Q_INVOKABLE QString getDataDir(const QString &dirInHome);
+    Q_INVOKABLE bool makeDir(const QString &path);
+    Q_INVOKABLE QString homePath() const;
+    Q_INVOKABLE bool writableHome();
+    Q_INVOKABLE QString getDataDir(const QString &subDir);
     Q_INVOKABLE QStringList listDir(const QString &dirname, const QStringList &filters);
 };
 
