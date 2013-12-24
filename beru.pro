@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
-SUBDIRS += filereader \
+SUBDIRS += filesystem \
     qhttpserver \
     epubreader \
     fontlister \

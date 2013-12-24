@@ -10,5 +10,6 @@
     "maintainer": "Robert Schroll <rschroll@gmail.com>",
     "name": "com.ubuntu.developer.rschroll.beru",
     "title": "Beru",
-    "version": "0.9.4"
+    "version": "0.9.5",
+    "architecture": "@ARCH@"
 }

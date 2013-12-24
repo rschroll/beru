@@ -101,9 +101,7 @@ Page {
                 download.done = false
                 download.target = downloadItem
 
-                // Check if ~/Books exists; try to make it if possible.  If not fall back to
-                // XDG_DATA_HOME.  See https://lists.launchpad.net/ubuntu-phone/msg03861.html
-                var dir = filereader.getDataDir("Books")
+                var dir = localBooks.bookdir
                 if (dir == "") {
                     PopupUtils.open(errorComponent)
                     return
@@ -115,7 +113,7 @@ Page {
                 var basename = components.join(".")
                 var filename = basename + "." + ext
                 var i = 0
-                while (filereader.exists(dir + filename)) {
+                while (filesystem.exists(dir + filename)) {
                     i += 1
                     filename = basename + "(" + i + ")." + ext
                 }
