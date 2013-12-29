@@ -35,6 +35,7 @@ MainView {
     PageStack {
         id: pageStack
         Component.onCompleted: push(tabs)
+        onCurrentPageChanged: currentPage.forceActiveFocus()
 
         Tabs {
             id: tabs

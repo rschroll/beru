@@ -27,6 +27,19 @@ Page {
     property var history: new History.History(updateNavButtons)
     property bool navjump: false
 
+    focus: true
+    Keys.onPressed: {
+        if (event.key == Qt.Key_Right || event.key == Qt.Key_Down || event.key == Qt.Key_Space
+                || event.key == Qt.Key_Period) {
+            Messaging.sendMessage("ChangePage", 1)
+            event.accepted = true
+        } else if (event.key == Qt.Key_Left || event.key == Qt.Key_Up
+                   || event.key == Qt.Key_Backspace || event.key == Qt.Key_Comma) {
+            Messaging.sendMessage("ChangePage", -1)
+            event.accepted = true
+        }
+    }
+
     onVisibleChanged: {
         if (visible == false) {
             // Reset things for the next time this page is opened
@@ -44,7 +57,7 @@ Page {
         id: bookWebView
         anchors.fill: parent
         visible: false
-        
+
         onTitleChanged: Messaging.handleMessage(title)
     }
 
