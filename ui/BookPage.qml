@@ -263,8 +263,8 @@ Page {
                     UbuntuShape {
                         id: backgroundShape
                         anchors {
-                            leftMargin: units.gu(1)
-                            rightMargin: units.gu(1)
+                            leftMargin: units.gu(0)
+                            rightMargin: units.gu(0)
                             fill: parent
                         }
                         z: -1
