@@ -120,6 +120,10 @@ MainView {
         })
     }
 
+    function sizeChanged() {
+        setSetting("winsize", JSON.stringify([width, height]))
+    }
+
     U1db.Database {
         id: bookSettingsDatabase
         path: "BeruBookSettings.db"
@@ -194,6 +198,14 @@ MainView {
         if (filePath !== "") {
             if (loadFile(filePath))
                 localBooks.addFile(filePath)
+        }
+
+        onWidthChanged.connect(sizeChanged)
+        onHeightChanged.connect(sizeChanged)
+        var size = JSON.parse(getSetting("winsize"))
+        if (size != null) {
+            width = size[0]
+            height = size[1]
         }
 
         localBooks.onMainCompleted()
