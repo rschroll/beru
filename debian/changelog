@@ -1,0 +1,5 @@
+beru (0.9.7-0) precise; urgency=low
+
+  * Initial debian release
+
+ -- Robert Schroll <rschroll@gmail.com>  Wed, 08 Jan 2014 00:25:55 -0500

@@ -1,0 +1,26 @@
+Source: beru
+Section: misc
+Priority: extra
+Maintainer: Robert Schroll <rschroll@gmail.com>
+Build-Depends: debhelper (>= 8.0.0),
+               qtbase5-dev,
+               qtdeclarative5-dev,
+               qt5-default,
+               zlib1g-dev
+Standards-Version: 3.9.2
+Homepage: http://www.github.com/rschroll/beru
+
+Package: beru
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+         qtdeclarative5-ubuntu-ui-toolkit-plugin | qt-components-ubuntu,
+         qtdeclarative5-qtquick2-plugin,
+         qtdeclarative5-u1db1.0,
+         ubuntu-mobile-icons,
+         zlib1g
+Description: The Basic Epub Reader for Ubuntu
+ Beru allows you to read ebooks on your Ubuntu device. It keeps a 
+ library of books and uses Ubuntu One to save your place in them across 
+ all your devices. Beru also includes a browser to let you download books 
+ from the web. Note that only DRM-free Epubs are supported.
+
