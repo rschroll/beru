@@ -122,11 +122,11 @@ Page {
                 var downloadargs = {
                     text: i18n.tr("This book will be added to your library as soon as the " +
                                   "download is complete."),
-                    details: i18n.tr("This book is being saved as %1").arg(dir + filename)
+                    details: i18n.tr("This book is being saved as <i>%1</i>").arg(dir + filename)
                 }
                 if (ext != "epub")
                     PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
-                                        text: i18n.tr("This file, %1, may not be an Epub file.  " +
+                                        text: i18n.tr("This file, <i>%1</i>, may not be an Epub file.  " +
                                                       "If it is not, Beru will not be able to " +
                                                       "read it.").arg(filename)})
                 else

@@ -560,7 +560,7 @@ Page {
             title: i18n.tr("Default Book Location")
             text: i18n.tr("Beru seems to be operating under AppArmor restrictions that prevent it " +
                               "from accessing most of your home directory.  Ebooks should be put in " +
-                              "'%1' for Beru to read them.").arg(bookdir)
+                              "<i>%1</i> for Beru to read them.").arg(bookdir)
 
             Label {
                 text: "For more information:<br>" +
