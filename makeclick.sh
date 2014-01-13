@@ -5,32 +5,29 @@
 # versions with file system access.
 read MAJ MIN REV < VERSION
 
-# If the first argument to the script starts with an 'a', build the version
-# with filesystem access.
-if [ "${1:0:1}" == "a" ]
-then
-    SUFFIX=".access"
-    REV=$(( REV + 1 ))
-else
-    SUFFIX=""
-fi
-VERSION="$MAJ.$MIN.$REV"
 ARCH="$(dpkg-architecture -qDEB_HOST_ARCH)"
-
-DIR="beru_$VERSION"
-mkdir $DIR
-for dir in Epub File FontList HttpServer html ui apparmor
+# Create versions with and without file system access
+for i in 0 1
 do
-    cp -r $dir $DIR
-done
-for file in beru beru.desktop beru.svg COPYING README.md
-do
-    cp $file $DIR
-done
-sed -e "s/@ARCH@/$ARCH/g" \
-    -e "s/@VERSION@/$VERSION/g" \
-    -e "s/@SUFFIX@/$SUFFIX/g" < manifest.json.in > $DIR/manifest.json
+    REV=$(( REV + i ))
+    [ $i == 1 ] && SUFFIX=".access" || SUFFIX=""
+    VERSION="$MAJ.$MIN.$REV"
 
-click build $DIR
-tar -czf "beru_${VERSION}_$ARCH.tar.gz" $DIR
-rm -r $DIR
+    DIR="beru-$VERSION"
+    mkdir $DIR
+    for dir in Epub File FontList HttpServer html ui apparmor
+    do
+        cp -r $dir $DIR
+    done
+    for file in beru beru.desktop beru.svg COPYING README.md
+    do
+        cp $file $DIR
+    done
+    sed -e "s/@ARCH@/$ARCH/g" \
+        -e "s/@VERSION@/$VERSION/g" \
+        -e "s/@SUFFIX@/$SUFFIX/g" < manifest.json.in > $DIR/manifest.json
+
+    click build $DIR
+    tar -czf "beru_${VERSION}_$ARCH.tar.gz" $DIR
+    rm -r $DIR
+done
