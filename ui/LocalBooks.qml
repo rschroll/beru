@@ -562,6 +562,18 @@ Page {
                               "from accessing most of your home directory.  Ebooks should be put in " +
                               "'%1' for Beru to read them.").arg(bookdir)
 
+            Label {
+                text: "For more information:<br>" +
+                      "<a href='http://rschroll.github.io/beru/confinement.html'>" +
+                      "rschroll.github.io/beru/confinement.html</a>"
+                linkColor: "#a4a4ff"
+                onLinkActivated: Qt.openUrlExternally(link)
+                horizontalAlignment: Text.AlignHCenter
+                fontSize: "medium"
+                color: Qt.rgba(1, 1, 1, 0.6)
+                wrapMode: Text.WordWrap
+            }
+
             Button {
                 text: i18n.tr("Close")
                 onClicked: PopupUtils.close(settingsDisabledDialog)
