@@ -2,21 +2,48 @@
 layout: default
 title: Basic Epub Reader for Ubuntu
 ---
-<!-- section id="downloads" class="clearfix">
-  <a href="https://github.com/rschroll/beru/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-  <a href="https://github.com/rschroll/beru/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-  <a href="https://github.com/rschroll/beru" id="view-on-github" class="button"><span>View on GitHub</span></a>
-</section -->
 
 <hr>
 
 <section id="main_content">
-<h3>Welcome to the Beru Devlog</h3>
-<p>I'm developing an Epub reader for the <a href="http://developer.ubuntu.com/2013/08/announcing-the-2013-ubuntu-app-showdown-contest/">Ubuntu App Showdown</a>, and this is where I'll be keeping track of my progress.</p>
+<p>Beru lets you read DRM-free Epub books on your Ubuntu desktop or touch device.  It tries to be unobtrusive, letting you manage your books as you like.  Your place in your books is saved to Ubuntu One, so you can pick up reading on any of your devices.</p>
 
-<p>This is the first time I've programmed in Qt or QML, so it's going to be a learning experience.  I'll post the gotchas that trip me up.  Hopefully this will smooth the road for others.</p>
+<p>Beru is availble in the <a href="{{ site.baseurl }}/install.html#store">Ubuntu Software Store</a>, as <a href="{{ site.baseurl }}/install.html#click">click package</a>, and in a <a href="{{ site.baseurl }}/install.html#ppa">PPA</a>.  It is developed <a href="https://github.com/rschroll/beru">on GitHub</a> and licensed under the GPLv3.</p>
 
-{% for post in site.posts %}
+<style>
+#screenshots {
+    text-align: center;
+}
+#screenshots #screenshot {
+    border: 3px solid #aaa;
+}
+#screenshots .thumb {
+    border: 2px solid #aaa;
+}
+#screenshots .thumb:hover {
+    border: 2px solid #d5000d;
+}
+</style>
+<script>
+function hover_img(event) {
+    document.getElementById('screenshot').src = event.target.src.replace('.sm.', '.');
+}
+</script>
+
+<div id="screenshots"><img src="{{ site.baseurl }}/assets/ss-library.png" width="400" height="596" id="screenshot" /><br />
+<img src="{{ site.baseurl }}/assets/ss-library.sm.png" width="100" height="149" class="thumb" onmouseover="hover_img(event)" />
+<img src="{{ site.baseurl }}/assets/ss-library-settings.sm.png" width="100" height="149" class="thumb" onmouseover="hover_img(event)" />
+<img src="{{ site.baseurl }}/assets/ss-book.sm.png" width="100" height="149" class="thumb" onmouseover="hover_img(event)" />
+<img src="{{ site.baseurl }}/assets/ss-book-settings.sm.png" width="100" height="149" class="thumb" onmouseover="hover_img(event)" />
+<img src="{{ site.baseurl }}/assets/ss-gutenberg.sm.png" width="100" height="149" class="thumb" onmouseover="hover_img(event)" />
+</div>
+
+<hr />
+
+<h3 class="posttitle" style="color: #6d6d6d">Beru Devlog</h3>
+<p>Beru was originally developed during the <a href="http://developer.ubuntu.com/2013/08/announcing-the-2013-ubuntu-app-showdown-contest/">2013 Ubuntu App Showdown</a>, and this devlog tracked my progress.  Updates will occasionally appear here.
+
+{% for post in site.posts limit:5 %}
 <hr>
 <h3 class="posttitle"><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h3>
 <h4>{{ post.date | date_to_long_string }}</h4>

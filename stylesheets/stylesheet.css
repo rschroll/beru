@@ -169,6 +169,20 @@ a.button span {
 #view-on-github {
   margin-right: 0;
 }
+#install {
+  margin-right: 0;
+}
+#install span:before {
+  content: "➲";
+  position: absolute;
+  margin-left: -38px;
+  font-size: 2em;
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+}
+#install:hover span:before {
+  color: #d5000d;
+}
 
 code, pre {
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;

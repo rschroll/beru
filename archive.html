@@ -1,12 +1,7 @@
 ---
-layout: default
+layout: page
 title: Devlog Archive
 ---
-<h3 class="posttitle">{{ page.title }}</h3>
-
-<hr>
-
-<section id="main_content">
 <ul id="archive">
     {% for post in site.posts reversed %}
     <li>
@@ -14,4 +9,3 @@ title: Devlog Archive
     </li>
     {% endfor %}
 </ul>
-</section>
