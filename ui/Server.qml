@@ -62,7 +62,7 @@ HttpServer {
 
         if (savedvals.marginv == undefined && widthgu > targetwidth)
             // Set the vertical margins to be the same as the horizontal, but no more than 5%.
-            marginv = Math.min(marginh, 5)
+            defaults.marginv = Math.min(defaults.margin, 5)
 
         response.setHeader("Content-Type", "application/javascript")
         response.writeHead(200)

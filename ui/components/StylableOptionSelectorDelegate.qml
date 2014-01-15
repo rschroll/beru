@@ -16,8 +16,8 @@
 
 /*!
     \qmltype OptionSelectorDelegate
-    \inqmlmodule Toolkit.Toolkit 0.1
-    \ingroup ubuntu-Toolkit
+    \inqmlmodule Ubuntu.Components 0.1
+    \ingroup ubuntu-components
     \brief OptionSelector delegate which can display text, subtext and an image from a custom model.
 
     \b{This component is under heavy development.}
@@ -30,7 +30,7 @@
             OptionSelector {
                 text: i18n.tr("Label")
                 model: customModel
-                delegate: OptionSelectorDelegate { text: name; subText: description; icon: image }
+                delegate: OptionSelectorDelegate { text: name; subText: description; iconSource: image }
             }
             ListModel {
                 id: customModel
@@ -64,10 +64,43 @@ ListItem.Standard {
     property string subText
 
     /*!
-      \preliminary
+      \deprecated
+
+      \b{Use iconName or iconSource instead.}
+
       Left icon url.
      */
-    property url icon
+    property url icon: iconSource
+    onIconChanged: if (icon != iconSource) {
+                       console.warn("WARNING: OptionSelectorDelegate.icon is DEPRECATED. " +
+                                     "Use iconName and iconSource instead.")
+                   }
+
+    /*!
+      The image shown for that option.
+      \qmlproperty url iconSource
+
+      This is a URL to any image file.
+      In order to use an icon from the Ubuntu theme, use the iconName property instead.
+     */
+    property url iconSource: iconName ? "image://theme/" + iconName : ""
+
+    /*!
+      The icon shown for that option.
+
+      \qmlproperty string iconName
+
+      If both iconSource and iconName are defined, iconName will be ignored.
+
+      \note The complete list of icons available in Ubuntu is not published yet.
+            For now please refer to the folders where the icon themes are installed:
+            \list
+              \li Ubuntu Touch: \l file:/usr/share/icons/ubuntu-mobile
+              \li Ubuntu Desktop: \l file:/usr/share/icons/ubuntu-mono-dark
+            \endlist
+            These 2 separate icon themes will be merged soon.
+    */
+    property string iconName
 
     /*!
       \preliminary
@@ -108,36 +141,30 @@ ListItem.Standard {
             gl_FragColor = colour * sourceColour.a * qt_Opacity;
         }"
 
-    /*!
-      \preliminary
-      Label with main text.
-     */
     property Label textLabel: textLabel
-
-    /*!
-      \preliminary
-      Label with subtext.
-     */
     property Label subTextLabel: subTextLabel
 
-    width: parent.width + units.gu(2)
     showDivider: index !== listView.count - 1 ? 1 : 0
     highlightWhenPressed: false
     selected: ListView.isCurrentItem
     anchors {
         left: parent.left
-        leftMargin: units.gu(-1)
+        right: parent.right
     }
     onClicked: {
-        if (listView.container.isExpanded) {
+        if (listView.container.currentlyExpanded) {
             listView.delegateClicked(index);
 
-            listView.previousIndex = listView.currentIndex;
-            listView.currentIndex = index;
+            if (!listView.multiSelection) {
+                listView.previousIndex = listView.currentIndex;
+                listView.currentIndex = index;
+            } else {
+                selected = !selected;
+            }
         }
 
-        if (!listView.expanded) {
-            listView.container.isExpanded = !listView.container.isExpanded;
+        if (!listView.expanded && !listView.multiSelection) {
+            listView.container.currentlyExpanded = !listView.container.currentlyExpanded;
         }
     }
 
@@ -178,14 +205,12 @@ ListItem.Standard {
     resources: [
         Connections {
             target: listView.container
-            onIsExpandedChanged: {
-                optionExpansion.stop();
+            onCurrentlyExpandedChanged: {
                 imageExpansion.stop();
-                optionCollapse.stop();
                 selectedImageCollapse.stop();
                 deselectedImageCollapse.stop();
 
-                if (listView.container.isExpanded === true) {
+                if (listView.container.currentlyExpanded === true) {
                     if (!option.selected) {
                         optionExpansion.start();
 
@@ -307,7 +332,7 @@ ListItem.Standard {
 
         anchors {
             left: parent.left
-            leftMargin: units.gu(3)
+            leftMargin: units.gu(2)
             verticalCenter: parent.verticalCenter
         }
 
@@ -353,11 +378,11 @@ ListItem.Standard {
 
         width: units.gu(2)
         height: units.gu(2)
-        source: listView.expanded ? listView.container.tick : listView.container.chevron
+        source: listView.expanded || listView.multiSelection ? listView.container.tick : listView.container.chevron
         opacity: option.selected ? 1.0 : 0.0
         anchors {
             right: parent.right
-            rightMargin: units.gu(3)
+            rightMargin: units.gu(2)
             verticalCenter: parent.verticalCenter
         }
 

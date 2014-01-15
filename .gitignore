@@ -4,3 +4,4 @@ Makefile
 tmp
 click
 *.click
+*.tar.gz

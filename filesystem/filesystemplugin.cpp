@@ -4,11 +4,11 @@
  * the GPL. See the file COPYING for full details.
  */
 
-#include "filereaderplugin.h"
-#include "filereader.h"
+#include "filesystemplugin.h"
+#include "filesystem.h"
 #include <qqml.h>
 
-void FileReaderPlugin::registerTypes(const char *uri)
+void FileSystemPlugin::registerTypes(const char *uri)
 {
-    qmlRegisterType<FileReader>(uri, 1, 0, "FileReader");
+    qmlRegisterType<FileSystem>(uri, 1, 0, "FileSystem");
 }

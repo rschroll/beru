@@ -9,7 +9,6 @@ import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
-import org.nemomobile.folderlistmodel 1.0
 import Epub 1.0
 
 
@@ -21,6 +20,9 @@ Page {
     property bool needsort: false
     property bool firststart: false
     property bool wide: width >= units.gu(80)
+    property string bookdir: ""
+    property bool writablehome: false
+    property string defaultdirname: i18n.tr("Books")
     onSortChanged: {
         listBooks()
         perAuthorModel.clear()
@@ -34,9 +36,8 @@ Page {
     
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
-        firststart = true
-        PopupUtils.open(firstStart)
         noBooksLabel.text = i18n.tr("Welcome to Beru")
+        firststart = true
     }
 
     function openDatabase() {
@@ -64,12 +65,12 @@ Page {
             coverTimer.start()
     }
 
-    function addFolder() {
+    function addBookDir() {
         var db = openDatabase()
         db.transaction(function (tx) {
-            for (var i=0; i<folderRepeater.count; i++) {
-                var item = folderRepeater.itemAt(i)
-                tx.executeSql(addFileSQL, [item.filepath, fileToTitle(item.filename)])
+            var files = filesystem.listDir(bookdir, ["*.epub"])
+            for (var i=0; i<files.length; i++) {
+                tx.executeSql(addFileSQL, [bookdir + "/" + files[i], fileToTitle(files[i])])
             }
         })
         localBooks.needsort = true
@@ -95,7 +96,7 @@ Page {
                                     "FROM LocalBooks " + sort)
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
-                if (filereader.exists(item.filename))
+                if (filesystem.exists(item.filename))
                     bookModel.append({filename: item.filename, title: item.title,
                                       author: item.author, cover: item.cover,
                                       authorsort: item.authorsort, count: item["count(*)"]})
@@ -112,7 +113,7 @@ Page {
                                     "WHERE authorsort=? ORDER BY title ASC", [authorsort])
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
-                if (filereader.exists(item.filename))
+                if (filesystem.exists(item.filename))
                     perAuthorModel.append({filename: item.filename, title: item.title,
                                            author: item.author, cover: item.cover})
             }
@@ -193,8 +194,19 @@ Page {
         })
     }
 
-    function setPath() {
-        folderModel.path = filereader.getDataDir("Books")
+    function refreshCover(filename) {
+        var db = openDatabase()
+        db.transaction(function (tx) {
+            tx.executeSql("UPDATE LocalBooks SET authorsort='zzznull' WHERE filename=?", [filename])
+        })
+
+        coverTimer.start()
+    }
+
+    function readBookDir() {
+        addBookDir()
+        listBooks()
+        coverTimer.start()
     }
 
     function adjustViews(showAuthor) {
@@ -213,7 +225,23 @@ Page {
             perAuthorListView.topMargin = 0
         }
     }
-    
+
+    function loadBookDir() {
+        if (filesystem.writableHome()) {
+            writablehome = true
+            var storeddir = getSetting("bookdir")
+            bookdir = (storeddir == null) ? filesystem.getDataDir(defaultdirname) : storeddir
+        } else {
+            writablehome = false
+            bookdir = filesystem.getDataDir(defaultdirname)
+        }
+    }
+
+    function setBookDir(dir) {
+        bookdir = dir
+        setSetting("bookdir", dir)
+    }
+
     Component.onCompleted: {
         var db = openDatabase()
         db.transaction(function (tx) {
@@ -228,12 +256,25 @@ Page {
                 tx.executeSql("ALTER TABLE LocalBooks ADD authorsort TEXT NOT NULL DEFAULT 'zzznull'")
             })
         }
+    }
 
-        // setPath() will trigger the loading of all files in the default directory
-        // into the library.  Since this can cause a freeze, on the first start, we
-        // throw up a dialog to hide it.  The dialog calls setPath once it's ready.
-        if (!firststart)
-            setPath()
+    // We need to wait for main to be finished, so that the settings are available.
+    function onMainCompleted() {
+        // readBookDir() will trigger the loading of all files in the default directory
+        // into the library.
+        if (!firststart) {
+            loadBookDir()
+            readBookDir()
+        } else {
+            writablehome = filesystem.writableHome()
+            if (writablehome) {
+                setBookDir(filesystem.homePath() + "/" + defaultdirname)
+                PopupUtils.open(settingsComponent)
+            } else {
+                setBookDir(filesystem.getDataDir(defaultdirname))
+                readBookDir()
+            }
+        }
     }
 
     // If we need to resort, do it when hiding or showing this page
@@ -244,45 +285,7 @@ Page {
         if (visible && sort == 0)
             listview.positionViewAtBeginning()
     }
-    
-    // This will list all files in "~/Books"
-    FolderListModel {
-        id: folderModel
-        isRecursive: true
-        showDirectories: true
-        filterDirectories: false
-        nameFilters: ["*.epub"] // file types supported.
-        onAwaitingResultsChanged: {
-            if (!awaitingResults) {
-                addFolder()
-                listBooks()
-                firststart = false
-                coverTimer.start()
-            }
-        }
-        onError: {
-            // No folder (Should we try to create it?)
-            // We can load the rest of the library anyway.
-            listBooks()
-            firststart = false
-            coverTimer.start()
-        }
-    }
-    
-    // We use the repeater to iterate through the folderModel
-    // The model is set after load, to avoid freezing the GUI
-    Repeater {
-        id: folderRepeater
-        model: folderModel
-        
-        Component {
-            Item {
-                property var filepath: filePath
-                property var filename: fileName
-            }
-        }
-    }
-    
+
     EpubReader {
         id: coverReader
     }
@@ -328,7 +331,11 @@ Page {
                     perAuthorModel.needsclear = true
                     adjustViews(false)
                 } else {
-                    loadFile(model.filename)
+                    // Save copies now, since these get cleared by loadFile (somehow...)
+                    var filename = model.filename
+                    var pasterror = model.cover == "ZZZerror"
+                    if (loadFile(filename) && pasterror)
+                        refreshCover(filename)
                 }
             }
         }
@@ -355,7 +362,11 @@ Page {
                     listAuthorBooks(model.authorsort)
                     adjustViews(true)
                 } else {
-                    loadFile(model.filename)
+                    // Save copies now, since these get cleared by loadFile (somehow...)
+                    var filename = model.filename
+                    var pasterror = model.cover == "ZZZerror"
+                    if (loadFile(filename) && pasterror)
+                        refreshCover(filename)
                 }
             }
         }
@@ -429,7 +440,7 @@ Page {
             Label {
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
                               "automatically find all epub files in %1.  Additionally, any book " +
-                              "opened with Beru will be added to the library.").arg(folderModel.path)
+                              "opened with Beru will be added to the library.").arg(bookdir)
                 wrapMode: Text.Wrap
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
@@ -444,24 +455,128 @@ Page {
             Button {
                 text: i18n.tr("Search Again")
                 width: parent.width
-                onClicked: {
-                    // Refresh isn't enough if folder was created in the meantime.
-                    folderModel.path = ""
-                    setPath()
-                }
+                onClicked: readBookDir()
             }
         }
     }
     
     tools: ToolbarItems {
         id: localBooksToolbar
-        
+
         ToolbarButton {
             id: sortButton
             action: Action {
                 text: i18n.tr("Sort")
                 iconSource: mobileIcon("filter")
                 onTriggered: PopupUtils.open(sortComponent, sortButton)
+            }
+        }
+
+        ToolbarButton {
+            id: settingsButton
+            action: Action {
+                text: i18n.tr("Settings")
+                iconSource: mobileIcon("settings")
+                onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent,
+                                                            settingsButton)
+            }
+        }
+    }
+
+    Component {
+        id: settingsComponent
+
+        Dialog {
+            id: settingsDialog
+            title: firststart ? i18n.tr("Welcome to Beru") : i18n.tr("Default Book Location")
+            text: i18n.tr("Enter the folder in your home directory where your ebooks are or " +
+                          "should be stored.\n\nChanging this value will not affect existing " +
+                          "books in your library.")
+            property string homepath: filesystem.homePath() + "/"
+
+            TextField {
+                id: pathfield
+                text: {
+                    if (bookdir.substring(0, homepath.length) == homepath)
+                        return bookdir.substring(homepath.length)
+                    return bookdir
+                }
+                onTextChanged: {
+                    var status = filesystem.exists(homepath + pathfield.text)
+                    if (status == 0) {
+                        useButton.text = i18n.tr("Create Directory")
+                        useButton.enabled = true
+                    } else if (status == 1) {
+                        useButton.text = i18n.tr("File Exists")
+                        useButton.enabled = false
+                    } else if (status == 2) {
+                        useButton.text = i18n.tr("Use Directory")
+                        useButton.enabled = true
+                    }
+                }
+            }
+
+            Button {
+                id: useButton
+                onClicked: {
+                    var status = filesystem.exists(homepath + pathfield.text)
+                    if (status != 1) { // Should always be true
+                        if (status == 0)
+                            filesystem.makeDir(homepath + pathfield.text)
+                        setBookDir(homepath + pathfield.text)
+                        useButton.enabled = false
+                        useButton.text = i18n.tr("Please wait...")
+                        cancelButton.enabled = false
+                        unblocker.start()
+                    }
+                }
+            }
+
+            Timer {
+                id: unblocker
+                interval: 10
+                onTriggered: {
+                    readBookDir()
+                    PopupUtils.close(settingsDialog)
+                    firststart = false
+                }
+            }
+
+            Button {
+                id: cancelButton
+                text: i18n.tr("Cancel")
+                gradient: UbuntuColors.greyGradient
+                visible: !firststart
+                onClicked: PopupUtils.close(settingsDialog)
+            }
+        }
+    }
+
+    Component {
+        id: settingsDisabledComponent
+
+        Dialog {
+            id: settingsDisabledDialog
+            title: i18n.tr("Default Book Location")
+            text: i18n.tr("Beru seems to be operating under AppArmor restrictions that prevent it " +
+                              "from accessing most of your home directory.  Ebooks should be put in " +
+                              "<i>%1</i> for Beru to read them.").arg(bookdir)
+
+            Label {
+                text: "For more information:<br>" +
+                      "<a href='http://rschroll.github.io/beru/confinement.html'>" +
+                      "rschroll.github.io/beru/confinement.html</a>"
+                linkColor: "#a4a4ff"
+                onLinkActivated: Qt.openUrlExternally(link)
+                horizontalAlignment: Text.AlignHCenter
+                fontSize: "medium"
+                color: Qt.rgba(1, 1, 1, 0.6)
+                wrapMode: Text.WordWrap
+            }
+
+            Button {
+                text: i18n.tr("Close")
+                onClicked: PopupUtils.close(settingsDisabledDialog)
             }
         }
     }
@@ -495,45 +610,6 @@ Page {
                     text: i18n.tr("Author")
                     property int sort: 2
                 }
-            }
-        }
-    }
-
-    Component {
-        id: firstStart
-
-        Dialog {
-            id: firstStartDialog
-            title: i18n.tr("Welcome to Beru")
-            text: i18n.tr("Right now, Beru is looking through %1 and adding all the Epub " +
-                          "files it finds to your Library.  Any files you add to this folder " +
-                          "will be added to the Library the next time you start Beru.\n\n" +
-                          "Additionally, any file you open with Beru will be added to your " +
-                          "library, regardless of where it is located.").arg(folderModel.path)
-
-            Button {
-                id: closeButton
-                text: firststart ? i18n.tr("One moment please...") : i18n.tr("OK")
-                gradient: firststart ? UbuntuColors.greyGradient : UbuntuColors.orangeGradient
-                enabled: !firststart
-                onClicked: {
-                    if (!firststart)
-                        PopupUtils.close(firstStartDialog)
-                }
-                onEnabledChanged: {
-                    if (enabled && bookModel.count == 0)
-                        PopupUtils.close(firstStartDialog)
-                }
-            }
-
-            // Just waiting for onCompleted isn't enough to ensure this dialog
-            // gets shown, so we start a brief timer before calling setPath().
-            Timer {
-                interval: 100
-                repeat: false
-                running: true
-                triggeredOnStart: false
-                onTriggered: setPath()
             }
         }
     }

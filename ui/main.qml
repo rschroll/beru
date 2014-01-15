@@ -28,13 +28,14 @@ MainView {
     width: units.gu(50)
     height: units.gu(75)
 
-    FileReader {
-        id: filereader
+    FileSystem {
+        id: filesystem
     }
 
     PageStack {
         id: pageStack
         Component.onCompleted: push(tabs)
+        onCurrentPageChanged: currentPage.forceActiveFocus()
 
         Tabs {
             id: tabs
@@ -119,6 +120,10 @@ MainView {
         })
     }
 
+    function sizeChanged() {
+        setSetting("winsize", JSON.stringify([width, height]))
+    }
+
     U1db.Database {
         id: bookSettingsDatabase
         path: "BeruBookSettings.db"
@@ -189,10 +194,20 @@ MainView {
             tx.executeSql("CREATE TABLE IF NOT EXISTS Settings(key TEXT UNIQUE, value TEXT)")
         })
 
-        var filePath = filereader.canonicalFilePath(args.values.appargs)
+        var filePath = filesystem.canonicalFilePath(args.values.appargs)
         if (filePath !== "") {
             if (loadFile(filePath))
                 localBooks.addFile(filePath)
         }
+
+        onWidthChanged.connect(sizeChanged)
+        onHeightChanged.connect(sizeChanged)
+        var size = JSON.parse(getSetting("winsize"))
+        if (size != null) {
+            width = size[0]
+            height = size[1]
+        }
+
+        localBooks.onMainCompleted()
     }
 }

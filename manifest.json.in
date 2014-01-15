@@ -3,12 +3,13 @@
     "framework": "ubuntu-sdk-13.10",
     "hooks": {
         "beru": {
-            "apparmor": "apparmor/beru.json",
+            "apparmor": "apparmor/beru@SUFFIX@.json",
             "desktop": "beru.desktop"
         }
     },
     "maintainer": "Robert Schroll <rschroll@gmail.com>",
     "name": "com.ubuntu.developer.rschroll.beru",
     "title": "Beru",
-    "version": "0.9.4"
+    "version": "@VERSION@",
+    "architecture": "@ARCH@"
 }

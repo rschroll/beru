@@ -101,9 +101,7 @@ Page {
                 download.done = false
                 download.target = downloadItem
 
-                // Check if ~/Books exists; try to make it if possible.  If not fall back to
-                // XDG_DATA_HOME.  See https://lists.launchpad.net/ubuntu-phone/msg03861.html
-                var dir = filereader.getDataDir("Books")
+                var dir = localBooks.bookdir
                 if (dir == "") {
                     PopupUtils.open(errorComponent)
                     return
@@ -115,7 +113,7 @@ Page {
                 var basename = components.join(".")
                 var filename = basename + "." + ext
                 var i = 0
-                while (filereader.exists(dir + filename)) {
+                while (filesystem.exists(dir + filename)) {
                     i += 1
                     filename = basename + "(" + i + ")." + ext
                 }
@@ -124,11 +122,11 @@ Page {
                 var downloadargs = {
                     text: i18n.tr("This book will be added to your library as soon as the " +
                                   "download is complete."),
-                    details: i18n.tr("This book is being saved as %1").arg(dir + filename)
+                    details: i18n.tr("This book is being saved as <i>%1</i>").arg(dir + filename)
                 }
                 if (ext != "epub")
                     PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
-                                        text: i18n.tr("This file, %1, may not be an Epub file.  " +
+                                        text: i18n.tr("This file, <i>%1</i>, may not be an Epub file.  " +
                                                       "If it is not, Beru will not be able to " +
                                                       "read it.").arg(filename)})
                 else
