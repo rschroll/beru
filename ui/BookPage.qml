@@ -57,8 +57,11 @@ Page {
         id: bookWebView
         anchors.fill: parent
         visible: false
+        focus: false
 
         onTitleChanged: Messaging.handleMessage(title)
+        // Reject attempts to give WebView focus
+        onActiveFocusChanged: focus = false
     }
 
     tools: ToolbarItems {
