@@ -1,4 +1,4 @@
-/* Copyright 2013 Robert Schroll
+/* Copyright 2013-2014 Robert Schroll
  *
  * This file is part of Beru and is distributed under the terms of
  * the GPL. See the file COPYING for full details.
@@ -15,7 +15,7 @@ import Epub 1.0
 Page {
     id: localBooks
     title: i18n.tr("Books")
-    flickable: listview
+    flickable: gridview
     property int sort: 0
     property bool needsort: false
     property bool firststart: false
@@ -23,6 +23,8 @@ Page {
     property string bookdir: ""
     property bool writablehome: false
     property string defaultdirname: i18n.tr("Books")
+    property double gridmargin: units.gu(1)
+    property double mingridwidth: units.gu(15)
     onSortChanged: {
         listBooks()
         perAuthorModel.clear()
@@ -213,16 +215,24 @@ Page {
         if (sort != 2 || perAuthorModel.count == 0)
             showAuthor = false  // Don't need to show authors' list
 
-        if (!wide || sort != 2) {
-            listview.width = localBooks.width
-            listview.x = showAuthor ? -localBooks.width : 0
-            localBooks.flickable = showAuthor ? perAuthorListView : listview
+        if (sort == 0) {
+            listview.visible = false
+            gridview.visible = true
+            localBooks.flickable = gridview
         } else {
-            localBooks.flickable = null
-            listview.width = localBooks.width / 2
-            listview.x = 0
-            listview.topMargin = 0
-            perAuthorListView.topMargin = 0
+            listview.visible = true
+            gridview.visible = false
+            if (!wide || sort != 2) {
+                listview.width = localBooks.width
+                listview.x = showAuthor ? -localBooks.width : 0
+                localBooks.flickable = showAuthor ? perAuthorListView : listview
+            } else {
+                localBooks.flickable = null
+                listview.width = localBooks.width / 2
+                listview.x = 0
+                listview.topMargin = 0
+                perAuthorListView.topMargin = 0
+            }
         }
     }
 
@@ -309,6 +319,81 @@ Page {
         property bool needsclear: false
     }
 
+    DefaultCover {
+        id: defaultCover
+    }
+
+    Component {
+        id: coverDelegate
+        Item {
+            width: gridview.cellWidth
+            height: gridview.cellHeight
+
+            Image {
+                x: gridmargin
+                y: 1.5*gridmargin
+                width: parent.width - 2*gridmargin
+                height: parent.height - 3*gridmargin
+                fillMode: Image.PreserveAspectFit
+                source: {
+                    if (model.cover == "ZZZnone")
+                        return defaultCover.missingCover(model)
+                    if (model.cover == "ZZZerror")
+                        return defaultCover.errorCover(model)
+                    return model.cover
+                }
+                // Prevent blurry SVGs
+                sourceSize.width: 2*localBooks.mingridwidth
+                sourceSize.height: 3*localBooks.mingridwidth
+
+                Text {
+                    x: 0
+                    y: 0
+                    width: parent.width
+                    height: parent.height/2
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    wrapMode: Text.Wrap
+                    color: defaultCover.textColor(model)
+                    font.family: "URW Bookman L"
+                    text: {
+                        if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
+                            return model.title
+                        return ""
+                    }
+                }
+
+                Text {
+                    x: 0
+                    y: parent.height/2
+                    width: parent.width
+                    height: parent.height/2
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    wrapMode: Text.Wrap
+                    color: defaultCover.textColor(model)
+                    font.family: "URW Bookman L"
+                    text: {
+                        if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
+                            return model.author
+                        return ""
+                    }
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    // Save copies now, since these get cleared by loadFile (somehow...)
+                    var filename = model.filename
+                    var pasterror = model.cover == "ZZZerror"
+                    if (loadFile(filename) && pasterror)
+                        refreshCover(filename)
+                }
+            }
+        }
+    }
+
     Component {
         id: titleDelegate
         Subtitled {
@@ -318,7 +403,7 @@ Page {
                 if (model.filename == "ZZZback")
                     return mobileIcon("back")
                 if (model.cover == "ZZZnone")
-                    return Qt.resolvedUrl("images/default_cover.svg")
+                    return defaultCover.missingCover(model)
                 if (model.cover == "ZZZerror")
                     return Qt.resolvedUrl("images/error_cover.svg")
                 return model.cover
@@ -350,7 +435,7 @@ Page {
                 if (model.count > 1)
                     return mobileIcon("contact")
                 if (model.cover == "ZZZnone")
-                    return Qt.resolvedUrl("images/default_cover.svg")
+                    return defaultCover.missingCover(model)
                 if (model.cover == "ZZZerror")
                     return Qt.resolvedUrl("images/error_cover.svg")
                 return model.cover
@@ -417,6 +502,30 @@ Page {
 
     Scrollbar {
         flickableItem: perAuthorListView
+        align: Qt.AlignTrailing
+    }
+
+    GridView {
+        id: gridview
+        anchors {
+            // Setting fill: parent leads to binding loop; see #17
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            leftMargin: gridmargin
+            rightMargin: gridmargin
+        }
+        height: mainView.height
+        clip: true
+        cellWidth: width / Math.floor(width/mingridwidth)
+        cellHeight: cellWidth*1.5
+
+        model: bookModel
+        delegate: coverDelegate
+    }
+
+    Scrollbar {
+        flickableItem: gridview
         align: Qt.AlignTrailing
     }
 
