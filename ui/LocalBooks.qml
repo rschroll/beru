@@ -545,6 +545,11 @@ Page {
     Scrollbar {
         flickableItem: gridview
         align: Qt.AlignTrailing
+        anchors {
+            right: localBooks.right
+            top: localBooks.top
+            bottom: localBooks.bottom
+        }
     }
 
     Item {
