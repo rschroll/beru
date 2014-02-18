@@ -23,7 +23,7 @@ public:
     Q_INVOKABLE bool load(const QString &filename);
     Q_INVOKABLE void serveBookData(QHttpResponse *response);
     Q_INVOKABLE void serveComponent(const QString &filename, QHttpResponse *response);
-    Q_INVOKABLE QVariantMap getCoverInfo(int guscale);
+    Q_INVOKABLE QVariantMap getCoverInfo(int thumbsize, int fullsize);
 
 signals:
     void contentsReady(QVariantList contents);

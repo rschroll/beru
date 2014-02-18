@@ -310,7 +310,7 @@ void EpubReader::serveBookData(QHttpResponse *response)
     response->end();
 }
 
-QVariantMap EpubReader::getCoverInfo(int guscale)
+QVariantMap EpubReader::getCoverInfo(int thumbsize, int fullsize)
 {
     QVariantMap res;
     if (!this->zip || !this->zip->isOpen())
@@ -351,7 +351,11 @@ QVariantMap EpubReader::getCoverInfo(int guscale)
     zfile.close();
     QByteArray byteArray;
     QBuffer buffer(&byteArray);
-    coverimg.scaledToWidth(5*guscale, Qt::SmoothTransformation).save(&buffer, "PNG");
+    coverimg.scaledToWidth(thumbsize, Qt::SmoothTransformation).save(&buffer, "PNG");
     res["cover"] = "data:image/png;base64," + QString(byteArray.toBase64());
+    QByteArray byteArrayf;
+    QBuffer bufferf(&byteArrayf);
+    coverimg.scaledToWidth(fullsize, Qt::SmoothTransformation).save(&bufferf, "PNG");
+    res["fullcover"] = "data:image/png;base64," + QString(byteArrayf.toBase64());
     return res;
 }

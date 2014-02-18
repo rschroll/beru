@@ -95,13 +95,13 @@ Page {
         bookModel.clear()
         var db = openDatabase()
         db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title, author, cover, authorsort, count(*) " +
+            var res = tx.executeSql("SELECT filename, title, author, cover, fullcover, authorsort, count(*) " +
                                     "FROM LocalBooks " + sort)
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
                 if (filesystem.exists(item.filename))
                     bookModel.append({filename: item.filename, title: item.title,
-                                      author: item.author, cover: item.cover,
+                                      author: item.author, cover: item.cover, fullcover: item.fullcover,
                                       authorsort: item.authorsort, count: item["count(*)"]})
             }
         })
@@ -112,13 +112,13 @@ Page {
         perAuthorModel.clear()
         var db = openDatabase()
         db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
+            var res = tx.executeSql("SELECT filename, title, author, cover, fullcover FROM LocalBooks " +
                                     "WHERE authorsort=? ORDER BY title ASC", [authorsort])
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
                 if (filesystem.exists(item.filename))
                     perAuthorModel.append({filename: item.filename, title: item.title,
-                                           author: item.author, cover: item.cover})
+                                           author: item.author, cover: item.cover, fullcover: item.fullcover})
             }
             perAuthorModel.append({filename: "ZZZback", title: i18n.tr("Back"),
                                    author: "", cover: ""})
@@ -143,9 +143,9 @@ Page {
                 return
 
             localBooks.needsort = true
-            var title, author, authorsort, cover
+            var title, author, authorsort, cover, fullcover
             if (coverReader.load(res.rows.item(0).filename)) {
-                var coverinfo = coverReader.getCoverInfo(units.gu(1))
+                var coverinfo = coverReader.getCoverInfo(units.gu(5), 2*mingridwidth)
                 title = coverinfo.title
                 if (title == "ZZZnone")
                     title = res.rows.item(0).title
@@ -171,23 +171,27 @@ Page {
                 }
 
                 cover = coverinfo.cover
+                fullcover = coverinfo.fullcover
             } else {
                 title = res.rows.item(0).title
                 author = i18n.tr("Could not open this book.")
                 authorsort = "zzzzerror"
                 cover = "ZZZerror"
+                fullcover = ""
             }
-            tx.executeSql("UPDATE LocalBooks SET title=?, author=?, authorsort=?, cover=? " +
-                          "WHERE filename=?",
-                          [title, author, authorsort, cover, res.rows.item(0).filename])
+            tx.executeSql("UPDATE LocalBooks SET title=?, author=?, authorsort=?, cover=?, " +
+                          "fullcover=? WHERE filename=?",
+                          [title, author, authorsort, cover, fullcover, res.rows.item(0).filename])
 
             if (localBooks.visible) {
                 for (var i=0; i<bookModel.count; i++) {
                     var book = bookModel.get(i)
                     if (book.filename == res.rows.item(0).filename) {
+                        console.log(book.filename + " " + book.fullcover)
                         book.title = title
                         book.author = author
                         book.cover = cover
+                        book.fullcover = fullcover
                         break
                     }
                 }
@@ -267,6 +271,13 @@ Page {
                 tx.executeSql("ALTER TABLE LocalBooks ADD authorsort TEXT NOT NULL DEFAULT 'zzznull'")
             })
         }
+        if (db.version == "" || db.version == "1" || db.version == "2") {
+            db.changeVersion(db.version, "3", function (tx) {
+                tx.executeSql("ALTER TABLE LocalBooks ADD fullcover BLOB DEFAULT ''")
+                // Trigger re-rendering of covers.
+                tx.executeSql("UPDATE LocalBooks SET authorsort='zzznull'")
+            })
+        }
     }
 
     // We need to wait for main to be finished, so that the settings are available.
@@ -344,11 +355,11 @@ Page {
                     }
                     fillMode: Image.PreserveAspectFit
                     source: {
-                        if (model.cover == "ZZZnone")
-                            return defaultCover.missingCover(model)
                         if (model.cover == "ZZZerror")
                             return defaultCover.errorCover(model)
-                        return model.cover
+                        if (!model.fullcover)
+                            return defaultCover.missingCover(model)
+                        return model.fullcover
                     }
                     // Prevent blurry SVGs
                     sourceSize.width: 2*localBooks.mingridwidth
@@ -362,10 +373,11 @@ Page {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         wrapMode: Text.Wrap
+                        elide: Text.ElideRight
                         color: defaultCover.textColor(model)
                         font.family: "URW Bookman L"
                         text: {
-                            if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
+                            if (!model.fullcover)
                                 return model.title
                             return ""
                         }
@@ -379,10 +391,11 @@ Page {
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         wrapMode: Text.Wrap
+                        elide: Text.ElideRight
                         color: defaultCover.textColor(model)
                         font.family: "URW Bookman L"
                         text: {
-                            if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
+                            if (!model.fullcover)
                                 return model.author
                             return ""
                         }
