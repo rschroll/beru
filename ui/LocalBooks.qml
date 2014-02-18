@@ -6,6 +6,7 @@
 
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
+import QtGraphicalEffects 1.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
@@ -329,56 +330,73 @@ Page {
             width: gridview.cellWidth
             height: gridview.cellHeight
 
-            Image {
-                x: gridmargin
-                y: 1.5*gridmargin
-                width: parent.width - 2*gridmargin
-                height: parent.height - 3*gridmargin
-                fillMode: Image.PreserveAspectFit
-                source: {
-                    if (model.cover == "ZZZnone")
-                        return defaultCover.missingCover(model)
-                    if (model.cover == "ZZZerror")
-                        return defaultCover.errorCover(model)
-                    return model.cover
-                }
-                // Prevent blurry SVGs
-                sourceSize.width: 2*localBooks.mingridwidth
-                sourceSize.height: 3*localBooks.mingridwidth
+            Item {
+                id: image
+                anchors.fill: parent
 
-                Text {
-                    x: 0
-                    y: 0
-                    width: parent.width
-                    height: parent.height/2
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: Text.Wrap
-                    color: defaultCover.textColor(model)
-                    font.family: "URW Bookman L"
-                    text: {
-                        if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
-                            return model.title
-                        return ""
+                Image {
+                    anchors {
+                        fill: parent
+                        leftMargin: gridmargin
+                        rightMargin: gridmargin
+                        topMargin: 1.5*gridmargin
+                        bottomMargin: 1.5*gridmargin
+                    }
+                    fillMode: Image.PreserveAspectFit
+                    source: {
+                        if (model.cover == "ZZZnone")
+                            return defaultCover.missingCover(model)
+                        if (model.cover == "ZZZerror")
+                            return defaultCover.errorCover(model)
+                        return model.cover
+                    }
+                    // Prevent blurry SVGs
+                    sourceSize.width: 2*localBooks.mingridwidth
+                    sourceSize.height: 3*localBooks.mingridwidth
+
+                    Text {
+                        x: 0
+                        y: 0
+                        width: parent.width
+                        height: parent.height/2
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        wrapMode: Text.Wrap
+                        color: defaultCover.textColor(model)
+                        font.family: "URW Bookman L"
+                        text: {
+                            if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
+                                return model.title
+                            return ""
+                        }
+                    }
+
+                    Text {
+                        x: 0
+                        y: parent.height/2
+                        width: parent.width
+                        height: parent.height/2
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        wrapMode: Text.Wrap
+                        color: defaultCover.textColor(model)
+                        font.family: "URW Bookman L"
+                        text: {
+                            if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
+                                return model.author
+                            return ""
+                        }
                     }
                 }
+            }
 
-                Text {
-                    x: 0
-                    y: parent.height/2
-                    width: parent.width
-                    height: parent.height/2
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: Text.Wrap
-                    color: defaultCover.textColor(model)
-                    font.family: "URW Bookman L"
-                    text: {
-                        if (model.cover == "ZZZnone" || model.cover == "ZZZerror")
-                            return model.author
-                        return ""
-                    }
-                }
+            DropShadow {
+                anchors.fill: image
+                radius: 1.5*gridmargin
+                samples: 16
+                source: image
+                color: "#808080"
+                verticalOffset: 0.25*gridmargin
             }
 
             MouseArea {
