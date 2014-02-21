@@ -366,15 +366,17 @@ Page {
                     sourceSize.height: 3*localBooks.mingridwidth
 
                     Text {
-                        x: 0
-                        y: 0
-                        width: parent.width
-                        height: parent.height/2
+                        x: 0.125*parent.width
+                        y: 0.0625*parent.width
+                        width: 0.8125*parent.width
+                        height: parent.height/2 - 0.125*parent.width
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         wrapMode: Text.Wrap
                         elide: Text.ElideRight
                         color: defaultCover.textColor(model)
+                        style: Text.Raised
+                        styleColor: defaultCover.highlightColor(model)
                         font.family: "URW Bookman L"
                         text: {
                             if (!model.fullcover)
@@ -384,15 +386,17 @@ Page {
                     }
 
                     Text {
-                        x: 0
-                        y: parent.height/2
-                        width: parent.width
-                        height: parent.height/2
+                        x: 0.125*parent.width
+                        y: parent.height/2 + 0.0625*parent.width
+                        width: 0.8125*parent.width
+                        height: parent.height/2 - 0.125*parent.width
                         horizontalAlignment: Text.AlignHCenter
                         verticalAlignment: Text.AlignVCenter
                         wrapMode: Text.Wrap
                         elide: Text.ElideRight
                         color: defaultCover.textColor(model)
+                        style: Text.Raised
+                        styleColor: defaultCover.highlightColor(model)
                         font.family: "URW Bookman L"
                         text: {
                             if (!model.fullcover)
