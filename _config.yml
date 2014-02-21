@@ -1,2 +1,3 @@
 excerpt_separator: "\n\n\n"
 baseurl: "/beru"
+markdown: kramdown
