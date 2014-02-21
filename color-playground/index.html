@@ -1,0 +1,281 @@
+---
+title: Color playground
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Color playground</title>
+<meta charset="utf-8" />
+<style type="text/css">
+body {
+    background: #eee;
+    font-family: "sans-serif";
+}
+#swatches {
+    width: 100%;
+    height: 100px;
+    border-spacing: 5px;
+    border-collapse: separate;
+}
+#swatches td {
+    //background: white;
+}
+#canvas {
+    width: 300px;
+    height: 300px;
+    position: relative;
+}
+#chromaBar {
+    height: 1px;
+    background: white;
+    width: 100%;
+    position: absolute;
+    left: 0;
+}
+#chroma, #luma {
+    display: inline-block;
+    width: 200px;
+    margin: 5px 20px 0 20px;
+}
+#chromaV, #lumaV {
+    display: inline-block;
+    width: 3em;
+}
+input {
+    width: 3em;
+}
+b {
+    cursor: pointer;
+}
+.highlight {
+    background: #eee;
+    box-shadow: 0 0 5px 5px #eee;
+}
+body.highlighted {
+    background: #aaa;
+}
+</style>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/base/jquery-ui.css" type="text/css" media="all" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+// From http://en.wikipedia.org/wiki/HSL_and_HSV#From_luma.2Fchroma.2Fhue
+// Note that not all values are in the RGB gamut!
+function hcyraw(H, C, Y) {
+    var Hp = H*6,
+        X = C * (1 - Math.abs(Hp % 2 - 1)),
+        R = 0, G = 0, B = 0;
+    if (Hp < 1) {
+        R = C;
+        G = X;
+    } else if (Hp < 2) {
+        R = X;
+        G = C;
+    } else if (Hp < 3) {
+        G = C;
+        B = X;
+    } else if (Hp < 4) {
+        G = X;
+        B = C;
+    } else if (Hp < 5) {
+        R = X;
+        B = C;
+    } else {
+        R = C;
+        B = X;
+    }
+    var Yr = parseFloat($("#Yr").val()),
+        Yg = parseFloat($("#Yg").val()),
+        Yb = parseFloat($("#Yb").val()),
+        m = Y - (Yr * R + Yg * G + Yb * B);
+    try {
+        return "#" + toHex(R + m) + toHex(G + m)+ toHex(B + m);
+    } catch (e) {
+        return "";
+    }
+}
+
+function hcyrel(H, C, Y) {
+    var Hp = H*6,
+        Yr = parseFloat($("#Yr").val()),
+        Yg = parseFloat($("#Yg").val()),
+        Yb = parseFloat($("#Yb").val()),
+        Ht, a, b, c;
+    if (Hp < 1) {
+        a = Yr; b = Yg; c = Yb;
+        Ht = Hp;
+    } else if (Hp < 2) {
+        a = Yg; b = Yr; c = Yb;
+        Ht = 2 - Hp;
+    } else if (Hp < 3) {
+        a = Yg; b = Yb; c = Yr;
+        Ht = Hp - 2;
+    } else if (Hp < 4) {
+        a = Yb; b = Yg; c = Yr;
+        Ht = 4 - Hp;
+    } else if (Hp < 5) {
+        a = Yb; b = Yr; c = Yg;
+        Ht = Hp - 4;
+    } else {
+        a = Yr; b = Yb; c = Yg;
+        Ht = 6 - Hp;
+    }
+    var Cmax = Math.min(Y / (a + b*Ht), (1 - Y) / (b * (1-Ht) + c));
+    return hcyraw(H, C*Cmax, Y);
+}
+
+function gethcy() {
+    if ($("#rescale")[0].checked)
+        return hcyrel;
+    return hcyraw;
+}
+
+function toHex(v) {
+    if ((v < 0) || (v > 1))
+        throw "Out of gamut";
+    var gamma = parseFloat($("#gamma").val());
+    v = Math.pow(v, 1/gamma);
+    var s = Math.round(v * 255).toString(16);
+    if (s.length == 1)
+        return "0" + s;
+    return s;
+}
+
+function setChromaBar(chroma) {
+    var bar = $("#chromaBar");
+    bar.css("top", 300*(1-chroma) + "px");
+}
+
+function setColors(chroma, luma) {
+    var swatches = $("#swatches td"),
+        n = swatches.length,
+        hcy = gethcy();
+    for (var i=0; i<n; i++)
+        swatches[i].bgColor = hcy(i/n, chroma, luma);
+}
+
+function drawCanvas(chroma, luma) {
+    var ctx = $("canvas").get()[0].getContext("2d"),
+        hcy = gethcy();
+    ctx.clearRect(0,0,300,300);
+    for (var x=0; x<100; x++) {
+        for (var y=0; y<100; y++) {
+            var color = hcy(x/100, y/100, luma);
+            if (color) {
+                ctx.fillStyle = color;
+                ctx.fillRect(3*x, 300-3*y, 3, 3);
+            }
+        }
+    }
+}
+
+function onChroma(event, ui) {
+    var chroma = ui.value,
+        gamma = parseFloat($("#gamma").val());
+        luma = $("#luma").slider("value");
+    $("#chromaV").text(chroma);
+    setColors(chroma, luma);
+    setChromaBar(chroma);
+}
+
+function onLuma(event, ui) {
+    var chroma = $("#chroma").slider("value"),
+        gamma = parseFloat($("#gamma").val());
+        luma = ui? ui.value : $("#luma").slider("value");
+    $("#lumaV").text(luma);
+    drawCanvas(chroma, luma);
+    setColors(chroma, luma);
+}
+
+function onLumaSlide(event, ui) {
+    $("#lumaV").text(ui.value);
+}
+
+function drag(event) {
+    var y = event.pageY - $("canvas").offset().top,
+        chroma = 1 - y/300;
+    $("#chroma").slider("value", chroma);
+}
+
+function setHighlight(hoverid, hlid) {
+    $(hoverid).mouseenter(function (e) {
+        $(hlid).addClass("highlight");
+        $("body").addClass("highlighted");
+    });
+    $(hoverid).mouseleave(function (e) {
+        $(hlid).removeClass("highlight");
+        $("body").removeClass("highlighted");
+    });
+}
+
+$(document).ready(function () {
+    $("canvas").mousedown(function (e) { drag(e); $("canvas").mousemove(drag); });
+    $("body").mouseup(function () { $("canvas").unbind("mousemove"); });
+    $("#chroma").slider({min: 0, max: 1, step: 0.01, change: onChroma, slide: onChroma});
+    $("#chroma").slider("value", 0.5);
+    $("#luma").slider({min: 0, max: 1, step: 0.01, value: 0.5, stop: onLuma, slide: onLumaSlide});
+    $("input").change(onLuma);
+    onLuma();
+    
+    setHighlight("#lumaD", "#lumaDiv");
+    setHighlight("#lumaCD", "#lumaC");
+    setHighlight("#gamutD", "#canvas");
+    setHighlight("#chromaD", "#chromaDiv");
+    setHighlight("#chromaBarD", "#chromaBar");
+    setHighlight("#swatchesD", "#swatches");
+    setHighlight("#rescaleD", "#rescale");
+    setHighlight("#gammaD", "#gammaDiv");
+    $("#lumaStd").click(function () {
+        $("#Yr").val(0.2126);
+        $("#Yg").val(0.7152);
+        $("#Yb").val(0.0722);
+        onLuma();
+        return true;
+    });
+});
+</script>
+</head>
+
+<body>
+<h1>Perceptual Color Playground</h1>
+<table id="swatches"><tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr></table>
+<div id="canvas"><canvas width="300" height="300"></canvas>
+<div id="chromaBar"></div></div>
+<form>
+    <div id="chromaDiv">C <span id="chroma"></span> <span id="chromaV"></span>
+        <input type="checkbox" id="rescale">Rescale Chroma</input>
+    </div>
+    <div id="lumaDiv">Y <span id="luma"></span> <span id="lumaV"></span>
+        <span id="lumaC">= <input id="Yr" size="2" value="0.30" /> r
+        + <input id="Yg" size="2" value="0.59" /> g
+        + <input id="Yb" size="2" value="0.11" /> b</span>
+    </div>
+    <div id="gammaDiv">gamma = <input id="gamma" size="2" value="2.2" /></div>
+</form>
+
+<p>The page is a tool I made to explore how to get a series of colors across all hues that have the same "brightness" and the same "colorfulness".  You can <a href="{{ site.baseurl }}{% post_url 2014-02-20-equal-colors %}">read more about the background</a>, if you're interested.</p>
+
+<p>The "brightness" of colors is measured by the <b id="lumaD">luminance</b>, a linear combination of the RGB components that accounts for the eye's differing sensitivity to color.  You may <b id="lumaCD">adjust those components</b> as you like, or you can switch them to the <a href="#" id="lumaStd">sRGB values</a>.  Note that the three coefficients should sum to one for the rest of the math to work out.</p>
+
+<p>With the luminance set, the <b id="gamutD">gamut</b> displays all the available colors, with hue running horizontally and chroma vertically.  Blank regions are outside of the RGB gamut.</p>
+
+<p>The <b id="chromaD">chroma</b> measures the "colorfulness" of colors.  The <b id="chromaBarD">white line</b> on the gamut shows the current chroma, which may be changed by clicking and dragging.  The <b id="swatchesD">swatches</b> are equally spaced in hue across that line.</p>
+
+<p>To avoid out-of-gamut regions, the <b id="rescaleD">rescale chroma</b> option sets the chroma relative the the maximum chroma for the given hue and luminance.</p>
+
+<p>The <b id="gammaD">gamma factor</b> adjusts the linear intensities for display on nonlinear monitors, like yours.</p>
+</body>
+</html>
