@@ -610,6 +610,14 @@ Page {
         id: localBooksToolbar
 
         ToolbarButton {
+            action: Action {
+                text: i18n.tr("Refresh")
+                iconSource: mobileIcon("reload")
+                onTriggered: readBookDir()
+            }
+        }
+
+        ToolbarButton {
             id: sortButton
             action: Action {
                 text: i18n.tr("Sort")
