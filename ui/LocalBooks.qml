@@ -73,7 +73,8 @@ Page {
         db.transaction(function (tx) {
             var files = filesystem.listDir(bookdir, ["*.epub"])
             for (var i=0; i<files.length; i++) {
-                tx.executeSql(addFileSQL, [bookdir + "/" + files[i], fileToTitle(files[i])])
+                var fileName = files[i].split("/").pop()
+                tx.executeSql(addFileSQL, [files[i], fileToTitle(fileName)])
             }
         })
         localBooks.needsort = true
