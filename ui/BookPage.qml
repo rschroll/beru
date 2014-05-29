@@ -27,6 +27,11 @@ Page {
     property var history: new History.History(updateNavButtons)
     property bool navjump: false
 
+    property string chapterTitle
+    property int pageNumber
+    property int pageCount
+    property real totalPercent
+
     focus: true
     Keys.onPressed: {
         if (event.key == Qt.Key_Right || event.key == Qt.Key_Down || event.key == Qt.Key_Space
@@ -52,10 +57,38 @@ Page {
     ListModel {
         id: contentsListModel
     }
+
+    Label {
+        id: header
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            topMargin: units.gu(2)
+        }
+        text: chapterTitle
+        fontSize: "large"
+    }
+
+    Label {
+        id: footer
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            bottom: parent.bottom
+            margins: units.gu(2)
+        }
+
+        text: i18n.tr("Page %1 of %2").arg(pageNumber).arg(pageCount)
+    }
     
     WebView {
         id: bookWebView
-        anchors.fill: parent
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: header.bottom
+            bottom: footer.top
+        }
+
         visible: false
         focus: false
 
@@ -505,6 +538,11 @@ Page {
         currentChapter = location.chapterSrc
         setBookSetting("locus", { componentId: location.componentId,
                                   percent: location.percent })
+
+        chapterTitle = location.title
+        pageNumber = location.page
+        pageCount = location.pages
+        totalPercent = location.totalPercentage
     }
 
     function onReady() {

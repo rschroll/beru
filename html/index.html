@@ -54,9 +54,33 @@ function createReader(bookData) {
     });
     reader.listen("monocle:pagechange", function(event) {
         var place = reader.getPlace();
+
+        // Following code taken from Monacle to estimate overall pages
+
+        var book = place.properties.component.properties.book;
+        var componentIds = book.properties.componentIds;
+        var weights = book.componentWeights();
+        var cmptIndex = place.properties.component.properties.index;
+        var pc = weights[cmptIndex] * place.properties.percent;
+        for (var i = 0, ii = cmptIndex; i < ii; ++i) { pc += weights[i]; }
+
+        // Note: This is a decent estimation of current page number and total
+        // number of pages, but it's very approximate. Could be improved by storing
+        // the page counts of all components accessed (since the dimensions of the
+        // reader last changed), and averaging the result across them. (You
+        // probably want to ignore calcs for components < 2 or 3 pages long, too.
+        // The bigger the component, the more accurate the calculation.)
+        //
+        var bkPages = place.properties.component.lastPageNumber() / weights[cmptIndex];
+
         Messaging.sendMessage("PageChange", { chapterSrc: place.chapterSrc(),
                                               componentId: place.componentId(),
-                                              percent: place.percentageThrough() });
+                                              percent: place.percentageThrough(),
+                                              title: place.chapterTitle(),
+                                              page: Math.floor(pc * bkPages),
+                                              pages: Math.floor(bkPages),
+                                              totalPercentage: pc
+                                            });
     });
 }
 
