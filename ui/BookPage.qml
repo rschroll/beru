@@ -71,6 +71,14 @@ Page {
             forwardButton.enabled = history.canForward()
         }
 
+        back: ToolbarButton {
+            action: Action {
+                text: i18n.tr("Library")
+                iconSource: mobileIcon("back")
+                onTriggered: pageStack.pop()
+            }
+        }
+
         ToolbarButton {
             id: backButton
             enabled: false
