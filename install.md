@@ -4,6 +4,7 @@ title: Installation Methods
 ---
 
 There are a number of ways to install Beru.  My recommendations are as follows:
+
 * On a touch device, if you don't care where books are stored: [Ubuntu Software Store](#store)
 * On a touch device, if you want to control where books are stored: [Click package](#click)
 * On the desktop: [PPA](#ppa)
