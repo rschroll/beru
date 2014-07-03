@@ -43,7 +43,8 @@ Page {
     onVisibleChanged: {
         if (visible == false) {
             // Reset things for the next time this page is opened
-            history.clear()
+            if (history)
+                history.clear()
             url = ""
             bookWebView.visible = false
         }
