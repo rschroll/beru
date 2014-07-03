@@ -431,7 +431,7 @@ Page {
         Subtitled {
             text: model.title
             subText: model.author
-            icon: {
+            iconSource: {
                 if (model.filename == "ZZZback")
                     return mobileIcon("back")
                 if (model.cover == "ZZZnone")
@@ -463,7 +463,7 @@ Page {
         Subtitled {
             text: model.author || i18n.tr("Unknown Author")
             subText: (model.count > 1) ? i18n.tr("%1 Books").arg(model.count) : model.title
-            icon: {
+            iconSource: {
                 if (model.count > 1)
                     return mobileIcon("contact")
                 if (model.cover == "ZZZnone")
