@@ -164,6 +164,10 @@ Page {
                             positionViewAtIndex(i, ListView.Center)
                     }
                 }
+
+                onVisibleChanged: {
+                    bookPageToolbar.locked = visible
+                }
             }
         }
     }

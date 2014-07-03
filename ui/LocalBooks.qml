@@ -765,6 +765,10 @@ Page {
                     property int sort: 2
                 }
             }
+
+            onVisibleChanged: {
+                localBooksToolbar.locked = visible
+            }
         }
     }
 }
