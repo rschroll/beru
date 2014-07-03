@@ -372,14 +372,22 @@ Page {
                     width: parent.width - labelwidth
                     minimumValue: 0.8
                     maximumValue: 2
+                    // If we make this a color, instead of a string, it stays linked to the
+                    // property, instead of storing the old value.  Moreover, we can't set it
+                    // here, for reasons I don't understand.  So we wait....
+                    property string activeColor: ""
+
                     function formatValue(v, untranslated) {
                         if (v < 0.95)
                             return untranslated ? "Default" : i18n.tr("Auto")
                         return v.toFixed(1)
                     }
                     function setThumbColor() {
+                        if (activeColor === "")
+                            activeColor = __styleInstance.thumb.color
+
                         __styleInstance.thumb.color = (value < 0.95) ?
-                                    UbuntuColors.warmGrey : Theme.palette.selected.foreground
+                                    UbuntuColors.warmGrey : activeColor
                     }
                     onValueChanged: {
                         bookStyles.lineHeight = formatValue(value, true)
@@ -387,7 +395,7 @@ Page {
                     }
                     onPressedChanged: {
                         if (pressed)
-                            __styleInstance.thumb.color = Theme.palette.selected.foreground
+                            __styleInstance.thumb.color = activeColor
                         else
                             setThumbColor()
                     }
