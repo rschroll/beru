@@ -610,14 +610,6 @@ Page {
         id: localBooksToolbar
 
         ToolbarButton {
-            action: Action {
-                text: i18n.tr("Refresh")
-                iconSource: mobileIcon("reload")
-                onTriggered: readBookDir()
-            }
-        }
-
-        ToolbarButton {
             id: sortButton
             action: Action {
                 text: i18n.tr("Sort")
@@ -664,7 +656,10 @@ Page {
                         useButton.text = i18n.tr("File Exists")
                         useButton.enabled = false
                     } else if (status == 2) {
-                        useButton.text = i18n.tr("Use Directory")
+                        if (homepath + pathfield.text == bookdir)
+                            useButton.text = i18n.tr("Reload Directory")
+                        else
+                            useButton.text = i18n.tr("Use Directory")
                         useButton.enabled = true
                     }
                 }
@@ -729,7 +724,19 @@ Page {
             }
 
             Button {
+                text: i18n.tr("Reload Directory")
+                // We don't bother with the Timer trick here since we don't get this dialog on
+                // first launch, so we shouldn't have too many books added to the library when
+                // this button is clicked.
+                onClicked: {
+                    PopupUtils.close(settingsDisabledDialog)
+                    readBookDir()
+                }
+            }
+
+            Button {
                 text: i18n.tr("Close")
+                gradient: UbuntuColors.greyGradient
                 onClicked: PopupUtils.close(settingsDisabledDialog)
             }
         }
