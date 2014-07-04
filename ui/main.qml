@@ -37,25 +37,18 @@ MainView {
 
     PageStack {
         id: pageStack
-        Component.onCompleted: push(tabs)
+        Component.onCompleted: push(localBooks)
         onCurrentPageChanged: currentPage.forceActiveFocus()
 
-        Tabs {
-            id: tabs
 
-            Tab {
-                title: i18n.tr("Library")
-                page: LocalBooks {
-                    id: localBooks
-                }
-            }
+        LocalBooks {
+            id: localBooks
+            visible: false
+        }
 
-            Tab {
-                title: i18n.tr("Get Books")
-                page: BookSources {
-                    id: bookSources
-                }
-            }
+        BookSources {
+            id: bookSources
+            visible: false
         }
 
         BookPage {

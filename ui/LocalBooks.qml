@@ -15,6 +15,7 @@ import Epub 1.0
 
 Page {
     id: localBooks
+    title: i18n.tr("Library")
     flickable: gridview
     property int sort: 0
     property bool needsort: false
@@ -607,6 +608,15 @@ Page {
     
     tools: ToolbarItems {
         id: localBooksToolbar
+
+        ToolbarButton {
+            id: getBooksButton
+            action: Action {
+                text: i18n.tr("Get Books")
+                iconSource: mobileIcon("search")
+                onTriggered: pageStack.push(bookSources)
+            }
+        }
 
         ToolbarButton {
             id: sortButton
