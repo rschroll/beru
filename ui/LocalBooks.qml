@@ -15,7 +15,6 @@ import Epub 1.0
 
 Page {
     id: localBooks
-    title: i18n.tr("Books")
     flickable: gridview
     property int sort: 0
     property bool needsort: false
