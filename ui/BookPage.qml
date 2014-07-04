@@ -41,6 +41,7 @@ Page {
     }
 
     onVisibleChanged: {
+        mainView.useDeprecatedToolbar = visible
         if (visible == false) {
             // Reset things for the next time this page is opened
             if (history)

@@ -25,6 +25,8 @@ MainView {
      when the device is rotated. The default is false.
     */
     automaticOrientation: true
+
+    useDeprecatedToolbar: false
     
     width: units.gu(50)
     height: units.gu(75)
