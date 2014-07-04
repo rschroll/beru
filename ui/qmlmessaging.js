@@ -11,6 +11,9 @@ function registerHandler(name, handler) {
 }
 
 function handleMessage(message) {
+    if (message === "")
+        return;
+
     var command = JSON.parse(message);
     var handler = handlers[command[0]];
     if (handler === undefined)
