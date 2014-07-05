@@ -7,13 +7,12 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
-import QtWebKit 3.0
-import QtWebKit.experimental 1.0
+import Ubuntu.Components.Extras.Browser 0.1
 
 Page {
     id: browserPage
     property var url
-    onUrlChanged: webViewLoader.item.url = url
+    onUrlChanged: webView.url = url
     property alias showAddressBar: addressBar.visible
     //flickable: webViewLoader
 
@@ -45,32 +44,18 @@ Page {
                 top: parent.top
                 right: parent.right
             }
-            onClicked: webViewLoader.item.url = addressField.text
+            onClicked: webView.url = addressField.text
         }
     }
 
-    Loader {
-        id: webViewLoader
+    UbuntuWebView {
+        id: webView
         //anchors.fill: parent
         anchors {
             top: addressBar.bottom
             left: parent.left
             right: parent.right
             bottom: parent.bottom
-        }
-
-        source: "components/UbuntuWebView.qml"
-
-        onStatusChanged: {
-            if (status == Loader.Error)
-                sourceComponent = basicWebView
-            else if (status == Loader.Ready)
-                load()
-        }
-
-        Component {
-            id: basicWebView
-            WebView {}
         }
 
         Connections {
@@ -87,51 +72,46 @@ Page {
             }
         }
 
-        function load() {
-            item.onUrlChanged.connect(function () {
-                addressField.text = item.url
-            })
-            item.onLoadingChanged.connect(function () {
-                loadProgressBar.visible = item.loading
-            })
-            item.onLoadProgressChanged.connect(function () {
-                loadProgressBar.value = item.loadProgress
-            })
-            item.experimental.onDownloadRequested.connect(function (downloadItem) {
-                download.done = false
-                download.target = downloadItem
+        onUrlChanged: addressField.text = url
 
-                var dir = localBooks.bookdir
-                if (dir == "") {
-                    PopupUtils.open(errorComponent)
-                    return
-                }
-                dir += "/"
+        onLoadingChanged: loadProgressBar.visible = loading
 
-                var components = downloadItem.suggestedFilename.split("/").pop().split(".")
-                var ext = components.pop()
-                var basename = components.join(".")
-                var filename = basename + "." + ext
-                var i = 0
-                while (filesystem.exists(dir + filename)) {
-                    i += 1
-                    filename = basename + "(" + i + ")." + ext
-                }
-                downloadItem.destinationPath = dir + filename
+        onLoadProgressChanged: loadProgressBar.value = loadProgress
 
-                var downloadargs = {
-                    text: i18n.tr("This book will be added to your library as soon as the " +
-                                  "download is complete."),
-                    details: i18n.tr("This book is being saved as <i>%1</i>").arg(dir + filename)
-                }
-                if (ext != "epub")
-                    PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
-                                        text: i18n.tr("This file, <i>%1</i>, may not be an Epub file.  " +
-                                                      "If it is not, Beru will not be able to " +
-                                                      "read it.").arg(filename)})
-                else
-                    PopupUtils.open(downloadComponent, browserPage, downloadargs)
-            })
+        experimental.onDownloadRequested: {
+            download.done = false
+            download.target = downloadItem
+
+            var dir = localBooks.bookdir
+            if (dir == "") {
+                PopupUtils.open(errorComponent)
+                return
+            }
+            dir += "/"
+
+            var components = downloadItem.suggestedFilename.split("/").pop().split(".")
+            var ext = components.pop()
+            var basename = components.join(".")
+            var filename = basename + "." + ext
+            var i = 0
+            while (filesystem.exists(dir + filename)) {
+                i += 1
+                filename = basename + "(" + i + ")." + ext
+            }
+            downloadItem.destinationPath = dir + filename
+
+            var downloadargs = {
+                text: i18n.tr("This book will be added to your library as soon as the " +
+                              "download is complete."),
+                details: i18n.tr("This book is being saved as <i>%1</i>").arg(dir + filename)
+            }
+            if (ext != "epub")
+                PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
+                                    text: i18n.tr("This file, <i>%1</i>, may not be an Epub file.  " +
+                                                  "If it is not, Beru will not be able to " +
+                                                  "read it.").arg(filename)})
+            else
+                PopupUtils.open(downloadComponent, browserPage, downloadargs)
         }
     }
 
@@ -307,8 +287,8 @@ Page {
             action: Action {
                 text: i18n.tr("Back")
                 iconSource: mobileIcon("go-previous")
-                enabled: webViewLoader.item.canGoBack
-                onTriggered: webViewLoader.item.goBack()
+                enabled: webView.canGoBack
+                onTriggered: webView.goBack()
             }
         }
 
@@ -317,8 +297,8 @@ Page {
             action: Action {
                 text: i18n.tr("Forward")
                 iconSource: mobileIcon("go-next")
-                enabled: webViewLoader.item.canGoForward
-                onTriggered: webViewLoader.item.goForward()
+                enabled: webView.canGoForward
+                onTriggered: webView.goForward()
             }
         }
     }
