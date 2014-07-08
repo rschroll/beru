@@ -26,6 +26,7 @@ QString resolveRelativePath(QString relto, QString path)
 EpubReader::EpubReader(QObject *parent) :
     QObject(parent)
 {
+    this->zip = NULL;
 }
 
 bool EpubReader::load(const QString &filename)
