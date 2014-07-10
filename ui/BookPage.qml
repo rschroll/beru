@@ -8,8 +8,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
-import QtWebKit 3.0
-import QtWebKit.experimental 1.0
+import com.canonical.Oxide 1.0
 import FontList 1.0
 
 import "components"
@@ -47,7 +46,7 @@ Page {
             if (history)
                 history.clear()
             url = ""
-            bookWebView.visible = false
+            bookWebView.opacity = 0
         }
     }
 
@@ -58,12 +57,24 @@ Page {
     WebView {
         id: bookWebView
         anchors.fill: parent
-        visible: false
+        opacity: 0
         focus: false
+        context: bookWebContext
 
         onTitleChanged: Messaging.handleMessage(title)
         // Reject attempts to give WebView focus
         onActiveFocusChanged: focus = false
+    }
+
+    WebContext {
+        id: bookWebContext
+        dataPath: filesystem.getDataDir("")
+        userScripts: [
+            UserScript {
+                context: Messaging.context
+                url: Qt.resolvedUrl("qmlmessaging-userscript.js")
+            }
+        ]
     }
 
     tools: ToolbarItems {
@@ -531,7 +542,7 @@ Page {
     }
 
     function onReady() {
-        bookWebView.visible = true
+        bookWebView.opacity = 1
     }
 
     function windowSizeChanged() {

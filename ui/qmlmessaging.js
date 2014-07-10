@@ -5,6 +5,7 @@
  */
 
 var handlers = {"Log": function (message) { console.log(message); } };
+var context = "messaging://"
 
 function registerHandler(name, handler) {
     handlers[name] = handler;
@@ -23,6 +24,10 @@ function handleMessage(message) {
 }
 
 function sendMessage(command, arguments) {
-    var message = JSON.stringify([command, arguments]).replace(/\\/g, "\\\\").replace(/'/g, "\\'");
-    bookWebView.experimental.evaluateJavaScript("Messaging.handleMessage('" + message + "')");
+    var req = bookWebView.rootFrame.sendMessage(context, "MESSAGE",
+                                                {command: command, arguments: arguments});
+    req.onerror = function (code, explanation) {
+        console.log("Error " + code + ": " + explanation);
+        console.log("  " + command)
+    }
 }

@@ -5,19 +5,10 @@
  */
 
 Messaging = {
-    handlers: Object(),
-
     registerHandler: function (name, handler) {
-        Messaging.handlers[name] = handler;
-    },
-
-    handleMessage: function (message) {
-        var command = JSON.parse(message);
-        var handler = Messaging.handlers[command[0]];
-        if (handler === undefined)
-            Messaging.sendMessage("Log", "WebView: No handler for " + command[0]);
-        else
-            handler(command[1]);
+        document.addEventListener(name, function (event) {
+            handler(event.detail);
+        });
     },
 
     sendMessage: function (command, arguments) {
