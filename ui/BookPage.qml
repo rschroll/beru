@@ -136,6 +136,7 @@ Page {
 
         Popover {
             id: contentsPopover
+            property var defaultTimeout: null
 
             ListView {
                 id: contentsListView
@@ -164,6 +165,12 @@ Page {
                             positionViewAtIndex(i, ListView.Center)
                     }
                 }
+            }
+
+            onVisibleChanged: {
+                if (defaultTimeout == null)
+                    defaultTimeout = toolbar.hideTimeout
+                toolbar.hideTimeout = visible ? -1 : defaultTimeout
             }
         }
     }
