@@ -605,6 +605,14 @@ Page {
             }
         }
     }
+
+    Item {
+        id: fakeSortButton
+        x: parent.width - units.gu(10)
+        y: units.gu(1)
+        width: units.gu(5)
+        height: units.gu(5)
+    }
     
     tools: ToolbarItems {
         id: localBooksToolbar
@@ -623,7 +631,7 @@ Page {
             action: Action {
                 text: i18n.tr("Sort")
                 iconSource: mobileIcon("filter")
-                onTriggered: PopupUtils.open(sortComponent, sortButton)
+                onTriggered: PopupUtils.open(sortComponent, fakeSortButton)
             }
         }
 
