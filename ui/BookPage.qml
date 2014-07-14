@@ -278,7 +278,7 @@ Page {
     Component {
         id: stylesComponent
 
-        Dialog {
+        TitlelessDialog {
             id: stylesDialog
             property real labelwidth: units.gu(11)
 
