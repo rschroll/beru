@@ -74,6 +74,10 @@ QString EpubReader::hash() {
     return this->_hash;
 }
 
+QString EpubReader::title() {
+    return this->metadata.contains("title") ? this->metadata["title"].toString() : "";
+}
+
 QDomDocument* EpubReader::getFileAsDom(const QString &filename)
 {
     if (!this->zip || !this->zip->isOpen())

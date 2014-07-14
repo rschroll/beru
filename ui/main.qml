@@ -6,6 +6,7 @@
 
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
+import QtQuick.Window 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import U1db 1.0 as U1db
@@ -87,6 +88,7 @@ MainView {
     function loadFile(filename) {
         if (server.loadFile(filename)) {
             pageStack.push(bookPage, {url: "http://127.0.0.1:" + server.port})
+            window.title = server.epub.title
             localBooks.updateRead(filename)
             return true
         }
