@@ -69,8 +69,8 @@ Page {
     tools: ToolbarItems {
         id: bookPageToolbar
         onOpenedChanged: {
-            backButton.enabled = history.canBackward()
-            forwardButton.enabled = history.canForward()
+            backAction.enabled = history.canBackward()
+            forwardAction.enabled = history.canForward()
         }
 
         back: ToolbarButton {
@@ -82,9 +82,8 @@ Page {
         }
 
         ToolbarButton {
-            id: backButton
-            enabled: false
             action: Action {
+                id: backAction
                 text: i18n.tr("Back")
                 iconSource: mobileIcon("go-previous")
                 onTriggered: {
@@ -98,9 +97,8 @@ Page {
         }
 
         ToolbarButton {
-            id: forwardButton
-            enabled: false
             action: Action {
+                id: forwardAction
                 text: i18n.tr("Forward")
                 iconSource: mobileIcon("go-next")
                 onTriggered: {
@@ -497,8 +495,8 @@ Page {
     }
 
     function updateNavButtons(back, forward) {
-        backButton.enabled = back
-        forwardButton.enabled = forward
+        backAction.enabled = back
+        forwardAction.enabled = forward
     }
 
     function onExternalLink(href) {

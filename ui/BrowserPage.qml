@@ -304,20 +304,20 @@ Page {
 
         ToolbarButton {
             id: backButton
-            enabled: webViewLoader.item.canGoBack
             action: Action {
                 text: i18n.tr("Back")
                 iconSource: mobileIcon("go-previous")
+                enabled: webViewLoader.item.canGoBack
                 onTriggered: webViewLoader.item.goBack()
             }
         }
 
         ToolbarButton {
             id: forwardButton
-            enabled: webViewLoader.item.canGoForward
             action: Action {
                 text: i18n.tr("Forward")
                 iconSource: mobileIcon("go-next")
+                enabled: webViewLoader.item.canGoForward
                 onTriggered: webViewLoader.item.goForward()
             }
         }
