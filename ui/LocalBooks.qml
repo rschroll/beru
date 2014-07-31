@@ -188,7 +188,6 @@ Page {
                 for (var i=0; i<bookModel.count; i++) {
                     var book = bookModel.get(i)
                     if (book.filename == res.rows.item(0).filename) {
-                        console.log(book.filename + " " + book.fullcover)
                         book.title = title
                         book.author = author
                         book.cover = cover
