@@ -12,10 +12,16 @@ function registerHandler(name, handler) {
 }
 
 function handleMessage(message) {
-    if (message === "")
+    if (message === "" || message.indexOf("127") === 0)
         return;
 
-    var command = JSON.parse(message);
+    try {
+        var command = JSON.parse(message);
+    } catch (error) {
+        console.log("Error parsing message: " + message);
+        return;
+    }
+
     var handler = handlers[command[0]];
     if (handler === undefined)
         console.log("No handler for " + command[0]);
