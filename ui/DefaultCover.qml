@@ -99,6 +99,8 @@ Item {
     }
 
     function highlightColor(model) {
+        if (model.cover === "ZZZerror")
+            return "white"
         return hcy(hue(model), 0.35, 0.39)
     }
 
