@@ -376,7 +376,7 @@ Page {
                         elide: Text.ElideRight
                         color: defaultCover.textColor(model)
                         style: Text.Raised
-                        styleColor: defaultCover.highlightColor(model)
+                        styleColor: defaultCover.highlightColor(model, defaultCover.hue(model))
                         font.family: "URW Bookman L"
                         text: {
                             if (!model.fullcover)
@@ -396,7 +396,7 @@ Page {
                         elide: Text.ElideRight
                         color: defaultCover.textColor(model)
                         style: Text.Raised
-                        styleColor: defaultCover.highlightColor(model)
+                        styleColor: defaultCover.highlightColor(model, defaultCover.hue(model))
                         font.family: "URW Bookman L"
                         text: {
                             if (!model.fullcover)

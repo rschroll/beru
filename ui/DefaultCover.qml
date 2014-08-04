@@ -94,26 +94,35 @@ Item {
         return hcy(0.167, 0.051, 0.051)
     }
 
-    function bgColor(model) {
-        return hcy(hue(model), 0.25, 0.25)
+    function bgColor(hue) {
+        return hcy(hue, 0.25, 0.25)
     }
 
-    function highlightColor(model) {
+    function highlightColor(model, hue) {
         if (model.cover === "ZZZerror")
             return "white"
-        return hcy(hue(model), 0.35, 0.39)
+        return hcy(hue, 0.35, 0.39)
     }
 
-    function bindColor(model) {
-        return hcyrel(hue(model), 0.5, 0.03)
+    function bindColor(hue) {
+        return hcyrel(hue, 0.5, 0.03)
     }
 
     function missingCover(model) {
+        var md5 = Qt.md5(model.title),
+                hue_ = hue(model),
+                angle = parseInt(md5.slice(2,4), 16) / 256 * 2*Math.PI,
+                cos = Math.cos(angle),
+                sin = Math.sin(angle),
+                x = parseInt(md5.slice(4,6), 16) / 256 * 360,
+                y = parseInt(md5.slice(6,8), 16) / 256 * 540;
         return "data:image/svg+xml," +
-                svg.replace("$bgColor", bgColor(model)
-                            ).replace("$textColor", textColor(model)
-                                      ).replace("$highlightColor", highlightColor(model)
-                                                ).replace(/\$bindColor/g, bindColor(model))
+                (svg.replace("$bgColor", bgColor(hue_))
+                 .replace("$textColor", textColor(model))
+                 .replace("$highlightColor", highlightColor(model, hue_))
+                 .replace(/\$bindColor/g, bindColor(hue_))
+                 .replace("$matrix", [cos, sin, -sin, cos, x, y].join(","))
+                 .replace("$texture", textures.stainedpaper_tiled))
     }
 
     function errorCover(model) {
@@ -135,6 +144,42 @@ Item {
      y="0"
      id="rect3002"
      style="fill:$bgColor;fill-opacity:1;fill-rule:nonzero;stroke:#47172c;stroke-width:0.50000000000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  <g
+     id="g6338"
+     style="opacity:0.15"
+     transform="matrix($matrix)">
+    <image
+       width="649.08002"
+       height="649.08002"
+       xlink:href="data:image/jpeg;base64,$texture"
+       id="image6329"
+       x="0"
+       y="-649.08002" />
+    <use
+       height="540"
+       width="360"
+       transform="translate(-649.08,2.9101563e-6)"
+       id="use6332"
+       xlink:href="#image6329"
+       y="0"
+       x="0" />
+    <use
+       height="540"
+       width="360"
+       transform="translate(0,649.08)"
+       id="use6334"
+       xlink:href="#image6329"
+       y="0"
+       x="0" />
+    <use
+       height="540"
+       width="360"
+       transform="translate(-649.08,649.08)"
+       id="use6336"
+       xlink:href="#image6329"
+       y="0"
+       x="0" />
+  </g>
   <rect
      style="fill:$bindColor;fill-opacity:1;fill-rule:nonzero;stroke:none"
      id="rect3768"
@@ -164,4 +209,8 @@ Item {
      id="path3803" />
 </svg>
 '
+
+    Textures {
+        id: textures
+    }
 }
