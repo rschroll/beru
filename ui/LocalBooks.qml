@@ -436,7 +436,7 @@ Page {
             subText: model.author
             iconSource: {
                 if (model.filename == "ZZZback")
-                    return mobileIcon("back")
+                    return "image://theme/back"
                 if (model.cover == "ZZZnone")
                     return defaultCover.missingCover(model)
                 if (model.cover == "ZZZerror")
@@ -468,7 +468,7 @@ Page {
             subText: (model.count > 1) ? i18n.tr("%1 Books").arg(model.count) : model.title
             iconSource: {
                 if (model.count > 1)
-                    return mobileIcon("contact")
+                    return "image://theme/contact"
                 if (model.cover == "ZZZnone")
                     return defaultCover.missingCover(model)
                 if (model.cover == "ZZZerror")
@@ -624,7 +624,7 @@ Page {
             id: getBooksButton
             action: Action {
                 text: i18n.tr("Get Books")
-                iconSource: mobileIcon("search")
+                iconName: "search"
                 onTriggered: pageStack.push(bookSources)
             }
         }
@@ -633,7 +633,7 @@ Page {
             id: sortButton
             action: Action {
                 text: i18n.tr("Sort")
-                iconSource: mobileIcon("filter")
+                iconName: "filter"
                 onTriggered: PopupUtils.open(sortComponent, fakeSortButton)
             }
         }
@@ -642,7 +642,7 @@ Page {
             id: settingsButton
             action: Action {
                 text: i18n.tr("Settings")
-                iconSource: mobileIcon("settings")
+                iconName: "settings"
                 onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent,
                                                             settingsButton)
             }

@@ -91,10 +91,6 @@ MainView {
         return false
     }
 
-    function mobileIcon(name) {
-        return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
-    }
-
     function openSettingsDatabase() {
         return LocalStorage.openDatabaseSync("BeruSettings", "1", "Global settings for Beru", 10000)
     }

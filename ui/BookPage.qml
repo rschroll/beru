@@ -87,7 +87,7 @@ Page {
         back: ToolbarButton {
             action: Action {
                 text: i18n.tr("Library")
-                iconSource: mobileIcon("back")
+                iconName: "back"
                 onTriggered: pageStack.pop()
             }
         }
@@ -96,7 +96,7 @@ Page {
             action: Action {
                 id: backAction
                 text: i18n.tr("Back")
-                iconSource: mobileIcon("go-previous")
+                iconName: "go-previous"
                 onTriggered: {
                     var locus = history.goBackward()
                     if (locus !== null) {
@@ -111,7 +111,7 @@ Page {
             action: Action {
                 id: forwardAction
                 text: i18n.tr("Forward")
-                iconSource: mobileIcon("go-next")
+                iconName: "go-next"
                 onTriggered: {
                     var locus = history.goForward()
                     if (locus !== null) {
@@ -135,7 +135,7 @@ Page {
             id: settingsButton
             action: Action {
                 text: i18n.tr("Settings")
-                iconSource: mobileIcon("settings")
+                iconName: "settings"
                 onTriggered: PopupUtils.open(stylesComponent, settingsButton)
             }
         }

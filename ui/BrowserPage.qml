@@ -168,7 +168,7 @@ Page {
                     width: units.gu(2)
                     height: units.gu(2)
                     rotation: parent.expanded ? -90 : 90
-                    source: mobileIcon("go-to")
+                    source: "image://theme/go-to"
                     anchors {
                         right: parent.right
                         rightMargin: units.gu(3)
@@ -277,7 +277,7 @@ Page {
         back: ToolbarButton {
             action: Action {
                 text: i18n.tr("Library")
-                iconSource: mobileIcon("back")
+                iconName: "back"
                 onTriggered: pageStack.pop()
             }
         }
@@ -286,7 +286,7 @@ Page {
             id: backButton
             action: Action {
                 text: i18n.tr("Back")
-                iconSource: mobileIcon("go-previous")
+                iconName: "go-previous"
                 enabled: webView.canGoBack
                 onTriggered: webView.goBack()
             }
@@ -296,7 +296,7 @@ Page {
             id: forwardButton
             action: Action {
                 text: i18n.tr("Forward")
-                iconSource: mobileIcon("go-next")
+                iconName: "go-next"
                 enabled: webView.canGoForward
                 onTriggered: webView.goForward()
             }
