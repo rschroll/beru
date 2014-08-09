@@ -1,3 +1,0 @@
-#!/bin/bash
-DIR="$( dirname $( readlink -f "${BASH_SOURCE[0]}" ) )"
-QT_SELECT=5 qmlscene -I "$DIR" "$DIR/ui/main.qml" --appargs="$*"
