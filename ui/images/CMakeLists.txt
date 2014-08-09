@@ -1,0 +1,12 @@
+file(GLOB UI_IMAGES_SRC_FILES
+     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+     default_cover.svg
+     error_cover.svg
+     error_cover_full.svg
+     stainedpaper_tiled.jpg
+     toc.svg
+)
+
+foreach( SRC_FILE ${UI_IMAGES_SRC_FILES} )
+     file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/${UI_IMAGES_SRC_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endforeach( SRC_FILE )
