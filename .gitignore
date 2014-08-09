@@ -1,3 +1,11 @@
+/.excludes
+/CMakeLists.txt~
+/beru.json
+/epubreader/CMakeLists.txt~
+/filesystem/CMakeLists.txt~
+/fontlister/CMakeLists.txt~
+/manifest.json
+/qhttpserver/CMakeLists.txt~
 *.user
 *.so
 Makefile
