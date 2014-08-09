@@ -1,2 +1,2 @@
 module HttpServer
-plugin qhttpserver
+plugin qhttpserverplugin
