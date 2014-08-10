@@ -1,0 +1,15 @@
+{
+    "name": "com.ubuntu.developer.randy-jr-olive.beru",
+    "description": "description of beru",
+    "framework": "ubuntu-sdk-14.10-qml-dev3",
+    "architecture": "all",
+    "title": "beru",
+    "hooks": {
+        "beru": {
+            "apparmor": "beru.json",
+            "desktop": "beru.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Randy Olive <randy.jr.olive@gmail.com>"
+}

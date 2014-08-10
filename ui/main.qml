@@ -17,17 +17,17 @@ MainView {
     // objectName for functional testing purposes (autopilot-qt5)
     objectName: "mainView"
     id: mainView
-    
+
     applicationName: "com.ubuntu.developer.rschroll.beru"
-    
-    /* 
-     This property enables the application to change orientation 
+
+    /*
+     This property enables the application to change orientation
      when the device is rotated. The default is false.
     */
     automaticOrientation: true
 
     useDeprecatedToolbar: false
-    
+
     width: units.gu(50)
     height: units.gu(75)
 
