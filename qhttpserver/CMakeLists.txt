@@ -13,6 +13,9 @@ set(qhttpserver_SRCS
     qhttpresponse.h
     httpserverplugin.cpp
     httpserverplugin.h
+    http-parser/http_parser.c
+    http-parser/http_parser.h
+    http-parser/url_parser.c
 )
 
 add_library(qhttpserverplugin MODULE
