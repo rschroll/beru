@@ -5,6 +5,24 @@ set(epubreader_SRCS
     epubreader.h
     epubreaderplugin.cpp
     epubreaderplugin.h
+    quazip/qioapi.cpp
+    quazip/quazip.cpp
+    quazip/quacrc32.cpp
+    quazip/JlCompress.cpp
+    quazip/quaadler32.cpp
+    quazip/quazipfile.cpp
+    quazip/quagzipfile.cpp
+    quazip/quaziodevice.cpp
+    quazip/quazipnewinfo.cpp
+    quazip/quazipfileinfo.cpp
+    quazip/unzip.c
+    quazip/zip.c
+    ../qhttpserver/qhttpconnection.cpp
+    ../qhttpserver/qhttprequest.cpp
+    ../qhttpserver/qhttpresponse.cpp
+    ../qhttpserver/qhttpserver.cpp
+    ../qhttpserver/http-parser/http_parser.c
+    ../qhttpserver/http-parser/url_parser.c
 )
 
 add_library(epubreaderplugin MODULE
