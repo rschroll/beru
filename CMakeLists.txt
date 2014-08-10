@@ -27,7 +27,6 @@ set(OUT_OF_TREE_BUILD true)
 if (${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR})
      set(OUT_OF_TREE_BUILD false)
 endif ( ${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR} )
-MESSAGE( "Out of Tree Build?:  ${OUT_OF_TREE_BUILD}" )
 
 #Scans the default include directories to find packages that will be needed for building plugins
 find_package(Qt5Core REQUIRED Qt5Qml Qt5Quick Qt5Xml Qt5Gui Qt5Network)
@@ -44,9 +43,12 @@ file(GLOB SRC_FILES
      *.qml *.js *.png *.svg *.json)
 
 #Copies each file in the SRC_FILES list into the build directory
-foreach( SRC_FILES ${SRC_FILES} )
+foreach( SRC_FILE ${SRC_FILES} )
      configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${SRC_FILES} ${CMAKE_CURRENT_BINARY_DIR}/${SRC_FILES})
-endforeach( SRC_FILES )
+endforeach( SRC_FILE )
+
+#Add files to Qt Creator resources, so they are visible in SDK file list
+QT5_ADD_RESOURCES (ResourceSources ${SRC_FILES})
 
 #Copies specific individual files into the build directory
 configure_file(${DESKTOP_FILE} ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE})
