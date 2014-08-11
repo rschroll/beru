@@ -22,5 +22,6 @@ add_custom_command(TARGET filesystemplugin POST_BUILD
 )
 
 # Install plugin file
-install(TARGETS filesystemplugin DESTINATION ${PLUGIN_DIR})
-install(FILES qmldir DESTINATION ${PLUGIN_DIR})
+string(REPLACE "//" "/" LIB_DIR ${DATA_DIR}/${PLUGIN_DIR})
+install(TARGETS filesystemplugin DESTINATION ${LIB_DIR})
+install(FILES qmldir DESTINATION ${LIB_DIR})

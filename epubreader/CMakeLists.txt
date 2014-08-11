@@ -37,5 +37,6 @@ add_custom_command(TARGET epubreaderplugin POST_BUILD
 )
 
 # Install plugin file
-install(TARGETS epubreaderplugin DESTINATION ${PLUGIN_DIR})
-install(FILES qmldir DESTINATION ${PLUGIN_DIR})
+string(REPLACE "//" "/" LIB_DIR ${DATA_DIR}/${PLUGIN_DIR})
+install(TARGETS epubreaderplugin DESTINATION ${LIB_DIR})
+install(FILES qmldir DESTINATION ${LIB_DIR})

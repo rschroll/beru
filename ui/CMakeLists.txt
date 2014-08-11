@@ -34,3 +34,6 @@ add_custom_command(OUTPUT Textures.qml
     DEPENDS ${IMAGE_SRC}
 )
 add_custom_target(MakeTextures ALL DEPENDS Textures.qml)
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} DESTINATION ${DATA_DIR}
+    PATTERN "[Cc][Mm]ake*" EXCLUDE)

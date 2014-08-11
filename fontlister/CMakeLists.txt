@@ -22,5 +22,6 @@ add_custom_command(TARGET fontlisterplugin POST_BUILD
 )
 
 # Install plugin file
-install(TARGETS fontlisterplugin DESTINATION ${PLUGIN_DIR})
-install(FILES qmldir DESTINATION ${PLUGIN_DIR})
+string(REPLACE "//" "/" LIB_DIR ${DATA_DIR}/${PLUGIN_DIR})
+install(TARGETS fontlisterplugin DESTINATION ${LIB_DIR})
+install(FILES qmldir DESTINATION ${LIB_DIR})
