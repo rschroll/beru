@@ -465,6 +465,7 @@ Page {
         id: authorDelegate
         Subtitled {
             text: model.author || i18n.tr("Unknown Author")
+            /*/ Argument will be at least 2. /*/
             subText: (model.count > 1) ? i18n.tr("%1 Books").arg(model.count) : model.title
             iconSource: {
                 if (model.count > 1)
@@ -587,8 +588,9 @@ Page {
             }
 
             Label {
+                /*/ A path on the file system. /*/
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
-                              "automatically find all epub files in %1.  Additionally, any book " +
+                              "automatically find all epub files in <i>%1</i>.  Additionally, any book " +
                               "opened with Beru will be added to the library.").arg(bookdir)
                 wrapMode: Text.Wrap
                 width: parent.width
@@ -676,7 +678,7 @@ Page {
                         useButton.text = i18n.tr("File Exists")
                         useButton.enabled = false
                     } else if (status == 2) {
-                        if (homepath + pathfield.text == bookdir)
+                        if (homepath + pathfield.text == bookdir && !firststart)
                             useButton.text = i18n.tr("Reload Directory")
                         else
                             useButton.text = i18n.tr("Use Directory")
@@ -727,13 +729,15 @@ Page {
         Dialog {
             id: settingsDisabledDialog
             title: i18n.tr("Default Book Location")
+            /*/ A path on the file system. /*/
             text: i18n.tr("Beru seems to be operating under AppArmor restrictions that prevent it " +
                               "from accessing most of your home directory.  Ebooks should be put in " +
                               "<i>%1</i> for Beru to read them.").arg(bookdir)
 
             Label {
-                text: "For more information:<br>" +
-                      "<a href='http://rschroll.github.io/beru/confinement.html'>" +
+                /*/ Hyperlinked URL follows. /*/
+                text: i18n.tr("For more information:") +
+                      "<br><a href='http://rschroll.github.io/beru/confinement.html'>" +
                       "rschroll.github.io/beru/confinement.html</a>"
                 linkColor: "#a4a4ff"
                 onLinkActivated: Qt.openUrlExternally(link)

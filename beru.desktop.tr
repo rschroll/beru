@@ -1,0 +1,5 @@
+This file contains entries identical to those in the .desktop file,
+but in a format that xgettext can parse.
+/*/ The application name is both an acronym and an homage to Star Wars. /*/
+tr("@DESKTOP_NAME@")
+tr("@DESKTOP_COMMENT@")
