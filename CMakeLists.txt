@@ -31,6 +31,8 @@ endif(FS_ACCESS)
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_REVISION})
 
 set(DESKTOP_FILE "${PROJECT_NAME}.desktop")
+set(DESKTOP_NAME "Beru")
+set(DESKTOP_COMMENT "The Basic Epub Reader for Ubuntu")
 set(APP_HARDCODE beru)
 set(ICON_FILE beru.svg)
 
@@ -42,6 +44,12 @@ endif(${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_BINARY_DIR})
 
 # Scan the default include directories to find packages that will be needed for building plugins
 find_package(Qt5Core REQUIRED Qt5Qml Qt5Quick Qt5Xml Qt5Gui Qt5Network)
+
+file(GLOB I18N_SRC_FILES
+     RELATIVE ${CMAKE_SOURCE_DIR}
+     ui/*.qml ${DESKTOP_FILE}.tr)
+# DefaultCover.qml doesn't have any translatable strings, but it does confuse xgettext.
+list(REMOVE_ITEM I18N_SRC_FILES ui/DefaultCover.qml)
 
 if(CLICK_MODE)
     # Find out the architecture for package building
@@ -69,11 +77,11 @@ else(CLICK_MODE)
         \"${CMAKE_INSTALL_PREFIX}/${DATA_DIR}/beru\")")
     install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/beru.in DESTINATION ${CMAKE_INSTALL_BINDIR} RENAME beru)
 endif(CLICK_MODE)
-message("Arch: ${ARCH_TRIPLET}")
 
 #Copies specific individual files into the build directory
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/beru ${CMAKE_CURRENT_BINARY_DIR}/beru @ONLY)
 configure_file(${DESKTOP_FILE}.in ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE})
+configure_file(${DESKTOP_FILE}.tr ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE}.tr)
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/beru DESTINATION ${DATA_DIR})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE} DESTINATION ${DESKTOP_DIR})
 install(FILES ${ICON_FILE} DESTINATION ${DATA_DIR})
@@ -85,3 +93,5 @@ add_subdirectory(fontlister)
 add_subdirectory(html)
 add_subdirectory(qhttpserver)
 add_subdirectory(ui)
+
+add_subdirectory(po)
