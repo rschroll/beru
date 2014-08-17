@@ -1,6 +1,6 @@
 {
     "description": "The Basic Epub Reader for Ubuntu",
-    "framework": "ubuntu-sdk-13.10",
+    "framework": "ubuntu-sdk-14.04",
     "hooks": {
         "beru": {
             "apparmor": "apparmor/beru@SUFFIX@.json",
