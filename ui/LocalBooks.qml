@@ -600,7 +600,7 @@ Page {
             Button {
                 text: i18n.tr("Download Books")
                 width: parent.width
-                onClicked: tabs.selectedTabIndex = 1
+                onClicked: pageStack.push(bookSources)
             }
 
             Button {
