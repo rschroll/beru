@@ -40,7 +40,6 @@ Page {
     }
 
     onVisibleChanged: {
-        mainView.useDeprecatedToolbar = visible
         if (visible == false) {
             // Reset things for the next time this page is opened
             if (history)
@@ -77,7 +76,7 @@ Page {
         ]
     }
 
-    tools: ToolbarItems {
+    ToolbarItems {
         id: bookPageToolbar
         onOpenedChanged: {
             backAction.enabled = history.canBackward()
@@ -139,6 +138,11 @@ Page {
                 onTriggered: PopupUtils.open(stylesComponent, settingsButton)
             }
         }
+    }
+
+    Toolbar {
+        id: toolbar
+        tools: bookPageToolbar
     }
 
     Component {
