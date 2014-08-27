@@ -78,10 +78,6 @@ Page {
 
     ToolbarItems {
         id: bookPageToolbar
-        onOpenedChanged: {
-            backAction.enabled = history.canBackward()
-            forwardAction.enabled = history.canForward()
-        }
 
         back: ToolbarButton {
             action: Action {
@@ -96,6 +92,7 @@ Page {
                 id: backAction
                 text: i18n.tr("Back")
                 iconName: "go-previous"
+                enabled: false
                 onTriggered: {
                     var locus = history.goBackward()
                     if (locus !== null) {
@@ -111,6 +108,7 @@ Page {
                 id: forwardAction
                 text: i18n.tr("Forward")
                 iconName: "go-next"
+                enabled: false
                 onTriggered: {
                     var locus = history.goForward()
                     if (locus !== null) {
