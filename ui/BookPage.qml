@@ -157,7 +157,7 @@ Page {
                     right: parent.right
                     top: parent.top
                 }
-                height: 0.8*bookPage.height
+                height: 0.9*(bookPage.height - toolbar.height)
 
                 model: contentsListModel
                 delegate: Standard {
