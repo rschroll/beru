@@ -122,7 +122,7 @@ MainView {
         path: "BeruBookSettings.db"
     }
 
-    function getBookSettings(key) {
+    function getBookSetting(key) {
         if (server.epub.hash == "")
             return undefined
 
@@ -138,7 +138,7 @@ MainView {
 
         if (databaseTimer.hash != null &&
                 (databaseTimer.hash != server.epub.hash || databaseTimer.key != key))
-            databaseTimer.trigger()
+            databaseTimer.triggered()
 
         databaseTimer.stop()
         databaseTimer.hash = server.epub.hash
