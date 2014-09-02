@@ -11,6 +11,7 @@
 #include <QtGui/QImage>
 #include <QBuffer>
 #include <QDir>
+#include <QCryptographicHash>
 #include "quazip/quazip.h"
 #include "quazip/quazipfile.h"
 #include "../qhttpserver/qhttpresponse.h"
@@ -70,7 +71,7 @@ QString EpubReader::hash() {
     foreach (const QuaZipFileInfo info, fileList) {
         CRCstream << info.crc;
     }
-    this->_hash = QString(CRCarray.toHex());
+    this->_hash = QCryptographicHash::hash(CRCarray, QCryptographicHash::Md5).toHex();
     return this->_hash;
 }
 
