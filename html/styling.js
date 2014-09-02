@@ -9,12 +9,7 @@ styleManager = {
     reader: null,
 
     init: function (title) {
-        styleManager.cookieName = "monocle.stylesaver." + title.toLowerCase().replace(/[^a-z0-9]/g, '');
-
-        var styles = styleManager.loadCookie();
-        if (styles == null)
-            styles = DEFAULT_STYLES;
-        styleManager.sendStyles(styles);
+        var styles = DEFAULT_STYLES;
         styleManager.updateOuter(styles);
         return {stylesheet: styleManager.iframeCSS(styles), fontScale: styles.fontScale};
     },
@@ -43,39 +38,6 @@ styleManager = {
         styleManager.reader.formatting.updatePageStyles(styleManager.reader.formatting.properties.initialStyles,
                                                         styleManager.iframeCSS(styles), true);
         styleManager.reader.formatting.setFontScale(styles.fontScale, true);
-
-        styleManager.saveCookie(styles);
-    },
-
-    sendStyles: function (styles) {
-        Messaging.sendMessage("Styles", styles);
-    },
-
-    resetToDefault: function () {
-        styleManager.updateStyles(DEFAULT_STYLES);
-        styleManager.sendStyles(DEFAULT_STYLES);
-    },
-
-    setDefault: function (styles) {
-        DEFAULT_STYLES = styles;
-    },
-
-    loadCookie: function() {
-        if (!document.cookie)
-            return null;
-        var regex = new RegExp(styleManager.cookieName + "=(.+?)(;|$)");
-        var matches = document.cookie.match(regex);
-        if (matches)
-            return JSON.parse(decodeURIComponent(matches[1]));
-        return null;
-    },
-
-    saveCookie: function(styles) {
-        var d = new Date();
-        d.setTime(d.getTime() + 365*24*60*60*1000);
-        var value = encodeURIComponent(JSON.stringify(styles))
-        document.cookie = styleManager.cookieName + "=" + value +
-                "; expires=" + d.toGMTString() + "; path=/";
     },
 
     fontFaces: function() {

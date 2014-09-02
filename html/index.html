@@ -37,8 +37,6 @@ function createReader(bookData) {
         reader.moveTo(locus);
     });
     Messaging.registerHandler("Styles", styleManager.updateStyles);
-    Messaging.registerHandler("ResetStylesToDefault", styleManager.resetToDefault);
-    Messaging.registerHandler("SetDefaultStyles", styleManager.setDefault);
     Messaging.registerHandler("WindowSizeChanged", function () {
         reader.resized();
     });

@@ -46,6 +46,8 @@ Page {
                 history.clear()
             url = ""
             bookWebView.opacity = 0
+        } else {
+            bookStyles.loadForBook()
         }
     }
 
@@ -200,6 +202,16 @@ Page {
         property real margin
         property real marginv
 
+        property var defaults: ({
+            textColor: "#222",
+            fontFamily: "Default",
+            lineHeight: "Default",
+            fontScale: 1,
+            background: "url(.background_paper@30.png)",
+            margin: 0,
+            marginv: 0
+        })
+
         //onTextColorChanged: update()  // This is always updated with background
         onFontFamilyChanged: update()
         onLineHeightChanged: update()
@@ -209,14 +221,19 @@ Page {
 
         function load(styles) {
             loading = true
-            textColor = styles.textColor || "#222"
-            fontFamily = styles.fontFamily || "Default"
-            lineHeight = styles.lineHeight || "Default"
-            fontScale = styles.fontScale || 1
-            background = styles.background || "url(.background_paper@30.png)"
-            margin = styles.margin || 0
-            marginv = styles.marginv || 0
+            textColor = styles.textColor || defaults.textColor
+            fontFamily = styles.fontFamily || defaults.fontFamily
+            lineHeight = styles.lineHeight || defaults.lineHeight
+            fontScale = styles.fontScale || defaults.fontScale
+            background = styles.background || defaults.background
+            margin = styles.margin || defaults.margin
+            marginv = styles.marginv || defaults.marginv
             loading = false
+        }
+
+        function loadForBook() {
+            var saved = getBookSetting("styles") || {}
+            load(saved)
         }
 
         function asObject() {
@@ -236,13 +253,44 @@ Page {
                 return
 
             Messaging.sendMessage("Styles", asObject())
-            atdefault = false
+            setBookSetting("styles", asObject())
+            atdefault = (JSON.stringify(asObject()) == JSON.stringify(defaults))
+        }
+
+        function resetToDefaults() {
+            load({})
+            update()
         }
 
         function saveAsDefault() {
             setSetting("defaultBookStyle", JSON.stringify(asObject()))
-            Messaging.sendMessage("SetDefaultStyles", asObject())
+            defaults = asObject()
+            atdefault = true
         }
+
+        Component.onCompleted: {
+            var targetwidth = 60
+            var widthgu = width/units.gu(1)
+            if (widthgu > targetwidth)
+                // Set the margins to give us the target width, but no more than 30%.
+                defaults.margin = Math.round(Math.min(50 * (1 - targetwidth/widthgu), 30))
+
+            var saveddefault = getSetting("defaultBookStyle")
+            var savedvals = {}
+            if (saveddefault != null)
+                savedvals = JSON.parse(saveddefault)
+            for (var prop in savedvals)
+                if (prop in defaults)
+                    defaults[prop] = savedvals[prop]
+
+            if (savedvals.marginv == undefined && widthgu > targetwidth)
+                // Set the vertical margins to be the same as the horizontal, but no more than 5%.
+                defaults.marginv = Math.min(defaults.margin, 5)
+        }
+    }
+
+    function getBookStyles() {
+        return bookStyles.asObject()
     }
 
     FontLister {
@@ -457,10 +505,7 @@ Page {
                     }
                     gradient: UbuntuColors.greyGradient
                     enabled: !bookStyles.atdefault
-                    onClicked: {
-                        bookStyles.saveAsDefault()
-                        bookStyles.atdefault = true
-                    }
+                    onClicked: bookStyles.saveAsDefault()
                 }
                 Button {
                     text: i18n.tr("Load Defaults")
@@ -471,10 +516,7 @@ Page {
                     }
                     gradient: UbuntuColors.greyGradient
                     enabled: !bookStyles.atdefault
-                    onClicked: {
-                        Messaging.sendMessage("ResetStylesToDefault")
-                        bookStyles.atdefault = true
-                    }
+                    onClicked: bookStyles.resetToDefaults()
                 }
             }
 
