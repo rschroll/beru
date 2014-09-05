@@ -1,0 +1,286 @@
+# Hungarian translation for beru
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the beru package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: beru\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-08-12 18:33-0400\n"
+"PO-Revision-Date: 2014-08-15 16:53+0000\n"
+"Last-Translator: Kristóf Kiszel <Unknown>\n"
+"Language-Team: Hungarian <hu@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-09-02 21:16+0000\n"
+"X-Generator: Launchpad (build 17192)\n"
+
+#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:281 ui/BookPage.qml:89
+msgid "Library"
+msgstr "Könyvtár"
+
+#: ui/LocalBooks.qml:26
+msgid "Books"
+msgstr "Könyvek"
+
+#: ui/LocalBooks.qml:42 ui/LocalBooks.qml:659
+msgid "Welcome to Beru"
+msgstr "Üdvözli a Beru"
+
+#: ui/LocalBooks.qml:124 ui/BrowserPage.qml:290 ui/BookPage.qml:98
+msgid "Back"
+msgstr "Vissza"
+
+#: ui/LocalBooks.qml:178
+msgid "Could not open this book."
+msgstr "Nem sikerült megnyitni a könyvet."
+
+#: ui/LocalBooks.qml:467
+msgid "Unknown Author"
+msgstr "Ismeretlen szerző"
+
+#. / Argument will be at least 2. /*/
+#: ui/LocalBooks.qml:469
+msgid "%1 Books"
+msgstr "%1 könyv"
+
+#: ui/LocalBooks.qml:584
+msgid "No Books in Library"
+msgstr "Nincsenek könyvek a könyvtárban"
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:592
+msgid ""
+"Beru could not find any books for your library.  Beru will automatically "
+"find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
+"will be added to the library."
+msgstr ""
+"A Beru nem talált egy könyvet sem a könyvtárban. Ha a(z) <i>%1</i> mappába "
+"teszi az epub fájlokat, a Beru automatikusan megtalálja azokat, ezen kívül a "
+"Beruval megnyitott könyvek is bekerülnek a könyvtárba."
+
+#: ui/LocalBooks.qml:601
+msgid "Download Books"
+msgstr "Könyvek letöltése"
+
+#: ui/LocalBooks.qml:607
+msgid "Search Again"
+msgstr "Keresés ismét"
+
+#: ui/LocalBooks.qml:628 ui/BookSources.qml:13
+msgid "Get Books"
+msgstr "Könyvek beszerzése"
+
+#: ui/LocalBooks.qml:637
+msgid "Sort"
+msgstr "Rendezés"
+
+#: ui/LocalBooks.qml:646 ui/BookPage.qml:137
+msgid "Settings"
+msgstr "Beállítások"
+
+#: ui/LocalBooks.qml:659 ui/LocalBooks.qml:731
+msgid "Default Book Location"
+msgstr "Alapértelmezett mappa"
+
+#: ui/LocalBooks.qml:660
+msgid ""
+"Enter the folder in your home directory where your ebooks are or should be "
+"stored.\n"
+"\n"
+"Changing this value will not affect existing books in your library."
+msgstr ""
+"Adja meg a mappát a saját mappájában, ahol az e-könyvei vannak vagy azokat "
+"tárolni szeretné.\n"
+"\n"
+"Ennek módosítása nem érinti a már meglévő könyveit a könyvtárban."
+
+#: ui/LocalBooks.qml:675
+msgid "Create Directory"
+msgstr "Mappa létrehozása"
+
+#: ui/LocalBooks.qml:678
+msgid "File Exists"
+msgstr "A fájl már létezik"
+
+#: ui/LocalBooks.qml:682 ui/LocalBooks.qml:751
+msgid "Reload Directory"
+msgstr "Mappa újratöltése"
+
+#: ui/LocalBooks.qml:684
+msgid "Use Directory"
+msgstr "Mappa használata"
+
+#: ui/LocalBooks.qml:699
+msgid "Please wait..."
+msgstr "Kérem várjon…"
+
+#: ui/LocalBooks.qml:718
+msgid "Cancel"
+msgstr "Mégsem"
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:733
+msgid ""
+"Beru seems to be operating under AppArmor restrictions that prevent it from "
+"accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
+"for Beru to read them."
+msgstr ""
+"Úgy tűnik, hogy a Beru működését az AppArmor korlátozza, ezért nem fér hozzá "
+"a saját mappájához. Az e-könyveket a(z) <i>%1</i> mappába kell helyezni, "
+"hogy a Beru olvashassa azokat."
+
+#. / Hyperlinked URL follows. /*/
+#: ui/LocalBooks.qml:739
+msgid "For more information:"
+msgstr "További információkért:"
+
+#: ui/LocalBooks.qml:762 ui/BookPage.qml:442
+msgid "Close"
+msgstr "Bezárás"
+
+#: ui/LocalBooks.qml:787
+msgid "Recently Read"
+msgstr "Nemrég olvasott"
+
+#: ui/LocalBooks.qml:791
+msgid "Title"
+msgstr "Cím"
+
+#: ui/LocalBooks.qml:795
+msgid "Author"
+msgstr "Szerző"
+
+#: ui/main.qml:69
+msgid "Error Opening File"
+msgstr "Hiba a fájl megnyitásakor"
+
+#: ui/main.qml:70
+msgid ""
+"Beru could not open this file.\n"
+"\n"
+"Remember, Beru can only open Epub files without DRM."
+msgstr ""
+"A Beru nem tudta megnyitni ezt a fájlt.\n"
+"\n"
+"Ne feledje, a Beru csak DRM mentes epub fájlokat képes megnyitni."
+
+#: ui/main.qml:73
+msgid "OK"
+msgstr "OK"
+
+#: ui/BrowserPage.qml:30
+msgid "Enter URL"
+msgstr "URL megadása"
+
+#: ui/BrowserPage.qml:41
+msgid "Go"
+msgstr "Ugrás"
+
+#: ui/BrowserPage.qml:104
+msgid ""
+"This book will be added to your library as soon as the download is complete."
+msgstr ""
+"A letöltés befejezésekor a könyv automatikusan hozzáadódik a könyvtárához."
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:107
+msgid "This book is being saved as <i>%1</i>"
+msgstr "A könyv letöltése a(z) <i>%1</i> mappába elkezdődött"
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:112
+msgid ""
+"This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
+"be able to read it."
+msgstr ""
+"A(z) <i>%1</i> fájl valószínűleg nem epub fájl. Ha nem az, a Beru nem tudja "
+"megnyitni."
+
+#: ui/BrowserPage.qml:138
+msgid "Downloading Ebook"
+msgstr "E-könyv letöltése"
+
+#: ui/BrowserPage.qml:209
+msgid "Read book"
+msgstr "Könyv olvasása"
+
+#: ui/BrowserPage.qml:218
+msgid "Continue Browsing"
+msgstr "Böngészés folytatása"
+
+#: ui/BrowserPage.qml:240
+msgid "Possibly Incompatible File Type"
+msgstr "Valószínűleg inkompatibilis fájltípus"
+
+#: ui/BrowserPage.qml:245
+msgid "Cancel Download"
+msgstr "Letöltés megszakítása"
+
+#: ui/BrowserPage.qml:250
+msgid "Continue Download"
+msgstr "Letöltés folytatása"
+
+#: ui/BrowserPage.qml:264
+msgid "Download Error"
+msgstr "Letöltési hiba"
+
+#: ui/BrowserPage.qml:265
+msgid ""
+"Beru was unable to find a place where the ebook could be saved.  This "
+"shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
+msgstr ""
+"A Beru nem talált olyan helyet, ahová el tudná menteni az e-könyveit. Ennek "
+"nem szabadna megtörténni, kérjük jelentse a hibát itt: "
+"github.com/rschroll/beru/issues"
+
+#: ui/BrowserPage.qml:270
+msgid "What a Bummer!"
+msgstr "Micsoda pech!"
+
+#: ui/BrowserPage.qml:300 ui/BookPage.qml:113
+msgid "Forward"
+msgstr "Előre"
+
+#: ui/BookPage.qml:128
+msgid "Contents"
+msgstr "Tartalomjegyzék"
+
+#: ui/BookPage.qml:352
+msgid "Default Font"
+msgstr "Alapértelmezett betűkészlet"
+
+#: ui/BookPage.qml:362
+msgid "Font Scaling"
+msgstr "Betűskálázás"
+
+#: ui/BookPage.qml:382
+msgid "Line Height"
+msgstr "Sormagasság"
+
+#: ui/BookPage.qml:400
+msgid "Auto"
+msgstr "Automatikus"
+
+#: ui/BookPage.qml:425
+msgid "Margins"
+msgstr "Margók"
+
+#: ui/BookPage.qml:449
+msgid "Make Default"
+msgstr "Beállítás alapértelmezettként"
+
+#: ui/BookPage.qml:464
+msgid "Load Defaults"
+msgstr "Alapértelmezések betöltése"
+
+#. / The application name is both an acronym and an homage to Star Wars. /*/
+#: beru.desktop.tr:4
+msgid "Beru"
+msgstr "Beru"
+
+#: beru.desktop.tr:5
+msgid "The Basic Epub Reader for Ubuntu"
+msgstr "Egyszerű epub olvasó az Ubuntuhoz"
