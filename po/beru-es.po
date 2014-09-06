@@ -1,0 +1,287 @@
+# Spanish translation for beru
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the beru package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: beru\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-08-12 18:33-0400\n"
+"PO-Revision-Date: 2014-08-26 04:22+0000\n"
+"Last-Translator: Adolfo Jayme <fitoschido@gmail.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-09-02 21:16+0000\n"
+"X-Generator: Launchpad (build 17192)\n"
+
+#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:281 ui/BookPage.qml:89
+msgid "Library"
+msgstr "Biblioteca"
+
+#: ui/LocalBooks.qml:26
+msgid "Books"
+msgstr "Libros"
+
+#: ui/LocalBooks.qml:42 ui/LocalBooks.qml:659
+msgid "Welcome to Beru"
+msgstr "Bienvenido a Beru"
+
+#: ui/LocalBooks.qml:124 ui/BrowserPage.qml:290 ui/BookPage.qml:98
+msgid "Back"
+msgstr "Atrás"
+
+#: ui/LocalBooks.qml:178
+msgid "Could not open this book."
+msgstr "No se puede abrir este libro."
+
+#: ui/LocalBooks.qml:467
+msgid "Unknown Author"
+msgstr "Autor desconocido"
+
+#. / Argument will be at least 2. /*/
+#: ui/LocalBooks.qml:469
+msgid "%1 Books"
+msgstr "%1 libros"
+
+#: ui/LocalBooks.qml:584
+msgid "No Books in Library"
+msgstr "No hay libros en la biblioteca"
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:592
+msgid ""
+"Beru could not find any books for your library.  Beru will automatically "
+"find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
+"will be added to the library."
+msgstr ""
+"Beru no ha podido encontrar ningún libro para su biblioteca. Beru encontrará "
+"automáticamente todos los archivos epub de <i>%1</i>. Además, cualquier "
+"libro que se abra con Beru se añadirá automáticamente a la biblioteca."
+
+#: ui/LocalBooks.qml:601
+msgid "Download Books"
+msgstr "Descargar libros"
+
+#: ui/LocalBooks.qml:607
+msgid "Search Again"
+msgstr "Volver a buscar"
+
+#: ui/LocalBooks.qml:628 ui/BookSources.qml:13
+msgid "Get Books"
+msgstr "Obtener libros"
+
+#: ui/LocalBooks.qml:637
+msgid "Sort"
+msgstr "Ordenar"
+
+#: ui/LocalBooks.qml:646 ui/BookPage.qml:137
+msgid "Settings"
+msgstr "Preferencias"
+
+#: ui/LocalBooks.qml:659 ui/LocalBooks.qml:731
+msgid "Default Book Location"
+msgstr "Ubicación predeterminada de los libros"
+
+#: ui/LocalBooks.qml:660
+msgid ""
+"Enter the folder in your home directory where your ebooks are or should be "
+"stored.\n"
+"\n"
+"Changing this value will not affect existing books in your library."
+msgstr ""
+"Introduzca la carpeta de su directorio personal en la que están almacenados "
+"los libros o deberían estarlo.\n"
+"\n"
+"Cambiar este valor no afectará a los libros existentes en su biblioteca."
+
+#: ui/LocalBooks.qml:675
+msgid "Create Directory"
+msgstr "Crear directorio"
+
+#: ui/LocalBooks.qml:678
+msgid "File Exists"
+msgstr "El archivo ya existe"
+
+#: ui/LocalBooks.qml:682 ui/LocalBooks.qml:751
+msgid "Reload Directory"
+msgstr "Recargar directorio"
+
+#: ui/LocalBooks.qml:684
+msgid "Use Directory"
+msgstr "Usar directorio"
+
+#: ui/LocalBooks.qml:699
+msgid "Please wait..."
+msgstr "Espere por favor..."
+
+#: ui/LocalBooks.qml:718
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:733
+msgid ""
+"Beru seems to be operating under AppArmor restrictions that prevent it from "
+"accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
+"for Beru to read them."
+msgstr ""
+"Beru parece estar funcionando bajo restricciones de AppArmor que le impiden "
+"acceder a la mayoría de su carpeta personal. Los libros deberían poner en "
+"<i>%1</i> para que Beru los lea."
+
+#. / Hyperlinked URL follows. /*/
+#: ui/LocalBooks.qml:739
+msgid "For more information:"
+msgstr "Para más información:"
+
+#: ui/LocalBooks.qml:762 ui/BookPage.qml:442
+msgid "Close"
+msgstr "Cerrar"
+
+#: ui/LocalBooks.qml:787
+msgid "Recently Read"
+msgstr "Leídos recientemente"
+
+#: ui/LocalBooks.qml:791
+msgid "Title"
+msgstr "Título"
+
+#: ui/LocalBooks.qml:795
+msgid "Author"
+msgstr "Autor"
+
+#: ui/main.qml:69
+msgid "Error Opening File"
+msgstr "Error al abrir el archivo"
+
+#: ui/main.qml:70
+msgid ""
+"Beru could not open this file.\n"
+"\n"
+"Remember, Beru can only open Epub files without DRM."
+msgstr ""
+"Beru no ha podido abrir este archivo.\n"
+"\n"
+"Recuerde, Beru solo puede abrir archivos Epub sin DRM."
+
+#: ui/main.qml:73
+msgid "OK"
+msgstr "Aceptar"
+
+#: ui/BrowserPage.qml:30
+msgid "Enter URL"
+msgstr "Introduzca la URL"
+
+#: ui/BrowserPage.qml:41
+msgid "Go"
+msgstr "Ir"
+
+#: ui/BrowserPage.qml:104
+msgid ""
+"This book will be added to your library as soon as the download is complete."
+msgstr ""
+"Este libro se añadirá a su biblioteca tan pronto como se complete la "
+"descarga."
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:107
+msgid "This book is being saved as <i>%1</i>"
+msgstr "Este libro se va a guardar como <i>%1</i>"
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:112
+msgid ""
+"This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
+"be able to read it."
+msgstr ""
+"El archivo <i>%1</i> podría no estar en el formato ePub. Beru solo puede "
+"leer archivos en este formato."
+
+#: ui/BrowserPage.qml:138
+msgid "Downloading Ebook"
+msgstr "Descargando el libro"
+
+#: ui/BrowserPage.qml:209
+msgid "Read book"
+msgstr "Leer libro"
+
+#: ui/BrowserPage.qml:218
+msgid "Continue Browsing"
+msgstr "Continuar navegando"
+
+#: ui/BrowserPage.qml:240
+msgid "Possibly Incompatible File Type"
+msgstr "Tipo de archivo posiblemente no compatible"
+
+#: ui/BrowserPage.qml:245
+msgid "Cancel Download"
+msgstr "Cancelar la descarga"
+
+#: ui/BrowserPage.qml:250
+msgid "Continue Download"
+msgstr "Continuar la descarga"
+
+#: ui/BrowserPage.qml:264
+msgid "Download Error"
+msgstr "Error en la descarga"
+
+#: ui/BrowserPage.qml:265
+msgid ""
+"Beru was unable to find a place where the ebook could be saved.  This "
+"shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
+msgstr ""
+"Beru no ha sido capaz de encontrar un lugar en el que poder guardar el "
+"libro. Esto no debiera ocurrir nunca; por favor, envíe un error a "
+"github.com/rschroll/beru/issues"
+
+#: ui/BrowserPage.qml:270
+msgid "What a Bummer!"
+msgstr "¡Vaya incordio!"
+
+#: ui/BrowserPage.qml:300 ui/BookPage.qml:113
+msgid "Forward"
+msgstr "Adelante"
+
+#: ui/BookPage.qml:128
+msgid "Contents"
+msgstr "Contenidos"
+
+#: ui/BookPage.qml:352
+msgid "Default Font"
+msgstr "Tipografía predeterminada"
+
+#: ui/BookPage.qml:362
+msgid "Font Scaling"
+msgstr "Escalado de la tipografía"
+
+#: ui/BookPage.qml:382
+msgid "Line Height"
+msgstr "Altura de línea"
+
+#: ui/BookPage.qml:400
+msgid "Auto"
+msgstr "Automático"
+
+#: ui/BookPage.qml:425
+msgid "Margins"
+msgstr "Márgenes"
+
+#: ui/BookPage.qml:449
+msgid "Make Default"
+msgstr "Establecer como predeterminado"
+
+#: ui/BookPage.qml:464
+msgid "Load Defaults"
+msgstr "Cargar valores predeterminados"
+
+#. / The application name is both an acronym and an homage to Star Wars. /*/
+#: beru.desktop.tr:4
+msgid "Beru"
+msgstr "Beru"
+
+#: beru.desktop.tr:5
+msgid "The Basic Epub Reader for Ubuntu"
+msgstr "El lector de Epubs básico para Ubuntu"

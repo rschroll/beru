@@ -26,7 +26,7 @@
 #include <QObject>
 #include <QHash>
 
-#include <http_parser.h>
+#include "http-parser/http_parser.h"
 
 class QTcpSocket;
 

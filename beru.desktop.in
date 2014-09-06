@@ -1,9 +1,10 @@
 [Desktop Entry]
-Name=Beru
-Comment=The Basic Epub Reader for Ubuntu
+Name=@DESKTOP_NAME@
+Comment=@DESKTOP_COMMENT@
 Exec=/usr/share/beru/beru %f
 Icon=/usr/share/beru/beru.svg
 Terminal=false
 Type=Application
 MimeType=application/epub+zip
 X-Ubuntu-Touch=true
+X-Ubuntu-Gettext-Domain=com.ubuntu.developer.rschroll.@PROJECT_NAME@

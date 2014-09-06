@@ -7,6 +7,7 @@
 #include "filesystem.h"
 #include <QFileInfo>
 #include <QDir>
+#include <QDirIterator>
 #include <QStandardPaths>
 #include <QTemporaryFile>
 
@@ -66,8 +67,14 @@ QString FileSystem::getDataDir(const QString &subDir)
     return XDG_data;
 }
 
+/*
+ * Return the absolute path of all files within dirname or its subdirectories that match filters.
+ */
 QStringList FileSystem::listDir(const QString &dirname, const QStringList &filters)
 {
-    QDir dir(dirname);
-    return dir.entryList(filters, QDir::Files | QDir::Readable);
+    QStringList files;
+    QDirIterator iter(dirname, filters, QDir::Files | QDir::Readable, QDirIterator::Subdirectories);
+    while (iter.hasNext())
+        files.append(iter.next());
+    return files;
 }

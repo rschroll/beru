@@ -6,6 +6,7 @@
 
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
+import QtQuick.Window 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import U1db 1.0 as U1db
@@ -24,6 +25,8 @@ MainView {
      when the device is rotated. The default is false.
     */
     automaticOrientation: true
+
+    useDeprecatedToolbar: false
     
     width: units.gu(50)
     height: units.gu(75)
@@ -34,25 +37,18 @@ MainView {
 
     PageStack {
         id: pageStack
-        Component.onCompleted: push(tabs)
+        Component.onCompleted: push(localBooks)
         onCurrentPageChanged: currentPage.forceActiveFocus()
 
-        Tabs {
-            id: tabs
 
-            Tab {
-                title: i18n.tr("Library")
-                page: LocalBooks {
-                    id: localBooks
-                }
-            }
+        LocalBooks {
+            id: localBooks
+            visible: false
+        }
 
-            Tab {
-                title: i18n.tr("Get Books")
-                page: BookSources {
-                    id: bookSources
-                }
-            }
+        BookSources {
+            id: bookSources
+            visible: false
         }
 
         BookPage {
@@ -87,15 +83,12 @@ MainView {
     function loadFile(filename) {
         if (server.loadFile(filename)) {
             pageStack.push(bookPage, {url: "http://127.0.0.1:" + server.port})
+            window.title = server.epub.title
             localBooks.updateRead(filename)
             return true
         }
         PopupUtils.open(errorOpen)
         return false
-    }
-
-    function mobileIcon(name) {
-        return "/usr/share/icons/ubuntu-mobile/actions/scalable/" + name + ".svg"
     }
 
     function openSettingsDatabase() {
@@ -129,7 +122,7 @@ MainView {
         path: "BeruBookSettings.db"
     }
 
-    function getBookSettings(key) {
+    function getBookSetting(key) {
         if (server.epub.hash == "")
             return undefined
 
@@ -145,7 +138,7 @@ MainView {
 
         if (databaseTimer.hash != null &&
                 (databaseTimer.hash != server.epub.hash || databaseTimer.key != key))
-            databaseTimer.trigger()
+            databaseTimer.triggered()
 
         databaseTimer.stop()
         databaseTimer.hash = server.epub.hash

@@ -37,38 +37,13 @@ HttpServer {
     }
 
     function defaults(response) {
-        var defaults = {
-            textColor: "#222",
-            fontFamily: "Default",
-            lineHeight: "Default",
-            fontScale: 1,
-            background: "url(.background_paper@30.png)",
-            margin: 0,
-            marginv: 0
-        }
-        var targetwidth = 60
-        var widthgu = width/units.gu(1)
-        if (widthgu > targetwidth)
-            // Set the margins to give us the target width, but no more than 30%.
-            defaults.margin = Math.round(Math.min(50 * (1 - targetwidth/widthgu), 30))
-
-        var saveddefault = getSetting("defaultBookStyle")
-        var savedvals = {}
-        if (saveddefault != null)
-            savedvals = JSON.parse(saveddefault)
-        for (var prop in savedvals)
-            if (prop in defaults)
-                defaults[prop] = savedvals[prop]
-
-        if (savedvals.marginv == undefined && widthgu > targetwidth)
-            // Set the vertical margins to be the same as the horizontal, but no more than 5%.
-            defaults.marginv = Math.min(defaults.margin, 5)
-
         response.setHeader("Content-Type", "application/javascript")
         response.writeHead(200)
-        response.write("DEFAULT_STYLES = " + JSON.stringify(defaults) + ";\n")
 
-        var locus = getBookSettings("locus")
+        var styles = bookPage.getBookStyles()
+        response.write("DEFAULT_STYLES = " + JSON.stringify(styles) + ";\n")
+
+        var locus = getBookSetting("locus")
         if (locus == undefined)
             locus = null
         response.write("SAVED_PLACE = " + JSON.stringify(locus) + ";\n")

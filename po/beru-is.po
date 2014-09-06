@@ -1,0 +1,267 @@
+# Icelandic translation for beru
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the beru package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: beru\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-08-12 18:33-0400\n"
+"PO-Revision-Date: 2014-08-21 07:39+0000\n"
+"Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
+"Language-Team: Icelandic <is@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-09-02 21:16+0000\n"
+"X-Generator: Launchpad (build 17192)\n"
+
+#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:281 ui/BookPage.qml:89
+msgid "Library"
+msgstr "Bókasafn"
+
+#: ui/LocalBooks.qml:26
+msgid "Books"
+msgstr "Bækur"
+
+#: ui/LocalBooks.qml:42 ui/LocalBooks.qml:659
+msgid "Welcome to Beru"
+msgstr "Velkomin í Beru"
+
+#: ui/LocalBooks.qml:124 ui/BrowserPage.qml:290 ui/BookPage.qml:98
+msgid "Back"
+msgstr "Til baka"
+
+#: ui/LocalBooks.qml:178
+msgid "Could not open this book."
+msgstr "Gat ekki opnað þessa bók."
+
+#: ui/LocalBooks.qml:467
+msgid "Unknown Author"
+msgstr "Höfundur óþekktur"
+
+#. / Argument will be at least 2. /*/
+#: ui/LocalBooks.qml:469
+msgid "%1 Books"
+msgstr "%1 bækur"
+
+#: ui/LocalBooks.qml:584
+msgid "No Books in Library"
+msgstr ""
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:592
+msgid ""
+"Beru could not find any books for your library.  Beru will automatically "
+"find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
+"will be added to the library."
+msgstr ""
+
+#: ui/LocalBooks.qml:601
+msgid "Download Books"
+msgstr "Ná í bækur"
+
+#: ui/LocalBooks.qml:607
+msgid "Search Again"
+msgstr ""
+
+#: ui/LocalBooks.qml:628 ui/BookSources.qml:13
+msgid "Get Books"
+msgstr ""
+
+#: ui/LocalBooks.qml:637
+msgid "Sort"
+msgstr "Raða"
+
+#: ui/LocalBooks.qml:646 ui/BookPage.qml:137
+msgid "Settings"
+msgstr "Stillingar"
+
+#: ui/LocalBooks.qml:659 ui/LocalBooks.qml:731
+msgid "Default Book Location"
+msgstr ""
+
+#: ui/LocalBooks.qml:660
+msgid ""
+"Enter the folder in your home directory where your ebooks are or should be "
+"stored.\n"
+"\n"
+"Changing this value will not affect existing books in your library."
+msgstr ""
+
+#: ui/LocalBooks.qml:675
+msgid "Create Directory"
+msgstr "Búa til möppu"
+
+#: ui/LocalBooks.qml:678
+msgid "File Exists"
+msgstr "Skrá þegar til staðar"
+
+#: ui/LocalBooks.qml:682 ui/LocalBooks.qml:751
+msgid "Reload Directory"
+msgstr "Endurlesa möppu"
+
+#: ui/LocalBooks.qml:684
+msgid "Use Directory"
+msgstr "Nota möppu"
+
+#: ui/LocalBooks.qml:699
+msgid "Please wait..."
+msgstr ""
+
+#: ui/LocalBooks.qml:718
+msgid "Cancel"
+msgstr ""
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:733
+msgid ""
+"Beru seems to be operating under AppArmor restrictions that prevent it from "
+"accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
+"for Beru to read them."
+msgstr ""
+
+#. / Hyperlinked URL follows. /*/
+#: ui/LocalBooks.qml:739
+msgid "For more information:"
+msgstr ""
+
+#: ui/LocalBooks.qml:762 ui/BookPage.qml:442
+msgid "Close"
+msgstr ""
+
+#: ui/LocalBooks.qml:787
+msgid "Recently Read"
+msgstr ""
+
+#: ui/LocalBooks.qml:791
+msgid "Title"
+msgstr ""
+
+#: ui/LocalBooks.qml:795
+msgid "Author"
+msgstr ""
+
+#: ui/main.qml:69
+msgid "Error Opening File"
+msgstr ""
+
+#: ui/main.qml:70
+msgid ""
+"Beru could not open this file.\n"
+"\n"
+"Remember, Beru can only open Epub files without DRM."
+msgstr ""
+
+#: ui/main.qml:73
+msgid "OK"
+msgstr ""
+
+#: ui/BrowserPage.qml:30
+msgid "Enter URL"
+msgstr ""
+
+#: ui/BrowserPage.qml:41
+msgid "Go"
+msgstr ""
+
+#: ui/BrowserPage.qml:104
+msgid ""
+"This book will be added to your library as soon as the download is complete."
+msgstr ""
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:107
+msgid "This book is being saved as <i>%1</i>"
+msgstr ""
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:112
+msgid ""
+"This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
+"be able to read it."
+msgstr ""
+
+#: ui/BrowserPage.qml:138
+msgid "Downloading Ebook"
+msgstr ""
+
+#: ui/BrowserPage.qml:209
+msgid "Read book"
+msgstr ""
+
+#: ui/BrowserPage.qml:218
+msgid "Continue Browsing"
+msgstr ""
+
+#: ui/BrowserPage.qml:240
+msgid "Possibly Incompatible File Type"
+msgstr ""
+
+#: ui/BrowserPage.qml:245
+msgid "Cancel Download"
+msgstr ""
+
+#: ui/BrowserPage.qml:250
+msgid "Continue Download"
+msgstr ""
+
+#: ui/BrowserPage.qml:264
+msgid "Download Error"
+msgstr ""
+
+#: ui/BrowserPage.qml:265
+msgid ""
+"Beru was unable to find a place where the ebook could be saved.  This "
+"shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
+msgstr ""
+
+#: ui/BrowserPage.qml:270
+msgid "What a Bummer!"
+msgstr ""
+
+#: ui/BrowserPage.qml:300 ui/BookPage.qml:113
+msgid "Forward"
+msgstr ""
+
+#: ui/BookPage.qml:128
+msgid "Contents"
+msgstr ""
+
+#: ui/BookPage.qml:352
+msgid "Default Font"
+msgstr ""
+
+#: ui/BookPage.qml:362
+msgid "Font Scaling"
+msgstr ""
+
+#: ui/BookPage.qml:382
+msgid "Line Height"
+msgstr ""
+
+#: ui/BookPage.qml:400
+msgid "Auto"
+msgstr ""
+
+#: ui/BookPage.qml:425
+msgid "Margins"
+msgstr ""
+
+#: ui/BookPage.qml:449
+msgid "Make Default"
+msgstr ""
+
+#: ui/BookPage.qml:464
+msgid "Load Defaults"
+msgstr ""
+
+#. / The application name is both an acronym and an homage to Star Wars. /*/
+#: beru.desktop.tr:4
+msgid "Beru"
+msgstr ""
+
+#: beru.desktop.tr:5
+msgid "The Basic Epub Reader for Ubuntu"
+msgstr ""

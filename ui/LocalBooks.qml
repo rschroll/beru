@@ -1,4 +1,4 @@
-/* Copyright 2013 Robert Schroll
+/* Copyright 2013-2014 Robert Schroll
  *
  * This file is part of Beru and is distributed under the terms of
  * the GPL. See the file COPYING for full details.
@@ -6,6 +6,7 @@
 
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
+import QtGraphicalEffects 1.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
@@ -14,8 +15,8 @@ import Epub 1.0
 
 Page {
     id: localBooks
-    title: i18n.tr("Books")
-    flickable: listview
+    title: i18n.tr("Library")
+    flickable: gridview
     property int sort: 0
     property bool needsort: false
     property bool firststart: false
@@ -23,6 +24,8 @@ Page {
     property string bookdir: ""
     property bool writablehome: false
     property string defaultdirname: i18n.tr("Books")
+    property double gridmargin: units.gu(1)
+    property double mingridwidth: units.gu(15)
     onSortChanged: {
         listBooks()
         perAuthorModel.clear()
@@ -70,7 +73,8 @@ Page {
         db.transaction(function (tx) {
             var files = filesystem.listDir(bookdir, ["*.epub"])
             for (var i=0; i<files.length; i++) {
-                tx.executeSql(addFileSQL, [bookdir + "/" + files[i], fileToTitle(files[i])])
+                var fileName = files[i].split("/").pop()
+                tx.executeSql(addFileSQL, [files[i], fileToTitle(fileName)])
             }
         })
         localBooks.needsort = true
@@ -92,13 +96,13 @@ Page {
         bookModel.clear()
         var db = openDatabase()
         db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title, author, cover, authorsort, count(*) " +
+            var res = tx.executeSql("SELECT filename, title, author, cover, fullcover, authorsort, count(*) " +
                                     "FROM LocalBooks " + sort)
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
                 if (filesystem.exists(item.filename))
                     bookModel.append({filename: item.filename, title: item.title,
-                                      author: item.author, cover: item.cover,
+                                      author: item.author, cover: item.cover, fullcover: item.fullcover,
                                       authorsort: item.authorsort, count: item["count(*)"]})
             }
         })
@@ -109,13 +113,13 @@ Page {
         perAuthorModel.clear()
         var db = openDatabase()
         db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title, author, cover FROM LocalBooks " +
+            var res = tx.executeSql("SELECT filename, title, author, cover, fullcover FROM LocalBooks " +
                                     "WHERE authorsort=? ORDER BY title ASC", [authorsort])
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
                 if (filesystem.exists(item.filename))
                     perAuthorModel.append({filename: item.filename, title: item.title,
-                                           author: item.author, cover: item.cover})
+                                           author: item.author, cover: item.cover, fullcover: item.fullcover})
             }
             perAuthorModel.append({filename: "ZZZback", title: i18n.tr("Back"),
                                    author: "", cover: ""})
@@ -140,9 +144,9 @@ Page {
                 return
 
             localBooks.needsort = true
-            var title, author, authorsort, cover
+            var title, author, authorsort, cover, fullcover
             if (coverReader.load(res.rows.item(0).filename)) {
-                var coverinfo = coverReader.getCoverInfo(units.gu(1))
+                var coverinfo = coverReader.getCoverInfo(units.gu(5), 2*mingridwidth)
                 title = coverinfo.title
                 if (title == "ZZZnone")
                     title = res.rows.item(0).title
@@ -168,15 +172,17 @@ Page {
                 }
 
                 cover = coverinfo.cover
+                fullcover = coverinfo.fullcover
             } else {
                 title = res.rows.item(0).title
                 author = i18n.tr("Could not open this book.")
                 authorsort = "zzzzerror"
                 cover = "ZZZerror"
+                fullcover = ""
             }
-            tx.executeSql("UPDATE LocalBooks SET title=?, author=?, authorsort=?, cover=? " +
-                          "WHERE filename=?",
-                          [title, author, authorsort, cover, res.rows.item(0).filename])
+            tx.executeSql("UPDATE LocalBooks SET title=?, author=?, authorsort=?, cover=?, " +
+                          "fullcover=? WHERE filename=?",
+                          [title, author, authorsort, cover, fullcover, res.rows.item(0).filename])
 
             if (localBooks.visible) {
                 for (var i=0; i<bookModel.count; i++) {
@@ -185,6 +191,7 @@ Page {
                         book.title = title
                         book.author = author
                         book.cover = cover
+                        book.fullcover = fullcover
                         break
                     }
                 }
@@ -213,16 +220,24 @@ Page {
         if (sort != 2 || perAuthorModel.count == 0)
             showAuthor = false  // Don't need to show authors' list
 
-        if (!wide || sort != 2) {
-            listview.width = localBooks.width
-            listview.x = showAuthor ? -localBooks.width : 0
-            localBooks.flickable = showAuthor ? perAuthorListView : listview
+        if (sort == 0) {
+            listview.visible = false
+            gridview.visible = true
+            localBooks.flickable = gridview
         } else {
-            localBooks.flickable = null
-            listview.width = localBooks.width / 2
-            listview.x = 0
-            listview.topMargin = 0
-            perAuthorListView.topMargin = 0
+            listview.visible = true
+            gridview.visible = false
+            if (!wide || sort != 2) {
+                listview.width = localBooks.width
+                listview.x = showAuthor ? -localBooks.width : 0
+                localBooks.flickable = showAuthor ? perAuthorListView : listview
+            } else {
+                localBooks.flickable = null
+                listview.width = localBooks.width / 2
+                listview.x = 0
+                listview.topMargin = 0
+                perAuthorListView.topMargin = 0
+            }
         }
     }
 
@@ -254,6 +269,13 @@ Page {
         if (db.version == "" || db.version == "1") {
             db.changeVersion(db.version, "2", function (tx) {
                 tx.executeSql("ALTER TABLE LocalBooks ADD authorsort TEXT NOT NULL DEFAULT 'zzznull'")
+            })
+        }
+        if (db.version == "" || db.version == "1" || db.version == "2") {
+            db.changeVersion(db.version, "3", function (tx) {
+                tx.executeSql("ALTER TABLE LocalBooks ADD fullcover BLOB DEFAULT ''")
+                // Trigger re-rendering of covers.
+                tx.executeSql("UPDATE LocalBooks SET authorsort='zzznull'")
             })
         }
     }
@@ -309,16 +331,114 @@ Page {
         property bool needsclear: false
     }
 
+    DefaultCover {
+        id: defaultCover
+    }
+
+    Component {
+        id: coverDelegate
+        Item {
+            width: gridview.cellWidth
+            height: gridview.cellHeight
+
+            Item {
+                id: image
+                anchors.fill: parent
+
+                Image {
+                    anchors {
+                        fill: parent
+                        leftMargin: gridmargin
+                        rightMargin: gridmargin
+                        topMargin: 1.5*gridmargin
+                        bottomMargin: 1.5*gridmargin
+                    }
+                    fillMode: Image.PreserveAspectFit
+                    source: {
+                        if (model.cover == "ZZZerror")
+                            return defaultCover.errorCover(model)
+                        if (!model.fullcover)
+                            return defaultCover.missingCover(model)
+                        return model.fullcover
+                    }
+                    // Prevent blurry SVGs
+                    sourceSize.width: 2*localBooks.mingridwidth
+                    sourceSize.height: 3*localBooks.mingridwidth
+
+                    Text {
+                        x: ((model.cover == "ZZZerror") ? 0.09375 : 0.125)*parent.width
+                        y: 0.0625*parent.width
+                        width: 0.8125*parent.width
+                        height: parent.height/2 - 0.125*parent.width
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        wrapMode: Text.Wrap
+                        elide: Text.ElideRight
+                        color: defaultCover.textColor(model)
+                        style: Text.Raised
+                        styleColor: defaultCover.highlightColor(model, defaultCover.hue(model))
+                        font.family: "URW Bookman L"
+                        text: {
+                            if (!model.fullcover)
+                                return model.title
+                            return ""
+                        }
+                    }
+
+                    Text {
+                        x: ((model.cover == "ZZZerror") ? 0.09375 : 0.125)*parent.width
+                        y: parent.height/2 + 0.0625*parent.width
+                        width: 0.8125*parent.width
+                        height: parent.height/2 - 0.125*parent.width
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        wrapMode: Text.Wrap
+                        elide: Text.ElideRight
+                        color: defaultCover.textColor(model)
+                        style: Text.Raised
+                        styleColor: defaultCover.highlightColor(model, defaultCover.hue(model))
+                        font.family: "URW Bookman L"
+                        text: {
+                            if (!model.fullcover)
+                                return model.author
+                            return ""
+                        }
+                    }
+                }
+            }
+
+            DropShadow {
+                anchors.fill: image
+                radius: 1.5*gridmargin
+                samples: 16
+                source: image
+                color: "#808080"
+                verticalOffset: 0.25*gridmargin
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    // Save copies now, since these get cleared by loadFile (somehow...)
+                    var filename = model.filename
+                    var pasterror = model.cover == "ZZZerror"
+                    if (loadFile(filename) && pasterror)
+                        refreshCover(filename)
+                }
+            }
+        }
+    }
+
     Component {
         id: titleDelegate
         Subtitled {
             text: model.title
             subText: model.author
-            icon: {
+            iconSource: {
                 if (model.filename == "ZZZback")
-                    return mobileIcon("back")
+                    return "image://theme/back"
                 if (model.cover == "ZZZnone")
-                    return Qt.resolvedUrl("images/default_cover.svg")
+                    return defaultCover.missingCover(model)
                 if (model.cover == "ZZZerror")
                     return Qt.resolvedUrl("images/error_cover.svg")
                 return model.cover
@@ -345,12 +465,13 @@ Page {
         id: authorDelegate
         Subtitled {
             text: model.author || i18n.tr("Unknown Author")
+            /*/ Argument will be at least 2. /*/
             subText: (model.count > 1) ? i18n.tr("%1 Books").arg(model.count) : model.title
-            icon: {
+            iconSource: {
                 if (model.count > 1)
-                    return mobileIcon("contact")
+                    return "image://theme/contact"
                 if (model.cover == "ZZZnone")
-                    return Qt.resolvedUrl("images/default_cover.svg")
+                    return defaultCover.missingCover(model)
                 if (model.cover == "ZZZerror")
                     return Qt.resolvedUrl("images/error_cover.svg")
                 return model.cover
@@ -420,6 +541,35 @@ Page {
         align: Qt.AlignTrailing
     }
 
+    GridView {
+        id: gridview
+        anchors {
+            // Setting fill: parent leads to binding loop; see #17
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            leftMargin: gridmargin
+            rightMargin: gridmargin
+        }
+        height: mainView.height
+        clip: true
+        cellWidth: width / Math.floor(width/mingridwidth)
+        cellHeight: cellWidth*1.5
+
+        model: bookModel
+        delegate: coverDelegate
+    }
+
+    Scrollbar {
+        flickableItem: gridview
+        align: Qt.AlignTrailing
+        anchors {
+            right: localBooks.right
+            top: localBooks.top
+            bottom: localBooks.bottom
+        }
+    }
+
     Item {
         anchors.fill: parent
         visible: bookModel.count == 0
@@ -438,8 +588,9 @@ Page {
             }
 
             Label {
+                /*/ A path on the file system. /*/
                 text: i18n.tr("Beru could not find any books for your library.  Beru will " +
-                              "automatically find all epub files in %1.  Additionally, any book " +
+                              "automatically find all epub files in <i>%1</i>.  Additionally, any book " +
                               "opened with Beru will be added to the library.").arg(bookdir)
                 wrapMode: Text.Wrap
                 width: parent.width
@@ -449,7 +600,7 @@ Page {
             Button {
                 text: i18n.tr("Download Books")
                 width: parent.width
-                onClicked: tabs.selectedTabIndex = 1
+                onClicked: pageStack.push(bookSources)
             }
 
             Button {
@@ -459,16 +610,33 @@ Page {
             }
         }
     }
+
+    Item {
+        id: fakeSortButton
+        x: parent.width - units.gu(10)
+        y: units.gu(1)
+        width: units.gu(5)
+        height: units.gu(5)
+    }
     
     tools: ToolbarItems {
         id: localBooksToolbar
 
         ToolbarButton {
+            id: getBooksButton
+            action: Action {
+                text: i18n.tr("Get Books")
+                iconName: "search"
+                onTriggered: pageStack.push(bookSources)
+            }
+        }
+
+        ToolbarButton {
             id: sortButton
             action: Action {
                 text: i18n.tr("Sort")
-                iconSource: mobileIcon("filter")
-                onTriggered: PopupUtils.open(sortComponent, sortButton)
+                iconName: "filter"
+                onTriggered: PopupUtils.open(sortComponent, fakeSortButton)
             }
         }
 
@@ -476,7 +644,7 @@ Page {
             id: settingsButton
             action: Action {
                 text: i18n.tr("Settings")
-                iconSource: mobileIcon("settings")
+                iconName: "settings"
                 onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent,
                                                             settingsButton)
             }
@@ -510,7 +678,10 @@ Page {
                         useButton.text = i18n.tr("File Exists")
                         useButton.enabled = false
                     } else if (status == 2) {
-                        useButton.text = i18n.tr("Use Directory")
+                        if (homepath + pathfield.text == bookdir && !firststart)
+                            useButton.text = i18n.tr("Reload Directory")
+                        else
+                            useButton.text = i18n.tr("Use Directory")
                         useButton.enabled = true
                     }
                 }
@@ -558,13 +729,15 @@ Page {
         Dialog {
             id: settingsDisabledDialog
             title: i18n.tr("Default Book Location")
+            /*/ A path on the file system. /*/
             text: i18n.tr("Beru seems to be operating under AppArmor restrictions that prevent it " +
                               "from accessing most of your home directory.  Ebooks should be put in " +
                               "<i>%1</i> for Beru to read them.").arg(bookdir)
 
             Label {
-                text: "For more information:<br>" +
-                      "<a href='http://rschroll.github.io/beru/confinement.html'>" +
+                /*/ Hyperlinked URL follows. /*/
+                text: i18n.tr("For more information:") +
+                      "<br><a href='http://rschroll.github.io/beru/confinement.html'>" +
                       "rschroll.github.io/beru/confinement.html</a>"
                 linkColor: "#a4a4ff"
                 onLinkActivated: Qt.openUrlExternally(link)
@@ -575,7 +748,19 @@ Page {
             }
 
             Button {
+                text: i18n.tr("Reload Directory")
+                // We don't bother with the Timer trick here since we don't get this dialog on
+                // first launch, so we shouldn't have too many books added to the library when
+                // this button is clicked.
+                onClicked: {
+                    PopupUtils.close(settingsDisabledDialog)
+                    readBookDir()
+                }
+            }
+
+            Button {
                 text: i18n.tr("Close")
+                gradient: UbuntuColors.greyGradient
                 onClicked: PopupUtils.close(settingsDisabledDialog)
             }
         }

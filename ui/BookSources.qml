@@ -10,6 +10,7 @@ import Ubuntu.Components.ListItems 0.1
 
 Page {
     id: bookSources
+    title: i18n.tr("Get Books")
 
     ListView {
         id: sourcesView

@@ -1,0 +1,270 @@
+# Finnish translation for beru
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the beru package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: beru\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2014-08-12 18:33-0400\n"
+"PO-Revision-Date: 2014-08-15 16:00+0000\n"
+"Last-Translator: Jiri Grönroos <Unknown>\n"
+"Language-Team: Finnish <fi@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-09-02 21:16+0000\n"
+"X-Generator: Launchpad (build 17192)\n"
+
+#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:281 ui/BookPage.qml:89
+msgid "Library"
+msgstr "Kirjasto"
+
+#: ui/LocalBooks.qml:26
+msgid "Books"
+msgstr "Kirjat"
+
+#: ui/LocalBooks.qml:42 ui/LocalBooks.qml:659
+msgid "Welcome to Beru"
+msgstr "Tervetuloa Berun pariin"
+
+#: ui/LocalBooks.qml:124 ui/BrowserPage.qml:290 ui/BookPage.qml:98
+msgid "Back"
+msgstr "Takaisin"
+
+#: ui/LocalBooks.qml:178
+msgid "Could not open this book."
+msgstr "Tämän kirjan avaaminen ei onnistunut."
+
+#: ui/LocalBooks.qml:467
+msgid "Unknown Author"
+msgstr "Tuntematon tekijä"
+
+#. / Argument will be at least 2. /*/
+#: ui/LocalBooks.qml:469
+msgid "%1 Books"
+msgstr "%1 kirjaa"
+
+#: ui/LocalBooks.qml:584
+msgid "No Books in Library"
+msgstr "Kirjastossa ei ole kirjoja"
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:592
+msgid ""
+"Beru could not find any books for your library.  Beru will automatically "
+"find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
+"will be added to the library."
+msgstr ""
+
+#: ui/LocalBooks.qml:601
+msgid "Download Books"
+msgstr "Lataa kirjoja"
+
+#: ui/LocalBooks.qml:607
+msgid "Search Again"
+msgstr "Etsi uudelleen"
+
+#: ui/LocalBooks.qml:628 ui/BookSources.qml:13
+msgid "Get Books"
+msgstr "Hanki kirjoja"
+
+#: ui/LocalBooks.qml:637
+msgid "Sort"
+msgstr "Lajittele"
+
+#: ui/LocalBooks.qml:646 ui/BookPage.qml:137
+msgid "Settings"
+msgstr "Asetukset"
+
+#: ui/LocalBooks.qml:659 ui/LocalBooks.qml:731
+msgid "Default Book Location"
+msgstr "Kirjojen oletussijainti"
+
+#: ui/LocalBooks.qml:660
+msgid ""
+"Enter the folder in your home directory where your ebooks are or should be "
+"stored.\n"
+"\n"
+"Changing this value will not affect existing books in your library."
+msgstr ""
+
+#: ui/LocalBooks.qml:675
+msgid "Create Directory"
+msgstr "Luo kansio"
+
+#: ui/LocalBooks.qml:678
+msgid "File Exists"
+msgstr "Tiedosto on jo olemassa"
+
+#: ui/LocalBooks.qml:682 ui/LocalBooks.qml:751
+msgid "Reload Directory"
+msgstr "Lataa kansio uudelleen"
+
+#: ui/LocalBooks.qml:684
+msgid "Use Directory"
+msgstr "Käytä kansiota"
+
+#: ui/LocalBooks.qml:699
+msgid "Please wait..."
+msgstr "Odota hetki..."
+
+#: ui/LocalBooks.qml:718
+msgid "Cancel"
+msgstr "Peru"
+
+#. / A path on the file system. /*/
+#: ui/LocalBooks.qml:733
+msgid ""
+"Beru seems to be operating under AppArmor restrictions that prevent it from "
+"accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
+"for Beru to read them."
+msgstr ""
+
+#. / Hyperlinked URL follows. /*/
+#: ui/LocalBooks.qml:739
+msgid "For more information:"
+msgstr "Lisätietoa:"
+
+#: ui/LocalBooks.qml:762 ui/BookPage.qml:442
+msgid "Close"
+msgstr "Sulje"
+
+#: ui/LocalBooks.qml:787
+msgid "Recently Read"
+msgstr "Äskettäin luettu"
+
+#: ui/LocalBooks.qml:791
+msgid "Title"
+msgstr "Nimi"
+
+#: ui/LocalBooks.qml:795
+msgid "Author"
+msgstr "Tekijä"
+
+#: ui/main.qml:69
+msgid "Error Opening File"
+msgstr "Virhe tiedostoa avattaessa"
+
+#: ui/main.qml:70
+msgid ""
+"Beru could not open this file.\n"
+"\n"
+"Remember, Beru can only open Epub files without DRM."
+msgstr ""
+"Beru ei kyennyt avaamaan tätä tiedostoa.\n"
+"\n"
+"Beru voi avata vain ilman DRM:ää olevat Epub-tiedostot."
+
+#: ui/main.qml:73
+msgid "OK"
+msgstr "OK"
+
+#: ui/BrowserPage.qml:30
+msgid "Enter URL"
+msgstr "Anna verkko-osoite"
+
+#: ui/BrowserPage.qml:41
+msgid "Go"
+msgstr "Siirry"
+
+#: ui/BrowserPage.qml:104
+msgid ""
+"This book will be added to your library as soon as the download is complete."
+msgstr "Tämä kirja lisätään kirjastoosi heti, kun lataus valmistuu."
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:107
+msgid "This book is being saved as <i>%1</i>"
+msgstr "Kirja tallennetaan polkuun <i>%1</i>"
+
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:112
+msgid ""
+"This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
+"be able to read it."
+msgstr ""
+
+#: ui/BrowserPage.qml:138
+msgid "Downloading Ebook"
+msgstr ""
+
+#: ui/BrowserPage.qml:209
+msgid "Read book"
+msgstr "Lue kirja"
+
+#: ui/BrowserPage.qml:218
+msgid "Continue Browsing"
+msgstr "Jatka selaamista"
+
+#: ui/BrowserPage.qml:240
+msgid "Possibly Incompatible File Type"
+msgstr "Mahdollisesti yhteensopimaton tiedostotyyppi"
+
+#: ui/BrowserPage.qml:245
+msgid "Cancel Download"
+msgstr "Peru lataus"
+
+#: ui/BrowserPage.qml:250
+msgid "Continue Download"
+msgstr "Jatka lataamista"
+
+#: ui/BrowserPage.qml:264
+msgid "Download Error"
+msgstr "Latausvirhe"
+
+#: ui/BrowserPage.qml:265
+msgid ""
+"Beru was unable to find a place where the ebook could be saved.  This "
+"shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
+msgstr ""
+
+#: ui/BrowserPage.qml:270
+msgid "What a Bummer!"
+msgstr "Mikä harmi!"
+
+#: ui/BrowserPage.qml:300 ui/BookPage.qml:113
+msgid "Forward"
+msgstr "Eteenpäin"
+
+#: ui/BookPage.qml:128
+msgid "Contents"
+msgstr "Sisältö"
+
+#: ui/BookPage.qml:352
+msgid "Default Font"
+msgstr "Oletusfontti"
+
+#: ui/BookPage.qml:362
+msgid "Font Scaling"
+msgstr "Fontin skaalaus"
+
+#: ui/BookPage.qml:382
+msgid "Line Height"
+msgstr "Rivikorkeus"
+
+#: ui/BookPage.qml:400
+msgid "Auto"
+msgstr ""
+
+#: ui/BookPage.qml:425
+msgid "Margins"
+msgstr "Reunukset"
+
+#: ui/BookPage.qml:449
+msgid "Make Default"
+msgstr "Aseta oletukseksi"
+
+#: ui/BookPage.qml:464
+msgid "Load Defaults"
+msgstr "Lataa oletusasetukset"
+
+#. / The application name is both an acronym and an homage to Star Wars. /*/
+#: beru.desktop.tr:4
+msgid "Beru"
+msgstr "Beru"
+
+#: beru.desktop.tr:5
+msgid "The Basic Epub Reader for Ubuntu"
+msgstr "Epub-kirjanlukusovellus Ubuntulle"

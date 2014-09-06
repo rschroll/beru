@@ -8,8 +8,7 @@ import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
-import QtWebKit 3.0
-import QtWebKit.experimental 1.0
+import com.canonical.Oxide 1.0
 import FontList 1.0
 
 import "components"
@@ -43,9 +42,12 @@ Page {
     onVisibleChanged: {
         if (visible == false) {
             // Reset things for the next time this page is opened
-            history.clear()
+            if (history)
+                history.clear()
             url = ""
-            bookWebView.visible = false
+            bookWebView.opacity = 0
+        } else {
+            bookStyles.loadForBook()
         }
     }
 
@@ -56,24 +58,43 @@ Page {
     WebView {
         id: bookWebView
         anchors.fill: parent
-        visible: false
+        opacity: 0
+        focus: false
+        context: bookWebContext
 
         onTitleChanged: Messaging.handleMessage(title)
+        // Reject attempts to give WebView focus
+        onActiveFocusChanged: focus = false
     }
 
-    tools: ToolbarItems {
+    WebContext {
+        id: bookWebContext
+        dataPath: filesystem.getDataDir("")
+        userScripts: [
+            UserScript {
+                context: Messaging.context
+                url: Qt.resolvedUrl("qmlmessaging-userscript.js")
+            }
+        ]
+    }
+
+    ToolbarItems {
         id: bookPageToolbar
-        onOpenedChanged: {
-            backButton.enabled = history.canBackward()
-            forwardButton.enabled = history.canForward()
+
+        back: ToolbarButton {
+            action: Action {
+                text: i18n.tr("Library")
+                iconName: "back"
+                onTriggered: pageStack.pop()
+            }
         }
 
         ToolbarButton {
-            id: backButton
-            enabled: false
             action: Action {
+                id: backAction
                 text: i18n.tr("Back")
-                iconSource: mobileIcon("go-previous")
+                iconName: "go-previous"
+                enabled: false
                 onTriggered: {
                     var locus = history.goBackward()
                     if (locus !== null) {
@@ -85,11 +106,11 @@ Page {
         }
 
         ToolbarButton {
-            id: forwardButton
-            enabled: false
             action: Action {
+                id: forwardAction
                 text: i18n.tr("Forward")
-                iconSource: mobileIcon("go-next")
+                iconName: "go-next"
+                enabled: false
                 onTriggered: {
                     var locus = history.goForward()
                     if (locus !== null) {
@@ -113,10 +134,15 @@ Page {
             id: settingsButton
             action: Action {
                 text: i18n.tr("Settings")
-                iconSource: mobileIcon("settings")
+                iconName: "settings"
                 onTriggered: PopupUtils.open(stylesComponent, settingsButton)
             }
         }
+    }
+
+    Toolbar {
+        id: toolbar
+        tools: bookPageToolbar
     }
 
     Component {
@@ -124,6 +150,7 @@ Page {
 
         Popover {
             id: contentsPopover
+            property var defaultTimeout: null
 
             ListView {
                 id: contentsListView
@@ -132,7 +159,7 @@ Page {
                     right: parent.right
                     top: parent.top
                 }
-                height: 0.8*bookPage.height
+                height: 0.9*(bookPage.height - toolbar.height)
 
                 model: contentsListModel
                 delegate: Standard {
@@ -153,6 +180,12 @@ Page {
                     }
                 }
             }
+
+            onVisibleChanged: {
+                if (defaultTimeout == null)
+                    defaultTimeout = toolbar.hideTimeout
+                toolbar.hideTimeout = visible ? -1 : defaultTimeout
+            }
         }
     }
 
@@ -169,6 +202,16 @@ Page {
         property real margin
         property real marginv
 
+        property var defaults: ({
+            textColor: "#222",
+            fontFamily: "Default",
+            lineHeight: "Default",
+            fontScale: 1,
+            background: "url(.background_paper@30.png)",
+            margin: 0,
+            marginv: 0
+        })
+
         //onTextColorChanged: update()  // This is always updated with background
         onFontFamilyChanged: update()
         onLineHeightChanged: update()
@@ -178,14 +221,19 @@ Page {
 
         function load(styles) {
             loading = true
-            textColor = styles.textColor || "#222"
-            fontFamily = styles.fontFamily || "Default"
-            lineHeight = styles.lineHeight || "Default"
-            fontScale = styles.fontScale || 1
-            background = styles.background || "url(.background_paper@30.png)"
-            margin = styles.margin || 0
-            marginv = styles.marginv || 0
+            textColor = styles.textColor || defaults.textColor
+            fontFamily = styles.fontFamily || defaults.fontFamily
+            lineHeight = styles.lineHeight || defaults.lineHeight
+            fontScale = styles.fontScale || defaults.fontScale
+            background = styles.background || defaults.background
+            margin = styles.margin || defaults.margin
+            marginv = styles.marginv || defaults.marginv
             loading = false
+        }
+
+        function loadForBook() {
+            var saved = getBookSetting("styles") || {}
+            load(saved)
         }
 
         function asObject() {
@@ -205,13 +253,44 @@ Page {
                 return
 
             Messaging.sendMessage("Styles", asObject())
-            atdefault = false
+            setBookSetting("styles", asObject())
+            atdefault = (JSON.stringify(asObject()) == JSON.stringify(defaults))
+        }
+
+        function resetToDefaults() {
+            load({})
+            update()
         }
 
         function saveAsDefault() {
             setSetting("defaultBookStyle", JSON.stringify(asObject()))
-            Messaging.sendMessage("SetDefaultStyles", asObject())
+            defaults = asObject()
+            atdefault = true
         }
+
+        Component.onCompleted: {
+            var targetwidth = 60
+            var widthgu = width/units.gu(1)
+            if (widthgu > targetwidth)
+                // Set the margins to give us the target width, but no more than 30%.
+                defaults.margin = Math.round(Math.min(50 * (1 - targetwidth/widthgu), 30))
+
+            var saveddefault = getSetting("defaultBookStyle")
+            var savedvals = {}
+            if (saveddefault != null)
+                savedvals = JSON.parse(saveddefault)
+            for (var prop in savedvals)
+                if (prop in defaults)
+                    defaults[prop] = savedvals[prop]
+
+            if (savedvals.marginv == undefined && widthgu > targetwidth)
+                // Set the vertical margins to be the same as the horizontal, but no more than 5%.
+                defaults.marginv = Math.min(defaults.margin, 5)
+        }
+    }
+
+    function getBookStyles() {
+        return bookStyles.asObject()
     }
 
     FontLister {
@@ -249,7 +328,7 @@ Page {
     Component {
         id: stylesComponent
 
-        Dialog {
+        TitlelessDialog {
             id: stylesDialog
             property real labelwidth: units.gu(11)
 
@@ -361,14 +440,22 @@ Page {
                     width: parent.width - labelwidth
                     minimumValue: 0.8
                     maximumValue: 2
+                    // If we make this a color, instead of a string, it stays linked to the
+                    // property, instead of storing the old value.  Moreover, we can't set it
+                    // here, for reasons I don't understand.  So we wait....
+                    property string activeColor: ""
+
                     function formatValue(v, untranslated) {
                         if (v < 0.95)
                             return untranslated ? "Default" : i18n.tr("Auto")
                         return v.toFixed(1)
                     }
                     function setThumbColor() {
+                        if (activeColor === "")
+                            activeColor = __styleInstance.thumb.color
+
                         __styleInstance.thumb.color = (value < 0.95) ?
-                                    UbuntuColors.warmGrey : Theme.palette.selected.foreground
+                                    UbuntuColors.warmGrey : activeColor
                     }
                     onValueChanged: {
                         bookStyles.lineHeight = formatValue(value, true)
@@ -376,7 +463,7 @@ Page {
                     }
                     onPressedChanged: {
                         if (pressed)
-                            __styleInstance.thumb.color = Theme.palette.selected.foreground
+                            __styleInstance.thumb.color = activeColor
                         else
                             setThumbColor()
                     }
@@ -418,10 +505,7 @@ Page {
                     }
                     gradient: UbuntuColors.greyGradient
                     enabled: !bookStyles.atdefault
-                    onClicked: {
-                        bookStyles.saveAsDefault()
-                        bookStyles.atdefault = true
-                    }
+                    onClicked: bookStyles.saveAsDefault()
                 }
                 Button {
                     text: i18n.tr("Load Defaults")
@@ -432,10 +516,7 @@ Page {
                     }
                     gradient: UbuntuColors.greyGradient
                     enabled: !bookStyles.atdefault
-                    onClicked: {
-                        Messaging.sendMessage("ResetStylesToDefault")
-                        bookStyles.atdefault = true
-                    }
+                    onClicked: bookStyles.resetToDefaults()
                 }
             }
 
@@ -469,8 +550,8 @@ Page {
     }
 
     function updateNavButtons(back, forward) {
-        backButton.enabled = back
-        forwardButton.enabled = forward
+        backAction.enabled = back
+        forwardAction.enabled = forward
     }
 
     function onExternalLink(href) {
@@ -505,7 +586,7 @@ Page {
     }
 
     function onReady() {
-        bookWebView.visible = true
+        bookWebView.opacity = 1
     }
 
     function windowSizeChanged() {
