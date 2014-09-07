@@ -124,6 +124,7 @@ Page {
         ToolbarButton {
             id: contentsButton
             action: Action {
+                /*/ Button presents Table of Contents /*/
                 text: i18n.tr("Contents")
                 iconSource: Qt.resolvedUrl("images/toc.svg")
                 onTriggered: PopupUtils.open(contentsComponent, contentsButton)

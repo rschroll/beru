@@ -466,7 +466,8 @@ Page {
         Subtitled {
             text: model.author || i18n.tr("Unknown Author")
             /*/ Argument will be at least 2. /*/
-            subText: (model.count > 1) ? i18n.tr("%1 Books").arg(model.count) : model.title
+            subText: (model.count > 1) ? i18n.tr("%1 Book", "%1 Books", model.count).arg(model.count)
+                                       : model.title
             iconSource: {
                 if (model.count > 1)
                     return "image://theme/contact"
