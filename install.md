@@ -16,19 +16,15 @@ Beru is available in the Software Store for Ubuntu Touch.  (This is different fr
 Note that this version runs under [application confinement restrictions]({{ site.baseurl }}/confinement.html).
 
 ## <a name="click">Click package</a>
-Download a click package for your [touch device (arm)]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.9.7_armhf.click) or [desktop (amd64)]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.9.7_amd64.click).  Allegedly you can install it with
+Download the click package for your [ARM touch device]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.9.9_armhf.click) and install it with
 {% highlight bash %}
 sudo pkcon install-local *.click
-{% endhighlight %}
-I've never gotten that to work, though, so I install with
-{% highlight bash %}
-sudo click install --force-missing-framework --user=$USER *.click
 {% endhighlight %}
 
 ## <a name="ppa">PPA</a>
 Beru is available in [ppa:rschroll/beru](https://launchpad.net/~rschroll/+archive/beru).  Add that to your software sources, and you should be able to install Beru with your favorite package manager.
 
-If you're on Precise or Quantal, you'll also need to add [ppa:ubuntu-sdk-team/ppa](https://launchpad.net/~ubuntu-sdk-team/+archive/ppa).  It's probably not a bad idea to add that even if you're running a more recent version, to ensure that you have an up-to-date version of the Ubuntu SDK.
+You may want to add [ppa:ubuntu-sdk-team/ppa](https://launchpad.net/~ubuntu-sdk-team/+archive/ppa) as well.  This used to ensure that you had an up-to-date version of the Ubuntu SDK.  I'm not quite sure what it does anymore.
 
 ## <a name="git">Git</a>
 You can browse the source on [GitHub](https://github.com/rschroll/beru) or get it for yourself with

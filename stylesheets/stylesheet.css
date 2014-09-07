@@ -66,6 +66,9 @@ a:hover {
 header {
   padding-top: 35px;
   padding-bottom: 10px;
+  margin-left: -84px;
+  padding-left: 84px;
+  background: url(../images/beru72.png) 0 50px no-repeat;
 }
 
 header h1 {
