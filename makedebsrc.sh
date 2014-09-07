@@ -1,5 +1,5 @@
 #!/bin/bash
-RELEASES="precise quantal raring saucy trusty"
+RELEASES="trusty utopic"
 
 # Version can only be a.b.c for numbers a,b,c!
 # Thus, we use even revisions for restricted versions and odd revisions for

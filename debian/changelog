@@ -1,3 +1,9 @@
+beru (0.9.9-0) trusty; urgency=low
+
+  * Beta release
+
+ -- Robert Schroll <rschroll@gmail.com>  Sat, 06 Sep 2015 21:57:00 -0400
+
 beru (0.9.7-0) precise; urgency=low
 
   * Initial debian release

@@ -3,6 +3,7 @@ Section: misc
 Priority: extra
 Maintainer: Robert Schroll <rschroll@gmail.com>
 Build-Depends: debhelper (>= 8.0.0),
+               cmake,
                qtbase5-dev,
                qtdeclarative5-dev,
                qt5-default,

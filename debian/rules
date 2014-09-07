@@ -9,28 +9,5 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-# Work-around for some machines where INSTALL_ROOT is not set properly by
-# dh_auto_install
-override_dh_auto_install:
-	dh_auto_install -- INSTALL_ROOT=$(CURDIR)/debian/tmp
-
-# Workaround a bug in that debhelper package version
-override_dh_install:
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/applications/
-	mkdir -p $(CURDIR)/debian/tmp/usr/bin/
-	mkdir -p $(CURDIR)/debian/tmp/usr/share/beru/
-	cp beru.desktop $(CURDIR)/debian/tmp/usr/share/applications/
-	cp beru $(CURDIR)/debian/tmp/usr/share/beru/beru
-	cp beru.svg $(CURDIR)/debian/tmp/usr/share/beru/
-	echo "/usr/share/beru/beru" > $(CURDIR)/debian/tmp/usr/bin/beru
-	cp -r ui/ $(CURDIR)/debian/tmp/usr/share/beru/
-	cp -r html/ $(CURDIR)/debian/tmp/usr/share/beru/
-	cp -r Epub/ $(CURDIR)/debian/tmp/usr/share/beru/
-	cp -r File/ $(CURDIR)/debian/tmp/usr/share/beru/
-	cp -r FontList/ $(CURDIR)/debian/tmp/usr/share/beru/
-	cp -r HttpServer/ $(CURDIR)/debian/tmp/usr/share/beru/
-	
-	dh_install --sourcedir=debian/tmp --fail-missing
-
 %:
 	dh $@
