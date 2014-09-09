@@ -658,6 +658,7 @@ Page {
         Dialog {
             id: settingsDialog
             title: firststart ? i18n.tr("Welcome to Beru") : i18n.tr("Default Book Location")
+            /*/ Text precedes an entry for a file path. /*/
             text: i18n.tr("Enter the folder in your home directory where your ebooks are or " +
                           "should be stored.\n\nChanging this value will not affect existing " +
                           "books in your library.")
@@ -673,15 +674,19 @@ Page {
                 onTextChanged: {
                     var status = filesystem.exists(homepath + pathfield.text)
                     if (status == 0) {
+                        /*/ Create a new directory from path given. /*/
                         useButton.text = i18n.tr("Create Directory")
                         useButton.enabled = true
                     } else if (status == 1) {
+                        /*/ File exists with path given. /*/
                         useButton.text = i18n.tr("File Exists")
                         useButton.enabled = false
                     } else if (status == 2) {
                         if (homepath + pathfield.text == bookdir && !firststart)
+                            /*/ Read the books in the given directory again. /*/
                             useButton.text = i18n.tr("Reload Directory")
                         else
+                            /*/ Use directory specified to store books. /*/
                             useButton.text = i18n.tr("Use Directory")
                         useButton.enabled = true
                     }
