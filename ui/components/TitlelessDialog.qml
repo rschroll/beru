@@ -171,7 +171,7 @@ PopupBase {
         property real itemSpacing: units.gu(2)
         property Item dismissArea: dialog.dismissArea
 
-        height: Math.min(childrenRect.height, dialog.height)
+        height: Math.min(contentsColumn.height + foreground.margins, dialog.height)
 
         Column {
             id: contentsColumn
