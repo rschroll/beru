@@ -305,7 +305,7 @@ Page {
             listBooks()
         // If we are viewing recently read, then the book we had been reading is now at the top
         if (visible && sort == 0)
-            listview.positionViewAtBeginning()
+            gridview.positionViewAtBeginning()
     }
 
     EpubReader {
