@@ -7,7 +7,8 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
-import Ubuntu.Components.Extras.Browser 0.1
+import Ubuntu.Components.Extras.Browser 0.2
+import Ubuntu.DownloadManager 0.1
 
 Page {
     id: browserPage
@@ -58,62 +59,28 @@ Page {
             bottom: parent.bottom
         }
 
-        Connections {
-            id: download
-            ignoreUnknownSignals: true
-            property real fraction
-            property bool done
-            onTotalBytesReceivedChanged: {
-                fraction = target.totalBytesReceived / target.expectedContentLength
-            }
-            onSucceeded: {
-                done = true
-                localBooks.addFile(target.destinationPath, true)
-            }
-        }
-
         onUrlChanged: addressField.text = url
 
         onLoadingChanged: loadProgressBar.visible = loading
 
         onLoadProgressChanged: loadProgressBar.value = loadProgress
 
-        experimental.onDownloadRequested: {
-            download.done = false
-            download.target = downloadItem
-
-            var dir = localBooks.bookdir
-            if (dir == "") {
-                PopupUtils.open(errorComponent)
-                return
-            }
-            dir += "/"
-
-            var components = downloadItem.suggestedFilename.split("/").pop().split(".")
-            var ext = components.pop()
-            var basename = components.join(".")
-            var filename = basename + "." + ext
-            var i = 0
-            while (filesystem.exists(dir + filename)) {
-                i += 1
-                filename = basename + "(" + i + ")." + ext
-            }
-            downloadItem.destinationPath = dir + filename
-
+        onDownloadRequested: {
             var downloadargs = {
                 text: i18n.tr("This book will be added to your library as soon as the " +
                               "download is complete."),
-                /*/ A path on the file system. /*/
-                details: i18n.tr("This book is being saved as <i>%1</i>").arg(dir + filename)
+                url: request.url
             }
-            if (ext != "epub")
+            if (request.mimeType != "application/epub+zip") {
+                var filename = request.url.toString().split("/").pop()
                 PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
-                                    /*/ A path on the file system. /*/
+                                    // A path on the file system. //
                                     text: i18n.tr("This file, <i>%1</i>, may not be an Epub file.  " +
                                                   "If it is not, Beru will not be able to " +
                                                   "read it.").arg(filename)})
-            else
+            } else {
                 PopupUtils.open(downloadComponent, browserPage, downloadargs)
+            }
         }
     }
 
@@ -137,8 +104,42 @@ Page {
             id: downloadDialog
             title: i18n.tr("Downloading Ebook")
             property string details
+            property string url
+
+
+            SingleDownload {
+                id: download
+                onFinished: {
+                    localBooks.addFile(path, true)
+                    downloadProgress.visible = false
+                    /*/ A path on the file system. /*/
+                    downloadDialog.details = i18n.tr("This book was saved as <i>%1</i>").arg(path)
+                    detailsShape.visible = true
+                    openFileButton.path = path
+                    openFileButton.visible = true
+                }
+            }
+
+            ProgressBar {
+                id: downloadProgress
+                value: download.progress/100
+            }
+
+            Button {
+                id: openFileButton
+                visible: false
+                text: i18n.tr("Read book")
+                property string path
+                onClicked: {
+                    PopupUtils.close(downloadDialog)
+                    pageStack.pop()
+                    loadFile(path)
+                }
+            }
 
             UbuntuShape {
+                id: detailsShape
+                visible: false
                 height: detailsLabel.height + units.gu(4)
                         + (expanded ? moreDetailsLabel.height + units.gu(2) : 0 )
                 clip: true
@@ -198,36 +199,13 @@ Page {
                 }
             }
 
-            ProgressBar {
-                id: downloadProgress
-                value: download.fraction
-            }
-
-            Button {
-                id: openFileButton
-                visible: false
-                text: i18n.tr("Read book")
-                onClicked: {
-                    PopupUtils.close(downloadDialog)
-                    pageStack.pop()
-                    loadFile(download.target.destinationPath)
-                }
-            }
-
             Button {
                 text: i18n.tr("Continue Browsing")
                 onClicked: PopupUtils.close(downloadDialog)
             }
 
             Component.onCompleted: {
-                // Can't connect to download.onSucceeded for some reason.
-                download.onDoneChanged.connect(function () {
-                    if (download.done) {
-                        downloadProgress.visible = false
-                        openFileButton.visible = true
-                    }
-                })
-                download.target.start()
+                download.download(url)
             }
         }
     }
