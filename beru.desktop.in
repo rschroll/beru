@@ -8,3 +8,5 @@ Type=Application
 MimeType=application/epub+zip
 X-Ubuntu-Touch=true
 X-Ubuntu-Gettext-Domain=@APP_NAME@
+X-Ubuntu-Splash-Show-Header=true
+X-Ubuntu-Splash-Title=Library
