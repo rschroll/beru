@@ -7,4 +7,4 @@ Terminal=false
 Type=Application
 MimeType=application/epub+zip
 X-Ubuntu-Touch=true
-X-Ubuntu-Gettext-Domain=com.ubuntu.developer.rschroll.@PROJECT_NAME@
+X-Ubuntu-Gettext-Domain=@APP_NAME@
