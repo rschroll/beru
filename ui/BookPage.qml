@@ -46,6 +46,7 @@ Page {
                 history.clear()
             url = ""
             bookWebView.opacity = 0
+            loadingIndicator.opacity = 1
         } else {
             bookStyles.loadForBook()
         }
@@ -53,6 +54,13 @@ Page {
 
     ListModel {
         id: contentsListModel
+    }
+
+    ActivityIndicator {
+        id: loadingIndicator
+        anchors.centerIn: parent
+        opacity: 1
+        running: opacity != 0
     }
     
     WebView {
@@ -588,6 +596,7 @@ Page {
 
     function onReady() {
         bookWebView.opacity = 1
+        loadingIndicator.opacity = 0
     }
 
     function windowSizeChanged() {
