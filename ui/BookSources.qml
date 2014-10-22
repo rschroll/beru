@@ -21,11 +21,7 @@ Page {
             text: model.name
             progression: true
             onClicked: {
-                var url = model.url
-                if (width < units.gu(80) && model.murl != undefined)
-                    url = model.murl
-                pageStack.push(browserPage, {url: url, title: model.name,
-                                   showAddressBar: model.showAddressBar})
+                browserLoader.loadURL(model.url, model.murl, model.name, model.showAddressBar)
             }
         }
     }

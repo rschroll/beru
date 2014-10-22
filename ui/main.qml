@@ -56,9 +56,28 @@ MainView {
             visible: false
         }
 
-        BrowserPage {
-            id: browserPage
+        Loader {
+            id: browserLoader
             visible: false
+            property bool systemBrowser: false
+
+            source: "BrowserPage.qml"
+
+            onStatusChanged: {
+                if (status == Loader.Error)
+                    systemBrowser = true
+            }
+
+            function loadURL(url, murl, title, showAddressBar) {
+                if (systemBrowser) {
+                    // We're probably on a desktop, so use the main URL.
+                    Qt.openUrlExternally(url)
+                } else {
+                    if (width < units.gu(80) && murl != undefined)
+                        url = murl
+                    pageStack.push(item, {url: url, title: title, showAddressBar: showAddressBar})
+                }
+            }
         }
     }
 
