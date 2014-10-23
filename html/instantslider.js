@@ -1,6 +1,6 @@
 Monocle.Flippers.InstantSlider = function (reader) {
 
-  var API = { constructor: Monocle.Flippers.Slider }
+  var API = { constructor: Monocle.Flippers.InstantSlider }
   var k = API.constants = API.constructor;
   var p = API.properties = {
     reader: reader,
@@ -101,11 +101,31 @@ Monocle.Flippers.InstantSlider = function (reader) {
 
     p.turnData.points = {
       start: boxPointX,
+      starttime: Date.now(),
       min: boxPointX,
-      max: boxPointX
+      max: boxPointX,
+      last: boxPointX,
+      lasttime: Date.now(),
+      velocity: 0
     }
     p.turnData.lifting = true;
+    p.turnData.tap = true;
+    p.turnData.swipeDir = 0;
+  }
 
+
+  function turning(dir, boxPointX) {
+    if (!p.turnData.points) { return; }
+    if (p.turnData.releasing) { return; }
+    checkPoint(boxPointX);
+
+    if (!p.turnData.tap && !p.turnData.lifting &&
+        p.turnData.points.lasttime - p.turnData.points.starttime > k.QUICK_SWIPE)
+      slideToCursor(boxPointX, null, "0");
+  }
+
+
+  function setPageTurnDir(dir, boxPointX) {
     var place = getPlace();
 
     if (dir == k.FORWARDS) {
@@ -121,7 +141,7 @@ Monocle.Flippers.InstantSlider = function (reader) {
         return;
       }
       onGoingForward(boxPointX);
-    } else if (dir == k.BACKWARDS) {
+    } else {
       if (place.onFirstPageOfBook()) {
         p.reader.dispatchEvent(
           'monocle:boundarystart',
@@ -134,17 +154,7 @@ Monocle.Flippers.InstantSlider = function (reader) {
         return;
       }
       onGoingBackward(boxPointX);
-    } else {
-      console.warn("Invalid direction: " + dir);
     }
-  }
-
-
-  function turning(dir, boxPointX) {
-    if (!p.turnData.points) { return; }
-    if (p.turnData.lifting || p.turnData.releasing) { return; }
-    checkPoint(boxPointX);
-    slideToCursor(boxPointX, null, "0");
   }
 
 
@@ -154,6 +164,8 @@ Monocle.Flippers.InstantSlider = function (reader) {
     }
     if (p.turnData.lifting) {
       p.turnData.releaseArgs = [dir, boxPointX];
+      if (p.turnData.tap)
+        setPageTurnDir(dir, boxPointX);
       return;
     }
     if (p.turnData.releasing) {
@@ -164,12 +176,23 @@ Monocle.Flippers.InstantSlider = function (reader) {
 
     p.turnData.releasing = true;
 
+    if (!p.turnData.tap)
+      dir = p.turnData.swipeDir;
+
+    var vlow = 0.1, vhigh = 1;
+
     if (dir == k.FORWARDS) {
-      if (p.turnData.points.tap) {
+      if (
+        p.turnData.tap ||
+        p.turnData.points.velocity < -vhigh ||
+        p.turnData.points.lasttime - p.turnData.points.starttime <= k.QUICK_SWIPE
+      ) {
         afterGoingForward();
       } else if (
-        p.turnData.points.start - boxPointX > 60 ||
-        p.turnData.points.min >= boxPointX
+        p.turnData.points.velocity < -vlow ||  // Swiping back moderately quickly
+        (p.turnData.points.velocity < vlow &&  // Almost still, but moved to the left
+         (p.turnData.points.start - boxPointX > 60 ||
+          p.turnData.points.min >= boxPointX))
       ) {
         // Completing forward turn
         slideOut(afterGoingForward);
@@ -178,11 +201,17 @@ Monocle.Flippers.InstantSlider = function (reader) {
         slideIn(afterCancellingForward);
       }
     } else if (dir == k.BACKWARDS) {
-      if (p.turnData.points.tap) {
+      if (
+        p.turnData.tap ||
+        p.turnData.points.velocity > vhigh ||
+        p.turnData.points.lasttime - p.turnData.points.starttime <= k.QUICK_SWIPE
+      ) {
         jumpIn(upperPage(), afterGoingBackward);
       } else if (
-        boxPointX - p.turnData.points.start > 60 ||
-        p.turnData.points.max <= boxPointX
+        p.turnData.points.velocity > vlow ||  // Swiping forward moderately quickly
+        (p.turnData.points.velocity > -vlow &&  //Almost still, but moved to the right
+         (boxPointX - p.turnData.points.start > 60 ||
+          p.turnData.points.max <= boxPointX))
       ) {
         // Completing backward turn
         slideIn(afterGoingBackward);
@@ -199,7 +228,20 @@ Monocle.Flippers.InstantSlider = function (reader) {
   function checkPoint(boxPointX) {
     p.turnData.points.min = Math.min(p.turnData.points.min, boxPointX);
     p.turnData.points.max = Math.max(p.turnData.points.max, boxPointX);
-    p.turnData.points.tap = p.turnData.points.max - p.turnData.points.min < 10;
+
+    var now = Date.now(), dt = now - p.turnData.points.lasttime;
+    if (dt > 100) {
+      p.turnData.points.velocity = (boxPointX - p.turnData.points.last) / dt;
+      p.turnData.points.last = boxPointX;
+      p.turnData.points.lasttime = now;
+    }
+
+    var delta = boxPointX - p.turnData.points.start;
+    if (p.turnData.tap && Math.abs(delta) > 10) {
+      p.turnData.tap = false;
+      p.turnData.swipeDir = (delta > 0) ? k.BACKWARDS : k.FORWARDS;
+      setPageTurnDir(p.turnData.swipeDir, boxPointX);
+    }
   }
 
 
@@ -467,3 +509,4 @@ Monocle.Flippers.InstantSlider.DEFAULT_PANELS_CLASS = Monocle.Panels.TwoPane;
 Monocle.Flippers.InstantSlider.FORWARDS = 1;
 Monocle.Flippers.InstantSlider.BACKWARDS = -1;
 Monocle.Flippers.InstantSlider.FOLLOW_DURATION = 100;
+Monocle.Flippers.InstantSlider.QUICK_SWIPE = 250;
