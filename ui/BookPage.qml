@@ -100,6 +100,7 @@ Page {
         ToolbarButton {
             action: Action {
                 id: backAction
+                /*/ Limited space: ~8 characters /*/
                 text: i18n.tr("Back")
                 iconName: "go-previous"
                 enabled: false
@@ -116,6 +117,7 @@ Page {
         ToolbarButton {
             action: Action {
                 id: forwardAction
+                /*/ Limited space: ~8 characters /*/
                 text: i18n.tr("Forward")
                 iconName: "go-next"
                 enabled: false
@@ -132,7 +134,7 @@ Page {
         ToolbarButton {
             id: contentsButton
             action: Action {
-                /*/ Button presents Table of Contents /*/
+                /*/ Button presents Table of Contents.  Limited space: ~8 characters /*/
                 text: i18n.tr("Contents")
                 iconSource: Qt.resolvedUrl("images/toc.svg")
                 onTriggered: PopupUtils.open(contentsComponent, contentsButton)
@@ -142,6 +144,7 @@ Page {
         ToolbarButton {
             id: settingsButton
             action: Action {
+                /*/ Limited space: ~8 characters /*/
                 text: i18n.tr("Settings")
                 iconName: "settings"
                 onTriggered: PopupUtils.open(stylesComponent, settingsButton)
@@ -418,6 +421,7 @@ Page {
 
             Row {
                 Label {
+                    /*/ Limited space: ~15 characters /*/
                     text: i18n.tr("Font Scaling")
                     verticalAlignment: Text.AlignVCenter
                     width: labelwidth
@@ -438,6 +442,7 @@ Page {
 
             Row {
                 Label {
+                    /*/ Limited space: ~15 characters /*/
                     text: i18n.tr("Line Height")
                     verticalAlignment: Text.AlignVCenter
                     width: labelwidth
@@ -456,6 +461,7 @@ Page {
 
                     function formatValue(v, untranslated) {
                         if (v < 0.95)
+                            /*/ Very limited space: ~5 characters /*/
                             return untranslated ? "Default" : i18n.tr("Auto")
                         return v.toFixed(1)
                     }
@@ -481,6 +487,7 @@ Page {
 
             Row {
                 Label {
+                    /*/ Limited space: ~15 characters /*/
                     text: i18n.tr("Margins")
                     verticalAlignment: Text.AlignVCenter
                     width: labelwidth
@@ -505,6 +512,7 @@ Page {
             Item {
                 height: children[0].height
                 Button {
+                    /*/ Limited space: ~15 characters /*/
                     text: i18n.tr("Make Default")
                     width: parent.width/2 - units.gu(1)
                     anchors {
@@ -517,6 +525,7 @@ Page {
                     onClicked: bookStyles.saveAsDefault()
                 }
                 Button {
+                    /*/ Limited space: ~15 characters /*/
                     text: i18n.tr("Load Defaults")
                     width: parent.width/2 - units.gu(1)
                     anchors {
