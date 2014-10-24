@@ -1,4 +1,4 @@
-# Norwegian Bokmal translation for beru
+# Basque translation for beru
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the beru package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-10-23 09:57-0400\n"
-"PO-Revision-Date: 2014-09-20 15:50+0000\n"
-"Last-Translator: Robert Schroll <rschroll@gmail.com>\n"
-"Language-Team: Norwegian Bokmal <nb@li.org>\n"
+"PO-Revision-Date: 2014-09-06 20:52+0000\n"
+"Last-Translator: Ibai Oihanguren Sala <Unknown>\n"
+"Language-Team: Basque <eu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,38 +20,38 @@ msgstr ""
 
 #: ui/LocalBooks.qml:18 ui/BrowserPage.qml:259 ui/BookPage.qml:94
 msgid "Library"
-msgstr "Bibliotek"
+msgstr "Liburutegia"
 
 #: ui/LocalBooks.qml:26
 msgid "Books"
-msgstr "Bøker"
+msgstr "Liburuak"
 
 #: ui/LocalBooks.qml:42 ui/LocalBooks.qml:660
 msgid "Welcome to Beru"
-msgstr "Velkommen til Beru"
+msgstr "Ongi etorri Beru-ra"
 
 #: ui/LocalBooks.qml:124 ui/BrowserPage.qml:268 ui/BookPage.qml:103
 msgid "Back"
-msgstr "Tilbake"
+msgstr "Atzera"
 
 #: ui/LocalBooks.qml:178
 msgid "Could not open this book."
-msgstr "Klarte ikke å åpne denne boka."
+msgstr "Ezin izan da liburua ireki."
 
 #: ui/LocalBooks.qml:467
 msgid "Unknown Author"
-msgstr "Ukjent forfatter"
+msgstr "Egile ezezaguna"
 
 #. / Argument will be at least 2. /*/
 #: ui/LocalBooks.qml:469
 msgid "%1 Book"
 msgid_plural "%1 Books"
-msgstr[0] "%1 bok"
-msgstr[1] "%1 bøker"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ui/LocalBooks.qml:585
 msgid "No Books in Library"
-msgstr "Ingen bøker i biblioteket"
+msgstr "Ez dago libururik liburutegian"
 
 #. / A path on the file system. /*/
 #: ui/LocalBooks.qml:593
@@ -60,33 +60,33 @@ msgid ""
 "find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
 "will be added to the library."
 msgstr ""
-"Beru fant ingen bøker for biblioteket ditt. Beru søker automatisk gjennom "
-"alle epub-filer i <i>%1</i>. Bøker som åpnes i Beru blir også lagt til i "
-"biblioteket."
+"Beru-k ezin izan du zure liburutegirako libururik aurkitu. Beru-k "
+"automatikoki aurkituko ditu epub fitxategiak <i>%1</i>(e)n. Gainera, Beru "
+"erabiliz irekitako edozein liburu liburutegira gehituko da."
 
 #: ui/LocalBooks.qml:602
 msgid "Download Books"
-msgstr "Last ned bøker"
+msgstr "Deskargatu liburuak"
 
 #: ui/LocalBooks.qml:608
 msgid "Search Again"
-msgstr "Søk igjen"
+msgstr "Bilatu berriz"
 
 #: ui/LocalBooks.qml:629 ui/BookSources.qml:13
 msgid "Get Books"
-msgstr "Hent bøker"
+msgstr "Eskuratu liburuak"
 
 #: ui/LocalBooks.qml:638
 msgid "Sort"
-msgstr "Sorter"
+msgstr "Antolatu"
 
 #: ui/LocalBooks.qml:647 ui/BookPage.qml:145
 msgid "Settings"
-msgstr "Innstillinger"
+msgstr "Ezarpenak"
 
 #: ui/LocalBooks.qml:660 ui/LocalBooks.qml:737
 msgid "Default Book Location"
-msgstr "Standard bokplassering"
+msgstr "Liburuen kokaleku lehenetsia"
 
 #. / Text precedes an entry for a file path. /*/
 #: ui/LocalBooks.qml:662
@@ -96,38 +96,34 @@ msgid ""
 "\n"
 "Changing this value will not affect existing books in your library."
 msgstr ""
-"Skriv inn hvor i hjemmemappa di det ligger bøker og/eller nye bøker skal "
-"lagres.\n"
-"\n"
-"Bøker i biblioteket ditt blir ikke flyttet hvis du endrer dette."
 
 #. / Create a new directory from path given. /*/
 #: ui/LocalBooks.qml:678
 msgid "Create Directory"
-msgstr "Lag mappe"
+msgstr "Sortu direktorioa"
 
 #. / File exists with path given. /*/
 #: ui/LocalBooks.qml:682
 msgid "File Exists"
-msgstr "Fila finnes"
+msgstr "Fitxategia existitzen da"
 
 #. / Read the books in the given directory again. /*/
 #: ui/LocalBooks.qml:687 ui/LocalBooks.qml:757
 msgid "Reload Directory"
-msgstr "Last inn mappe på nytt"
+msgstr "Birkargatu direktorioa"
 
 #. / Use directory specified to store books. /*/
 #: ui/LocalBooks.qml:690
 msgid "Use Directory"
-msgstr "Bruk mappe"
+msgstr "Erabili direktorioa"
 
 #: ui/LocalBooks.qml:705
 msgid "Please wait..."
-msgstr "Vent litt …"
+msgstr "Itxaron..."
 
 #: ui/LocalBooks.qml:724
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr "Utzi"
 
 #. / A path on the file system. /*/
 #: ui/LocalBooks.qml:739
@@ -136,34 +132,31 @@ msgid ""
 "accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
 "for Beru to read them."
 msgstr ""
-"Det ser ut som om AppArmor hindrer Beru fra å se størsteparten av "
-"hjemmemappa di.  Legg e-bøker i <i>%1</i> for å gjøre dem tilgjengelig for "
-"Beru."
 
 #. / Hyperlinked URL follows. /*/
 #: ui/LocalBooks.qml:745
 msgid "For more information:"
-msgstr "For mer informasjon:"
+msgstr "Informazio gehiago:"
 
 #: ui/LocalBooks.qml:768 ui/BookPage.qml:501
 msgid "Close"
-msgstr "Lukk"
+msgstr "Itxi"
 
 #: ui/LocalBooks.qml:793
 msgid "Recently Read"
-msgstr "Nylig lest"
+msgstr "Azkena irakurriak"
 
 #: ui/LocalBooks.qml:797
 msgid "Title"
-msgstr "Tittel"
+msgstr "Izenburua"
 
 #: ui/LocalBooks.qml:801
 msgid "Author"
-msgstr "Forfatter"
+msgstr "Egilea"
 
 #: ui/main.qml:88
 msgid "Error Opening File"
-msgstr "Feil ved åpning av fil"
+msgstr "Errorea fitxategia irekitzean"
 
 #: ui/main.qml:89
 msgid ""
@@ -171,39 +164,38 @@ msgid ""
 "\n"
 "Remember, Beru can only open Epub files without DRM."
 msgstr ""
-"Beru klarte ikke å åpne denne fila.\n"
+"Beru-k ezin izan du fitxategia ireki.\n"
 "\n"
-"Husk at Beru ikke kan åpne Epub-filer med DRM."
+"Gogoratu, Beru-k DRMrik gabeko Epub fitxategiak soilik irakur ditzake."
 
 #: ui/main.qml:92
 msgid "OK"
-msgstr "OK"
+msgstr "Ados"
 
 #: ui/BrowserPage.qml:31
 msgid "Enter URL"
-msgstr "Skriv inn nettadresse"
+msgstr "Idatzi URLa"
 
 #: ui/BrowserPage.qml:42
 msgid "Go"
-msgstr "Utfør"
+msgstr "Joan"
 
 #: ui/BrowserPage.qml:70
 msgid ""
 "This book will be added to your library as soon as the download is complete."
-msgstr ""
-"Denne boka blir lagt til i biblioteket ditt når nedlastinga er ferdig."
+msgstr "Liburu hau liburutegira gehituko da deskarga burutu bezain laster."
 
 #: ui/BrowserPage.qml:78
 msgid ""
 "This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
 "be able to read it."
 msgstr ""
-"Det ser ut som om fila <i>%1</i> ikke er en Epub-fil. Hvis dette stemmer, "
-"kan ikke Beru lese den."
+"Baliteke fitxategi hau, <i>%1</i>, ez izatea Epub fitxategi bat. Ez bada, "
+"Beru-k ezin izango du irakurri."
 
 #: ui/BrowserPage.qml:105
 msgid "Downloading Ebook"
-msgstr "Laster ned E-bok"
+msgstr "Liburu elektronikoa deskargatzen"
 
 #. / A path on the file system. /*/
 #: ui/BrowserPage.qml:116
@@ -212,76 +204,74 @@ msgstr ""
 
 #: ui/BrowserPage.qml:131
 msgid "Read book"
-msgstr "Les bok"
+msgstr "Irakurri liburua"
 
 #: ui/BrowserPage.qml:203
 msgid "Continue Browsing"
-msgstr "Fortsett å lete"
+msgstr "Jarraitu arakatzen"
 
 #: ui/BrowserPage.qml:218
 msgid "Possibly Incompatible File Type"
-msgstr "Mulig ubrukelig filtype"
+msgstr "Seguruenik fitxategi mota bateraezina"
 
 #: ui/BrowserPage.qml:223
 msgid "Cancel Download"
-msgstr "Avbryt nedlasting"
+msgstr "Utzi deskarga"
 
 #: ui/BrowserPage.qml:228
 msgid "Continue Download"
-msgstr "Fortsett nedlasting"
+msgstr "Berrekin deskarga"
 
 #: ui/BrowserPage.qml:242
 msgid "Download Error"
-msgstr "Feil ved nedlastning"
+msgstr "Deskarga-errorea"
 
 #: ui/BrowserPage.qml:243
 msgid ""
 "Beru was unable to find a place where the ebook could be saved.  This "
 "shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
 msgstr ""
-"Beru fant ikke et sted å lagre e-boka. Dette skal aldri skje. Vi ber om at "
-"du rapporterer dette som en programfeil via github.com/rschroll/beru/issues"
 
 #: ui/BrowserPage.qml:248
 msgid "What a Bummer!"
-msgstr "For en skuffelse!"
+msgstr ""
 
 #: ui/BrowserPage.qml:278 ui/BookPage.qml:119
 msgid "Forward"
-msgstr "Framover"
+msgstr "Aurrera"
 
 #. / Button presents Table of Contents /*/
 #: ui/BookPage.qml:136
 msgid "Contents"
-msgstr "Innhold"
+msgstr "Edukiak"
 
 #: ui/BookPage.qml:411
 msgid "Default Font"
-msgstr "Standard skrifttype"
+msgstr "Letra-tipo lehenetsia"
 
 #: ui/BookPage.qml:421
 msgid "Font Scaling"
-msgstr "Skriftskalering"
+msgstr ""
 
 #: ui/BookPage.qml:441
 msgid "Line Height"
-msgstr "Linjehøyde"
+msgstr "Lerroaren altuera"
 
 #: ui/BookPage.qml:459
 msgid "Auto"
-msgstr "Auto"
+msgstr ""
 
 #: ui/BookPage.qml:484
 msgid "Margins"
-msgstr "Marger"
+msgstr "Marjinak"
 
 #: ui/BookPage.qml:508
 msgid "Make Default"
-msgstr "Bruk som standard"
+msgstr "Bihurtu lehenetsi"
 
 #: ui/BookPage.qml:520
 msgid "Load Defaults"
-msgstr "Last inn standardverdier"
+msgstr "Kargatu lehenetsiak"
 
 #. / The application name is both an acronym and an homage to Star Wars. /*/
 #: beru.desktop.tr:4
@@ -291,4 +281,4 @@ msgstr "Beru"
 #. / "Basic" is used in the sense of "simple" or "uncomplicated". /*/
 #: beru.desktop.tr:6
 msgid "The Basic Epub Reader for Ubuntu"
-msgstr "Den enkle Epub-leseren for Ubuntu"
+msgstr "Ubunturako oinarrizko Epub irakurgailua"

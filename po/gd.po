@@ -1,57 +1,61 @@
-# Norwegian Bokmal translation for beru
+# Gaelic; Scottish translation for beru
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the beru package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
-#
+# GunChleoc <fios@foramnagaidhlig.net>, 2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-10-23 09:57-0400\n"
-"PO-Revision-Date: 2014-09-20 15:50+0000\n"
-"Last-Translator: Robert Schroll <rschroll@gmail.com>\n"
-"Language-Team: Norwegian Bokmal <nb@li.org>\n"
+"PO-Revision-Date: 2014-09-08 09:18+0000\n"
+"Last-Translator: GunChleoc <Unknown>\n"
+"Language-Team: Fòram na Gàidhlig\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : "
+"(n > 2 && n < 20) ? 2 : 3;\n"
 "X-Launchpad-Export-Date: 2014-10-24 04:16+0000\n"
 "X-Generator: Launchpad (build 17203)\n"
+"Language: gd\n"
 
 #: ui/LocalBooks.qml:18 ui/BrowserPage.qml:259 ui/BookPage.qml:94
 msgid "Library"
-msgstr "Bibliotek"
+msgstr "Leabhar-lann"
 
 #: ui/LocalBooks.qml:26
 msgid "Books"
-msgstr "Bøker"
+msgstr "Leabhraichean"
 
 #: ui/LocalBooks.qml:42 ui/LocalBooks.qml:660
 msgid "Welcome to Beru"
-msgstr "Velkommen til Beru"
+msgstr "Fàilte gu Beru"
 
 #: ui/LocalBooks.qml:124 ui/BrowserPage.qml:268 ui/BookPage.qml:103
 msgid "Back"
-msgstr "Tilbake"
+msgstr "Air ais"
 
 #: ui/LocalBooks.qml:178
 msgid "Could not open this book."
-msgstr "Klarte ikke å åpne denne boka."
+msgstr "Cha b' urrainn dhuinn an leabhar seo fhosgladh."
 
 #: ui/LocalBooks.qml:467
 msgid "Unknown Author"
-msgstr "Ukjent forfatter"
+msgstr "Ùghdar neo-aithnichte"
 
 #. / Argument will be at least 2. /*/
 #: ui/LocalBooks.qml:469
 msgid "%1 Book"
 msgid_plural "%1 Books"
-msgstr[0] "%1 bok"
-msgstr[1] "%1 bøker"
+msgstr[0] "%1 leabhar"
+msgstr[1] "%1 leabhar"
+msgstr[2] "%1 leabhraichean"
+msgstr[3] "%1 leabhar"
 
 #: ui/LocalBooks.qml:585
 msgid "No Books in Library"
-msgstr "Ingen bøker i biblioteket"
+msgstr "Chan eil leabhar san leabhar-lann"
 
 #. / A path on the file system. /*/
 #: ui/LocalBooks.qml:593
@@ -60,33 +64,33 @@ msgid ""
 "find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
 "will be added to the library."
 msgstr ""
-"Beru fant ingen bøker for biblioteket ditt. Beru søker automatisk gjennom "
-"alle epub-filer i <i>%1</i>. Bøker som åpnes i Beru blir også lagt til i "
-"biblioteket."
+"Cha deach le Beru leabhar a lorg airson na leabhar-lainn agad.  Lorgaidh "
+"Beru gach faidhle epub ann an <i>%1</i> gu fèin-obrachail.  A bharrachd air "
+"sin, thèid gach leabhar a dh'fhosglas tu le Beru a chur ris an leabhar-lann."
 
 #: ui/LocalBooks.qml:602
 msgid "Download Books"
-msgstr "Last ned bøker"
+msgstr "Luchdaich a-nuas leabhraichean"
 
 #: ui/LocalBooks.qml:608
 msgid "Search Again"
-msgstr "Søk igjen"
+msgstr "Lorg a-rithist"
 
 #: ui/LocalBooks.qml:629 ui/BookSources.qml:13
 msgid "Get Books"
-msgstr "Hent bøker"
+msgstr "Faigh leabhraichean"
 
 #: ui/LocalBooks.qml:638
 msgid "Sort"
-msgstr "Sorter"
+msgstr "Seòrsaich"
 
 #: ui/LocalBooks.qml:647 ui/BookPage.qml:145
 msgid "Settings"
-msgstr "Innstillinger"
+msgstr "Roghainnean"
 
 #: ui/LocalBooks.qml:660 ui/LocalBooks.qml:737
 msgid "Default Book Location"
-msgstr "Standard bokplassering"
+msgstr "Ionad tùsail nan leabhraichean"
 
 #. / Text precedes an entry for a file path. /*/
 #: ui/LocalBooks.qml:662
@@ -96,38 +100,39 @@ msgid ""
 "\n"
 "Changing this value will not affect existing books in your library."
 msgstr ""
-"Skriv inn hvor i hjemmemappa di det ligger bøker og/eller nye bøker skal "
-"lagres.\n"
+"cuir a-steach am pasgan sa phasgan dachaigh agad far an tèid na ebooks agad "
+"a ghlèidheadh.\n"
 "\n"
-"Bøker i biblioteket ditt blir ikke flyttet hvis du endrer dette."
+"Cha bhi buaidh aig an roghainn seo air na leabhraichean a tha san leabhar-"
+"lann agad mu thràth."
 
 #. / Create a new directory from path given. /*/
 #: ui/LocalBooks.qml:678
 msgid "Create Directory"
-msgstr "Lag mappe"
+msgstr "Cruthaich pasgan"
 
 #. / File exists with path given. /*/
 #: ui/LocalBooks.qml:682
 msgid "File Exists"
-msgstr "Fila finnes"
+msgstr "Tha am faidhle ann"
 
 #. / Read the books in the given directory again. /*/
 #: ui/LocalBooks.qml:687 ui/LocalBooks.qml:757
 msgid "Reload Directory"
-msgstr "Last inn mappe på nytt"
+msgstr "Luchdaich am pasgan às ùr"
 
 #. / Use directory specified to store books. /*/
 #: ui/LocalBooks.qml:690
 msgid "Use Directory"
-msgstr "Bruk mappe"
+msgstr "Cleachd am pasgan"
 
 #: ui/LocalBooks.qml:705
 msgid "Please wait..."
-msgstr "Vent litt …"
+msgstr "Fuirich ort..."
 
 #: ui/LocalBooks.qml:724
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr "Sguir dheth"
 
 #. / A path on the file system. /*/
 #: ui/LocalBooks.qml:739
@@ -136,34 +141,34 @@ msgid ""
 "accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
 "for Beru to read them."
 msgstr ""
-"Det ser ut som om AppArmor hindrer Beru fra å se størsteparten av "
-"hjemmemappa di.  Legg e-bøker i <i>%1</i> for å gjøre dem tilgjengelig for "
-"Beru."
+"Tha Beru ag obair fo chuingeachadh AppArmor a-rèir coltais a bhacas e on "
+"inntrigeadh dhan mhòrchuid dhen phasgan dachaigh agad.  Bu chòir dhut na h-"
+"ebooks a chur ann an <i>%1</i> ach an leugh Beru iad."
 
 #. / Hyperlinked URL follows. /*/
 #: ui/LocalBooks.qml:745
 msgid "For more information:"
-msgstr "For mer informasjon:"
+msgstr "Airson barrachd fiosrachaidh:"
 
 #: ui/LocalBooks.qml:768 ui/BookPage.qml:501
 msgid "Close"
-msgstr "Lukk"
+msgstr "Dùin"
 
 #: ui/LocalBooks.qml:793
 msgid "Recently Read"
-msgstr "Nylig lest"
+msgstr "Air a leughadh o chionn goirid"
 
 #: ui/LocalBooks.qml:797
 msgid "Title"
-msgstr "Tittel"
+msgstr "Tiotal"
 
 #: ui/LocalBooks.qml:801
 msgid "Author"
-msgstr "Forfatter"
+msgstr "Ùghdar"
 
 #: ui/main.qml:88
 msgid "Error Opening File"
-msgstr "Feil ved åpning av fil"
+msgstr "Mearachd le fosgladh an fhaidhle"
 
 #: ui/main.qml:89
 msgid ""
@@ -171,39 +176,40 @@ msgid ""
 "\n"
 "Remember, Beru can only open Epub files without DRM."
 msgstr ""
-"Beru klarte ikke å åpne denne fila.\n"
+"Cha deach le Beru am faidhle seo fhosgladh.\n"
 "\n"
-"Husk at Beru ikke kan åpne Epub-filer med DRM."
+"Chan urrainn dha Beru fosgladh ach faidhlichean Epub nach eil fo DRM."
 
 #: ui/main.qml:92
 msgid "OK"
-msgstr "OK"
+msgstr "Ceart ma-thà"
 
 #: ui/BrowserPage.qml:31
 msgid "Enter URL"
-msgstr "Skriv inn nettadresse"
+msgstr "Cuir URL a-steach"
 
 #: ui/BrowserPage.qml:42
 msgid "Go"
-msgstr "Utfør"
+msgstr "Siuthad"
 
 #: ui/BrowserPage.qml:70
 msgid ""
 "This book will be added to your library as soon as the download is complete."
 msgstr ""
-"Denne boka blir lagt til i biblioteket ditt når nedlastinga er ferdig."
+"Thèid an leabhar seo a chur ris an leabhar-lann agad cho luath 's a bhios an "
+"luchdadh a-nuas coileanta."
 
 #: ui/BrowserPage.qml:78
 msgid ""
 "This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
 "be able to read it."
 msgstr ""
-"Det ser ut som om fila <i>%1</i> ikke er en Epub-fil. Hvis dette stemmer, "
-"kan ikke Beru lese den."
+"'S dòcha nach eil am faidhle <i>%1</i> seo 'na fhaidhle Epub. Chan urrainn "
+"do Beru a leughadh mur eil."
 
 #: ui/BrowserPage.qml:105
 msgid "Downloading Ebook"
-msgstr "Laster ned E-bok"
+msgstr "A' luchdadh a-nuas Ebook"
 
 #. / A path on the file system. /*/
 #: ui/BrowserPage.qml:116
@@ -212,76 +218,76 @@ msgstr ""
 
 #: ui/BrowserPage.qml:131
 msgid "Read book"
-msgstr "Les bok"
+msgstr "Leagh an leabhar"
 
 #: ui/BrowserPage.qml:203
 msgid "Continue Browsing"
-msgstr "Fortsett å lete"
+msgstr "Cum a' brabhsadh"
 
 #: ui/BrowserPage.qml:218
 msgid "Possibly Incompatible File Type"
-msgstr "Mulig ubrukelig filtype"
+msgstr "'S dòcha nach eil seòrsa an fhaidhle co-chòrdail"
 
 #: ui/BrowserPage.qml:223
 msgid "Cancel Download"
-msgstr "Avbryt nedlasting"
+msgstr "Sgur dhen luchdadh a-nuas"
 
 #: ui/BrowserPage.qml:228
 msgid "Continue Download"
-msgstr "Fortsett nedlasting"
+msgstr "Lean air adhart leis an luchdadh a-nuas"
 
 #: ui/BrowserPage.qml:242
 msgid "Download Error"
-msgstr "Feil ved nedlastning"
+msgstr "Mearachd leis an luchdadh a-nuas"
 
 #: ui/BrowserPage.qml:243
 msgid ""
 "Beru was unable to find a place where the ebook could be saved.  This "
 "shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
 msgstr ""
-"Beru fant ikke et sted å lagre e-boka. Dette skal aldri skje. Vi ber om at "
-"du rapporterer dette som en programfeil via github.com/rschroll/beru/issues"
+"Cha do lorg Beru ionad gus an ebook a shàbhaladh. Cha bu chòir seo tachairt; "
+"nach dèan thu aithris air buga air github.com/rschroll/beru/issues?"
 
 #: ui/BrowserPage.qml:248
 msgid "What a Bummer!"
-msgstr "For en skuffelse!"
+msgstr "Daingead!"
 
 #: ui/BrowserPage.qml:278 ui/BookPage.qml:119
 msgid "Forward"
-msgstr "Framover"
+msgstr "Air adhart"
 
 #. / Button presents Table of Contents /*/
 #: ui/BookPage.qml:136
 msgid "Contents"
-msgstr "Innhold"
+msgstr "Clàr-innse"
 
 #: ui/BookPage.qml:411
 msgid "Default Font"
-msgstr "Standard skrifttype"
+msgstr "Cruth-clò tùsail"
 
 #: ui/BookPage.qml:421
 msgid "Font Scaling"
-msgstr "Skriftskalering"
+msgstr "Meud a' chrutha-chlò"
 
 #: ui/BookPage.qml:441
 msgid "Line Height"
-msgstr "Linjehøyde"
+msgstr "Àirde na loidhne"
 
 #: ui/BookPage.qml:459
 msgid "Auto"
-msgstr "Auto"
+msgstr "Gu fèin-obrachail"
 
 #: ui/BookPage.qml:484
 msgid "Margins"
-msgstr "Marger"
+msgstr "Marghain"
 
 #: ui/BookPage.qml:508
 msgid "Make Default"
-msgstr "Bruk som standard"
+msgstr "Dèan a' bhun-roghainn dheth"
 
 #: ui/BookPage.qml:520
 msgid "Load Defaults"
-msgstr "Last inn standardverdier"
+msgstr "Luchdaich na bun-roghainnean"
 
 #. / The application name is both an acronym and an homage to Star Wars. /*/
 #: beru.desktop.tr:4
@@ -291,4 +297,4 @@ msgstr "Beru"
 #. / "Basic" is used in the sense of "simple" or "uncomplicated". /*/
 #: beru.desktop.tr:6
 msgid "The Basic Epub Reader for Ubuntu"
-msgstr "Den enkle Epub-leseren for Ubuntu"
+msgstr "Inneal-leughaidh Epub bunasach airson Ubuntu"
