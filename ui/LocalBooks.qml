@@ -20,7 +20,7 @@ Page {
     property int sort: 0
     property bool needsort: false
     property bool firststart: false
-    property bool wide: width >= units.gu(80)
+    property bool wide: false
     property string bookdir: ""
     property bool writablehome: false
     property string defaultdirname: i18n.tr("Books")
@@ -32,6 +32,7 @@ Page {
         adjustViews(false)
     }
     onWidthChanged: {
+        wide = (width >= units.gu(80))
         widthAnimation.enabled = false
         adjustViews(true)  // True to allow author's list if necessary
         widthAnimation.enabled = true
@@ -305,7 +306,7 @@ Page {
             listBooks()
         // If we are viewing recently read, then the book we had been reading is now at the top
         if (visible && sort == 0)
-            listview.positionViewAtBeginning()
+            gridview.positionViewAtBeginning()
     }
 
     EpubReader {
@@ -466,7 +467,8 @@ Page {
         Subtitled {
             text: model.author || i18n.tr("Unknown Author")
             /*/ Argument will be at least 2. /*/
-            subText: (model.count > 1) ? i18n.tr("%1 Books").arg(model.count) : model.title
+            subText: (model.count > 1) ? i18n.tr("%1 Book", "%1 Books", model.count).arg(model.count)
+                                       : model.title
             iconSource: {
                 if (model.count > 1)
                     return "image://theme/contact"
@@ -657,6 +659,7 @@ Page {
         Dialog {
             id: settingsDialog
             title: firststart ? i18n.tr("Welcome to Beru") : i18n.tr("Default Book Location")
+            /*/ Text precedes an entry for a file path. /*/
             text: i18n.tr("Enter the folder in your home directory where your ebooks are or " +
                           "should be stored.\n\nChanging this value will not affect existing " +
                           "books in your library.")
@@ -672,15 +675,19 @@ Page {
                 onTextChanged: {
                     var status = filesystem.exists(homepath + pathfield.text)
                     if (status == 0) {
+                        /*/ Create a new directory from path given. /*/
                         useButton.text = i18n.tr("Create Directory")
                         useButton.enabled = true
                     } else if (status == 1) {
+                        /*/ File exists with path given. /*/
                         useButton.text = i18n.tr("File Exists")
                         useButton.enabled = false
                     } else if (status == 2) {
                         if (homepath + pathfield.text == bookdir && !firststart)
+                            /*/ Read the books in the given directory again. /*/
                             useButton.text = i18n.tr("Reload Directory")
                         else
+                            /*/ Use directory specified to store books. /*/
                             useButton.text = i18n.tr("Use Directory")
                         useButton.enabled = true
                     }

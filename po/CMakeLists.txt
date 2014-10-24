@@ -30,5 +30,5 @@ foreach(PO_FILE ${PO_FILES})
     set(INSTALL_DIR ${CMAKE_INSTALL_LOCALEDIR}/${LANG}/LC_MESSAGES)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${LANG}.gmo
             DESTINATION ${INSTALL_DIR}
-            RENAME ${DOMAIN}.mo)
+            RENAME ${APP_NAME}.mo)
 endforeach(PO_FILE)

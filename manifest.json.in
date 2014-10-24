@@ -8,7 +8,7 @@
         }
     },
     "maintainer": "Robert Schroll <rschroll@gmail.com>",
-    "name": "com.ubuntu.developer.rschroll.beru",
+    "name": "@APP_NAME@",
     "title": "Beru",
     "version": "@VERSION@",
     "architecture": "@ARCH@"
