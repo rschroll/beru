@@ -7,17 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-08-12 18:33-0400\n"
-"PO-Revision-Date: 2014-08-16 07:03+0000\n"
+"POT-Creation-Date: 2014-10-23 09:57-0400\n"
+"PO-Revision-Date: 2014-09-30 11:10+0000\n"
 "Last-Translator: Claudio Arseni <claudio.arseni@gmail.com>\n"
 "Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2014-09-02 21:16+0000\n"
-"X-Generator: Launchpad (build 17192)\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Launchpad-Export-Date: 2014-10-24 04:16+0000\n"
+"X-Generator: Launchpad (build 17203)\n"
 
-#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:281 ui/BookPage.qml:89
+#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:259 ui/BookPage.qml:94
 msgid "Library"
 msgstr "Libreria"
 
@@ -25,11 +26,11 @@ msgstr "Libreria"
 msgid "Books"
 msgstr "Libri"
 
-#: ui/LocalBooks.qml:42 ui/LocalBooks.qml:659
+#: ui/LocalBooks.qml:42 ui/LocalBooks.qml:660
 msgid "Welcome to Beru"
 msgstr "Benvenuti in Beru"
 
-#: ui/LocalBooks.qml:124 ui/BrowserPage.qml:290 ui/BookPage.qml:98
+#: ui/LocalBooks.qml:124 ui/BrowserPage.qml:268 ui/BookPage.qml:103
 msgid "Back"
 msgstr "Indietro"
 
@@ -43,15 +44,17 @@ msgstr "Autore sconosciuto"
 
 #. / Argument will be at least 2. /*/
 #: ui/LocalBooks.qml:469
-msgid "%1 Books"
-msgstr "%1 libri"
+msgid "%1 Book"
+msgid_plural "%1 Books"
+msgstr[0] "%1 libro"
+msgstr[1] "%1 libri"
 
-#: ui/LocalBooks.qml:584
+#: ui/LocalBooks.qml:585
 msgid "No Books in Library"
 msgstr "Nessun libro presente"
 
 #. / A path on the file system. /*/
-#: ui/LocalBooks.qml:592
+#: ui/LocalBooks.qml:593
 msgid ""
 "Beru could not find any books for your library.  Beru will automatically "
 "find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
@@ -61,31 +64,32 @@ msgstr ""
 "automaticamente tutti i file epub in <i>%1</i>. Inoltre, ogni libro aperto "
 "con Beru verrà aggiunto alla libreria."
 
-#: ui/LocalBooks.qml:601
+#: ui/LocalBooks.qml:602
 msgid "Download Books"
 msgstr "Scarica libri"
 
-#: ui/LocalBooks.qml:607
+#: ui/LocalBooks.qml:608
 msgid "Search Again"
 msgstr "Cerca ancora"
 
-#: ui/LocalBooks.qml:628 ui/BookSources.qml:13
+#: ui/LocalBooks.qml:629 ui/BookSources.qml:13
 msgid "Get Books"
 msgstr "Ottieni libri"
 
-#: ui/LocalBooks.qml:637
+#: ui/LocalBooks.qml:638
 msgid "Sort"
 msgstr "Ordina"
 
-#: ui/LocalBooks.qml:646 ui/BookPage.qml:137
+#: ui/LocalBooks.qml:647 ui/BookPage.qml:145
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: ui/LocalBooks.qml:659 ui/LocalBooks.qml:731
+#: ui/LocalBooks.qml:660 ui/LocalBooks.qml:737
 msgid "Default Book Location"
 msgstr "Posizione predefinita dei libri"
 
-#: ui/LocalBooks.qml:660
+#. / Text precedes an entry for a file path. /*/
+#: ui/LocalBooks.qml:662
 msgid ""
 "Enter the folder in your home directory where your ebooks are or should be "
 "stored.\n"
@@ -98,32 +102,36 @@ msgstr ""
 "La modifica di questo valore non interesserà i libri già presenti nella "
 "libreria."
 
-#: ui/LocalBooks.qml:675
+#. / Create a new directory from path given. /*/
+#: ui/LocalBooks.qml:678
 msgid "Create Directory"
 msgstr "Crea directory"
 
-#: ui/LocalBooks.qml:678
+#. / File exists with path given. /*/
+#: ui/LocalBooks.qml:682
 msgid "File Exists"
 msgstr "File già esistente"
 
-#: ui/LocalBooks.qml:682 ui/LocalBooks.qml:751
+#. / Read the books in the given directory again. /*/
+#: ui/LocalBooks.qml:687 ui/LocalBooks.qml:757
 msgid "Reload Directory"
 msgstr "Ricarica directory"
 
-#: ui/LocalBooks.qml:684
+#. / Use directory specified to store books. /*/
+#: ui/LocalBooks.qml:690
 msgid "Use Directory"
 msgstr "Usa directory"
 
-#: ui/LocalBooks.qml:699
+#: ui/LocalBooks.qml:705
 msgid "Please wait..."
 msgstr "Attendere..."
 
-#: ui/LocalBooks.qml:718
+#: ui/LocalBooks.qml:724
 msgid "Cancel"
 msgstr "Annulla"
 
 #. / A path on the file system. /*/
-#: ui/LocalBooks.qml:733
+#: ui/LocalBooks.qml:739
 msgid ""
 "Beru seems to be operating under AppArmor restrictions that prevent it from "
 "accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
@@ -134,31 +142,31 @@ msgstr ""
 "essere collocati in <i>%1</i> per consentire a Beru di leggerli."
 
 #. / Hyperlinked URL follows. /*/
-#: ui/LocalBooks.qml:739
+#: ui/LocalBooks.qml:745
 msgid "For more information:"
 msgstr "Per ulteriori informazioni:"
 
-#: ui/LocalBooks.qml:762 ui/BookPage.qml:442
+#: ui/LocalBooks.qml:768 ui/BookPage.qml:501
 msgid "Close"
 msgstr "Chiudi"
 
-#: ui/LocalBooks.qml:787
+#: ui/LocalBooks.qml:793
 msgid "Recently Read"
 msgstr "Letti recentemente"
 
-#: ui/LocalBooks.qml:791
+#: ui/LocalBooks.qml:797
 msgid "Title"
 msgstr "Titolo"
 
-#: ui/LocalBooks.qml:795
+#: ui/LocalBooks.qml:801
 msgid "Author"
 msgstr "Autore"
 
-#: ui/main.qml:69
+#: ui/main.qml:88
 msgid "Error Opening File"
 msgstr "Errore nell'apertura del file"
 
-#: ui/main.qml:70
+#: ui/main.qml:89
 msgid ""
 "Beru could not open this file.\n"
 "\n"
@@ -168,32 +176,26 @@ msgstr ""
 "\n"
 "Tenere presente che Beru può aprire solo Epub senza DRM."
 
-#: ui/main.qml:73
+#: ui/main.qml:92
 msgid "OK"
 msgstr "OK"
 
-#: ui/BrowserPage.qml:30
+#: ui/BrowserPage.qml:31
 msgid "Enter URL"
 msgstr "Inserire URL"
 
-#: ui/BrowserPage.qml:41
+#: ui/BrowserPage.qml:42
 msgid "Go"
 msgstr "Vai"
 
-#: ui/BrowserPage.qml:104
+#: ui/BrowserPage.qml:70
 msgid ""
 "This book will be added to your library as soon as the download is complete."
 msgstr ""
 "Questo libro verrà aggiunto alla libreria personale appena il download sarà "
 "completato."
 
-#. / A path on the file system. /*/
-#: ui/BrowserPage.qml:107
-msgid "This book is being saved as <i>%1</i>"
-msgstr "Questo libro viene salvato in <i>%1</i>"
-
-#. / A path on the file system. /*/
-#: ui/BrowserPage.qml:112
+#: ui/BrowserPage.qml:78
 msgid ""
 "This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
 "be able to read it."
@@ -201,35 +203,40 @@ msgstr ""
 "Il file <i>%1</i> potrebbe non essere un file Epub. In questo caso, Beru non "
 "sarà in grado di leggerlo."
 
-#: ui/BrowserPage.qml:138
+#: ui/BrowserPage.qml:105
 msgid "Downloading Ebook"
 msgstr "Scaricamento Ebook"
 
-#: ui/BrowserPage.qml:209
+#. / A path on the file system. /*/
+#: ui/BrowserPage.qml:116
+msgid "This book was saved as <i>%1</i>"
+msgstr ""
+
+#: ui/BrowserPage.qml:131
 msgid "Read book"
 msgstr "Leggi libro"
 
-#: ui/BrowserPage.qml:218
+#: ui/BrowserPage.qml:203
 msgid "Continue Browsing"
 msgstr "Continua l'esplorazione"
 
-#: ui/BrowserPage.qml:240
+#: ui/BrowserPage.qml:218
 msgid "Possibly Incompatible File Type"
 msgstr "Possibile tipo di file non compatibile"
 
-#: ui/BrowserPage.qml:245
+#: ui/BrowserPage.qml:223
 msgid "Cancel Download"
 msgstr "Annulla scaricamento"
 
-#: ui/BrowserPage.qml:250
+#: ui/BrowserPage.qml:228
 msgid "Continue Download"
 msgstr "Continua scaricamento"
 
-#: ui/BrowserPage.qml:264
+#: ui/BrowserPage.qml:242
 msgid "Download Error"
 msgstr "Errore nello scaricamento"
 
-#: ui/BrowserPage.qml:265
+#: ui/BrowserPage.qml:243
 msgid ""
 "Beru was unable to find a place where the ebook could be saved.  This "
 "shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
@@ -238,43 +245,44 @@ msgstr ""
 "Questo non dovrebbe accadere; segnalare il problema nella pagina "
 "github.com/rschroll/beru/issues"
 
-#: ui/BrowserPage.qml:270
+#: ui/BrowserPage.qml:248
 msgid "What a Bummer!"
 msgstr "Accidenti!"
 
-#: ui/BrowserPage.qml:300 ui/BookPage.qml:113
+#: ui/BrowserPage.qml:278 ui/BookPage.qml:119
 msgid "Forward"
 msgstr "Inoltra"
 
-#: ui/BookPage.qml:128
+#. / Button presents Table of Contents /*/
+#: ui/BookPage.qml:136
 msgid "Contents"
 msgstr "Contenuti"
 
-#: ui/BookPage.qml:352
+#: ui/BookPage.qml:411
 msgid "Default Font"
 msgstr "Carattere predefinito"
 
-#: ui/BookPage.qml:362
+#: ui/BookPage.qml:421
 msgid "Font Scaling"
 msgstr "Scalatura carattere"
 
-#: ui/BookPage.qml:382
+#: ui/BookPage.qml:441
 msgid "Line Height"
 msgstr "Altezza riga"
 
-#: ui/BookPage.qml:400
+#: ui/BookPage.qml:459
 msgid "Auto"
 msgstr "Automatica"
 
-#: ui/BookPage.qml:425
+#: ui/BookPage.qml:484
 msgid "Margins"
 msgstr "Margini"
 
-#: ui/BookPage.qml:449
+#: ui/BookPage.qml:508
 msgid "Make Default"
 msgstr "Rendi predefinito"
 
-#: ui/BookPage.qml:464
+#: ui/BookPage.qml:520
 msgid "Load Defaults"
 msgstr "Carica predefiniti"
 
@@ -283,6 +291,7 @@ msgstr "Carica predefiniti"
 msgid "Beru"
 msgstr "Beru"
 
-#: beru.desktop.tr:5
+#. / "Basic" is used in the sense of "simple" or "uncomplicated". /*/
+#: beru.desktop.tr:6
 msgid "The Basic Epub Reader for Ubuntu"
 msgstr "Basic Epub Reader per Ubuntu"
