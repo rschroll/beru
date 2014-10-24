@@ -20,7 +20,7 @@ Page {
     property int sort: 0
     property bool needsort: false
     property bool firststart: false
-    property bool wide: width >= units.gu(80)
+    property bool wide: false
     property string bookdir: ""
     property bool writablehome: false
     property string defaultdirname: i18n.tr("Books")
@@ -32,6 +32,7 @@ Page {
         adjustViews(false)
     }
     onWidthChanged: {
+        wide = (width >= units.gu(80))
         widthAnimation.enabled = false
         adjustViews(true)  // True to allow author's list if necessary
         widthAnimation.enabled = true
