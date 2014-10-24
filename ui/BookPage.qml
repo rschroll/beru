@@ -40,6 +40,7 @@ Page {
     }
 
     onVisibleChanged: {
+        mainView.automaticOrientation = !visible
         if (visible == false) {
             // Reset things for the next time this page is opened
             if (history)
