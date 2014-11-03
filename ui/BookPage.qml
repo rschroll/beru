@@ -422,9 +422,10 @@ Page {
 
             Row {
                 Label {
-                    /*/ Limited space: ~15 characters /*/
+                    /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Font Scaling")
                     verticalAlignment: Text.AlignVCenter
+                    wrapMode: Text.Wrap
                     width: labelwidth
                     height: fontScaleSlider.height
                 }
@@ -443,9 +444,10 @@ Page {
 
             Row {
                 Label {
-                    /*/ Limited space: ~15 characters /*/
+                    /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Line Height")
                     verticalAlignment: Text.AlignVCenter
+                    wrapMode: Text.Wrap
                     width: labelwidth
                     height: lineHeightSlider.height
                 }
@@ -462,7 +464,10 @@ Page {
 
                     function formatValue(v, untranslated) {
                         if (v < 0.95)
-                            /*/ Very limited space: ~5 characters /*/
+                            /*/ Indicates the default line height will be used, as opposed to a /*/
+                            /*/ user-set value.  There is only space for about 5 characters; if /*/
+                            /*/ the translated string will not fit, please translate this as an /*/
+                            /*/ em-dash (—). /*/
                             return untranslated ? "Default" : i18n.tr("Auto")
                         return v.toFixed(1)
                     }
@@ -488,9 +493,10 @@ Page {
 
             Row {
                 Label {
-                    /*/ Limited space: ~15 characters /*/
+                    /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Margins")
                     verticalAlignment: Text.AlignVCenter
+                    wrapMode: Text.Wrap
                     width: labelwidth
                     height: marginSlider.height
                 }
@@ -511,11 +517,13 @@ Page {
             }
 
             Item {
-                height: children[0].height
+                property bool horizontal: (setDefault.text.length < 16 && loadDefault.text.length < 16)
+                height: horizontal ? setDefault.height : 2 * setDefault.height + units.gu(2)
                 Button {
-                    /*/ Limited space: ~15 characters /*/
+                    id: setDefault
+                    /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Make Default")
-                    width: parent.width/2 - units.gu(1)
+                    width: parent.horizontal ? parent.width/2 - units.gu(1) : parent.width
                     anchors {
                         left: parent.left
                         top: parent.top
@@ -526,12 +534,13 @@ Page {
                     onClicked: bookStyles.saveAsDefault()
                 }
                 Button {
-                    /*/ Limited space: ~15 characters /*/
+                    id: loadDefault
+                    /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Load Defaults")
-                    width: parent.width/2 - units.gu(1)
+                    width: parent.horizontal ? parent.width/2 - units.gu(1) : parent.width
                     anchors {
                         right: parent.right
-                        top: parent.top
+                        bottom: parent.bottom
                     }
                     gradient: UbuntuColors.greyGradient
                     enabled: !bookStyles.atdefault
