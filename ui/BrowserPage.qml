@@ -39,7 +39,6 @@ Page {
 
         Button {
             id: goButton
-            /*/ Limited space: ~8 characters /*/
             text: i18n.tr("Go")
             anchors {
                 margins: units.gu(1)
