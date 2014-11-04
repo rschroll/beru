@@ -436,7 +436,8 @@ Page {
                     minimumValue: 0
                     maximumValue: 12
                     function formatValue(v) {
-                        return [0.5, 0.59, 0.7, 0.84, 1, 1.2, 1.4, 1.7, 2, 2.4, 2.8, 3.4, 4][Math.round(v)]
+                        return ["0.5", "0.59", "0.7", "0.84", "1", "1.2", "1.4", "1.7", "2", "2.4",
+                                "2.8", "3.4", "4"][Math.round(v)]
                     }
                     onValueChanged: bookStyles.fontScale = formatValue(value)
                 }
