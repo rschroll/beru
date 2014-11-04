@@ -12,6 +12,8 @@ import Ubuntu.Components.Popups 0.1
 import U1db 1.0 as U1db
 import File 1.0
 
+import "components"
+
 
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
@@ -88,7 +90,7 @@ MainView {
             title: i18n.tr("Error Opening File")
             text: i18n.tr("Beru could not open this file.\n\n" +
                           "Remember, Beru can only open Epub files without DRM.")
-            Button {
+            StyledButton {
                 text: i18n.tr("OK")
                 onClicked: PopupUtils.close(errorOpenDialog)
             }

@@ -10,6 +10,9 @@ import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.Extras.Browser 0.2
 import Ubuntu.DownloadManager 0.1
 
+import "components"
+
+
 Page {
     id: browserPage
     property var url
@@ -37,7 +40,7 @@ Page {
             }
         }
 
-        Button {
+        StyledButton {
             id: goButton
             text: i18n.tr("Go")
             anchors {
@@ -125,7 +128,7 @@ Page {
                 value: download.progress/100
             }
 
-            Button {
+            StyledButton {
                 id: openFileButton
                 visible: false
                 text: i18n.tr("Read book")
@@ -199,7 +202,7 @@ Page {
                 }
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Continue Browsing")
                 onClicked: PopupUtils.close(downloadDialog)
             }
@@ -219,12 +222,12 @@ Page {
 
             property var downloadargs
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Cancel Download")
                 onClicked: PopupUtils.close(extensionDialog)
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Continue Download")
                 onClicked: {
                     PopupUtils.close(extensionDialog)
@@ -244,7 +247,7 @@ Page {
                           "This shouldn't ever happen; please submit a bug at " +
                           "github.com/rschroll/beru/issues")
 
-            Button {
+            StyledButton {
                 text: i18n.tr("What a Bummer!")
                 onClicked: PopupUtils.close(errorDialog)
             }

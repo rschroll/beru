@@ -511,7 +511,7 @@ Page {
                 }
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Close")
                 onClicked: PopupUtils.close(stylesDialog)
             }
@@ -519,7 +519,7 @@ Page {
             Item {
                 property bool horizontal: (setDefault.text.length < 16 && loadDefault.text.length < 16)
                 height: horizontal ? setDefault.height : 2 * setDefault.height + units.gu(2)
-                Button {
+                StyledButton {
                     id: setDefault
                     /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Make Default")
@@ -529,11 +529,11 @@ Page {
                         top: parent.top
                         //width: parent.width / 2
                     }
-                    gradient: UbuntuColors.greyGradient
+                    primary: false
                     enabled: !bookStyles.atdefault
                     onClicked: bookStyles.saveAsDefault()
                 }
-                Button {
+                StyledButton {
                     id: loadDefault
                     /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Load Defaults")
@@ -542,7 +542,7 @@ Page {
                         right: parent.right
                         bottom: parent.bottom
                     }
-                    gradient: UbuntuColors.greyGradient
+                    primary: false
                     enabled: !bookStyles.atdefault
                     onClicked: bookStyles.resetToDefaults()
                 }
