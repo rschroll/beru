@@ -39,7 +39,7 @@ Page {
         adjustViews(true)  // True to allow author's list if necessary
         widthAnimation.enabled = true
     }
-    
+
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
         noBooksLabel.text = i18n.tr("Welcome to Beru")
@@ -50,11 +50,11 @@ Page {
         return LocalStorage.openDatabaseSync("BeruLocalBooks", "", "Books on the local device",
                                              1000000, onFirstStart);
     }
-    
+
     function fileToTitle(filename) {
         return filename.replace(/\.epub$/, "").replace(/_/g, " ")
     }
-    
+
     // New items are given a lastread time of now, since these are probably
     // interesting for a user to see.
     property string addFileSQL: "INSERT OR IGNORE INTO LocalBooks(filename, title, author, authorsort, " +
@@ -82,7 +82,7 @@ Page {
         })
         localBooks.needsort = true
     }
-    
+
     function listBooks() {
         // We only need to GROUP BY in the author sort, but this lets us use the same
         // SQL logic for all three cases.
@@ -324,7 +324,7 @@ Page {
 
         onTriggered: localBooks.updateBookCover()
     }
-    
+
     ListModel {
         id: bookModel
     }
@@ -622,7 +622,7 @@ Page {
         width: units.gu(5)
         height: units.gu(5)
     }
-    
+
     tools: ToolbarItems {
         id: localBooksToolbar
 
@@ -774,13 +774,13 @@ Page {
             }
         }
     }
-    
+
     Component {
         id: sortComponent
-        
+
         ActionSelectionPopover {
             id: sortPopover
-            
+
             delegate: Standard {
                 text: action.text
                 selected: action.sort == localBooks.sort
@@ -790,7 +790,7 @@ Page {
                     localBooksToolbar.opened = false
                 }
             }
-            
+
             actions: ActionList {
                 Action {
                     text: i18n.tr("Recently Read")
