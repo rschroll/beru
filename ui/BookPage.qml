@@ -94,6 +94,7 @@ Page {
             action: Action {
                 text: i18n.tr("Library")
                 iconName: "back"
+                //this 3 step process forces book covers to return to top of page by force pushing the localBooks page
                 onTriggered: {pageStack.pop(); pageStack.push(localBooks); pageStack.pop()}
             }
         }
