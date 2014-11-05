@@ -20,7 +20,7 @@ import "historystack.js" as History
 Page {
     id: bookPage
     //flickable: null
-    
+
     property alias url: bookWebView.url
     property var currentChapter: null
     property var history: new History.History(updateNavButtons)
@@ -63,7 +63,7 @@ Page {
         opacity: 1
         running: opacity != 0
     }
-    
+
     WebView {
         id: bookWebView
         anchors.fill: parent
@@ -94,7 +94,7 @@ Page {
             action: Action {
                 text: i18n.tr("Library")
                 iconName: "back"
-                onTriggered: pageStack.pop()
+                onTriggered: {pageStack.pop(); pageStack.push(localBooks); pageStack.pop()}
             }
         }
 
