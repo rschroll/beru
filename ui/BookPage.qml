@@ -94,7 +94,10 @@ Page {
             action: Action {
                 text: i18n.tr("Library")
                 iconName: "back"
-                onTriggered: pageStack.pop()
+                onTriggered: {
+                    pageStack.pop()
+                    localBooks.flickable.returnToBounds()  // Fix bug #63
+                }
             }
         }
 
