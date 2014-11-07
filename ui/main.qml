@@ -1,4 +1,4 @@
-/* Copyright 2013 Robert Schroll
+/* Copyright 2013-2014 Robert Schroll
  *
  * This file is part of Beru and is distributed under the terms of
  * the GPL. See the file COPYING for full details.
@@ -11,6 +11,8 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import U1db 1.0 as U1db
 import File 1.0
+
+import "components"
 
 
 MainView {
@@ -88,7 +90,7 @@ MainView {
             title: i18n.tr("Error Opening File")
             text: i18n.tr("Beru could not open this file.\n\n" +
                           "Remember, Beru can only open Epub files without DRM.")
-            Button {
+            StyledButton {
                 text: i18n.tr("OK")
                 onClicked: PopupUtils.close(errorOpenDialog)
             }

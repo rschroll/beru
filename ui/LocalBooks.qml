@@ -12,6 +12,8 @@ import Ubuntu.Components.ListItems 0.1
 import Ubuntu.Components.Popups 0.1
 import Epub 1.0
 
+import "components"
+
 
 Page {
     id: localBooks
@@ -599,13 +601,13 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Download Books")
                 width: parent.width
                 onClicked: pageStack.push(bookSources)
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Search Again")
                 width: parent.width
                 onClicked: readBookDir()
@@ -694,7 +696,7 @@ Page {
                 }
             }
 
-            Button {
+            StyledButton {
                 id: useButton
                 onClicked: {
                     var status = filesystem.exists(homepath + pathfield.text)
@@ -720,10 +722,10 @@ Page {
                 }
             }
 
-            Button {
+            StyledButton {
                 id: cancelButton
                 text: i18n.tr("Cancel")
-                gradient: UbuntuColors.greyGradient
+                primary: false
                 visible: !firststart
                 onClicked: PopupUtils.close(settingsDialog)
             }
@@ -754,7 +756,7 @@ Page {
                 wrapMode: Text.WordWrap
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Reload Directory")
                 // We don't bother with the Timer trick here since we don't get this dialog on
                 // first launch, so we shouldn't have too many books added to the library when
@@ -765,9 +767,9 @@ Page {
                 }
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Close")
-                gradient: UbuntuColors.greyGradient
+                primary: false
                 onClicked: PopupUtils.close(settingsDisabledDialog)
             }
         }

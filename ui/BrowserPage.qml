@@ -1,4 +1,4 @@
-/* Copyright 2013 Robert Schroll
+/* Copyright 2013-2014 Robert Schroll
  *
  * This file is part of Beru and is distributed under the terms of
  * the GPL. See the file COPYING for full details.
@@ -9,6 +9,9 @@ import Ubuntu.Components 0.1
 import Ubuntu.Components.Popups 0.1
 import Ubuntu.Components.Extras.Browser 0.2
 import Ubuntu.DownloadManager 0.1
+
+import "components"
+
 
 Page {
     id: browserPage
@@ -37,9 +40,8 @@ Page {
             }
         }
 
-        Button {
+        StyledButton {
             id: goButton
-            /*/ Limited space: ~8 characters /*/
             text: i18n.tr("Go")
             anchors {
                 margins: units.gu(1)
@@ -126,7 +128,7 @@ Page {
                 value: download.progress/100
             }
 
-            Button {
+            StyledButton {
                 id: openFileButton
                 visible: false
                 text: i18n.tr("Read book")
@@ -200,7 +202,7 @@ Page {
                 }
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Continue Browsing")
                 onClicked: PopupUtils.close(downloadDialog)
             }
@@ -220,12 +222,12 @@ Page {
 
             property var downloadargs
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Cancel Download")
                 onClicked: PopupUtils.close(extensionDialog)
             }
 
-            Button {
+            StyledButton {
                 text: i18n.tr("Continue Download")
                 onClicked: {
                     PopupUtils.close(extensionDialog)
@@ -245,7 +247,7 @@ Page {
                           "This shouldn't ever happen; please submit a bug at " +
                           "github.com/rschroll/beru/issues")
 
-            Button {
+            StyledButton {
                 text: i18n.tr("What a Bummer!")
                 onClicked: PopupUtils.close(errorDialog)
             }

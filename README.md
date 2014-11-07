@@ -1,8 +1,8 @@
 Basic Epub Reader for Ubuntu
 ============================
-Beru is an epub reader for Ubuntu Touch.  It's fair to call it a
-beta now, but some rough edges still exist.  Watch the progress at
-http://rschroll.github.io/beru/.
+Beru is an epub reader for Ubuntu.  It's built on the the new Ubuntu
+Toolkit, so it works best on touch devices.  It behaves resonably on the
+desktop, as well.  Watch the progress at http://rschroll.github.io/beru/.
 
 Building
 --------
