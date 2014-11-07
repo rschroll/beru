@@ -1,3 +1,9 @@
+beru (1.0.1-0) trusty; urgency=low
+
+  * 1.0 release
+
+ -- Robert Schroll <rschroll@gmail.com>  Fri, 07 Nov 2014 14:22:00 -0500
+
 beru (0.9.11-0) trusty; urgency=low
 
   * Beta 2 release

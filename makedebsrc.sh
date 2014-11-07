@@ -1,5 +1,7 @@
 #!/bin/bash
-RELEASES="trusty utopic"
+RELEASES="trusty utopic vivid"
+PPA="ppa:rschroll/beru"
+NAME="beru"
 
 # Version can only be a.b.c for numbers a,b,c!
 # Thus, we use even revisions for restricted versions and odd revisions for
@@ -23,7 +25,7 @@ do
     cp debian/changelog debian/changelog.backup
     sed -i "s/${ORIG_RELEASE}/${RELEASE}/;s/-0)/-0~${RELEASE}1)/" debian/changelog
     debuild -S
-    #dput ${PPA} ../${NAME}_${VERSION}-0ubuntu1~${RELEASE}1_source.changes
+    dput ${PPA} ../${NAME}_${VERSION}-0~${RELEASE}1_source.changes
     mv debian/changelog.backup debian/changelog
 done
 cd ..
