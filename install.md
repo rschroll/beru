@@ -16,7 +16,7 @@ Beru is available in the Software Store for Ubuntu Touch.  (This is different fr
 Note that this version runs under [application confinement restrictions]({{ site.baseurl }}/confinement.html).
 
 ## <a name="click">Click package</a>
-Download the click package for your [ARM touch device]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_0.9.11_armhf.click) and install it with
+Download the click package for your [ARM touch device]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_1.0.1_armhf.click) and install it with
 {% highlight bash %}
 sudo pkcon install-local *.click
 {% endhighlight %}
