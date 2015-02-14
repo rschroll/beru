@@ -19,7 +19,7 @@ Page {
     id: localBooks
     title: i18n.tr("Library")
     flickable: gridview
-    property int sort: 0
+    property int sort: localBooks.head.sections.selectedIndex
     property bool needsort: false
     property bool firststart: false
     property bool wide: false
@@ -615,33 +615,25 @@ Page {
         }
     }
 
-    Item {
-        id: fakeSortButton
-        x: parent.width - units.gu(10)
-        y: units.gu(1)
-        width: units.gu(5)
-        height: units.gu(5)
-    }
-    
-    head.actions: [
-        Action {
-            text: i18n.tr("Get Books")
-            iconName: "search"
-            onTriggered: pageStack.push(bookSources)
-        },
+    head {
+        actions: [
+            Action {
+                text: i18n.tr("Get Books")
+                iconName: "search"
+                onTriggered: pageStack.push(bookSources)
+            },
 
-        Action {
-            text: i18n.tr("Sort")
-            iconName: "filter"
-            onTriggered: PopupUtils.open(sortComponent, fakeSortButton)
-        },
+            Action {
+                text: i18n.tr("Settings")
+                iconName: "settings"
+                onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent)
+            }
+        ]
 
-        Action {
-            text: i18n.tr("Settings")
-            iconName: "settings"
-            onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent)
+        sections {
+            model: [i18n.tr("Recently Read"), i18n.tr("Title"), i18n.tr("Author")]
         }
-    ]
+    }
 
     Component {
         id: settingsComponent
@@ -759,39 +751,6 @@ Page {
                 text: i18n.tr("Close")
                 primary: false
                 onClicked: PopupUtils.close(settingsDisabledDialog)
-            }
-        }
-    }
-    
-    Component {
-        id: sortComponent
-        
-        ActionSelectionPopover {
-            id: sortPopover
-            
-            delegate: Standard {
-                text: action.text
-                selected: action.sort == localBooks.sort
-                onTriggered: {
-                    localBooks.sort = action.sort
-                    PopupUtils.close(sortPopover)
-                    localBooksToolbar.opened = false
-                }
-            }
-            
-            actions: ActionList {
-                Action {
-                    text: i18n.tr("Recently Read")
-                    property int sort: 0
-                }
-                Action {
-                    text: i18n.tr("Title")
-                    property int sort: 1
-                }
-                Action {
-                    text: i18n.tr("Author")
-                    property int sort: 2
-                }
             }
         }
     }
