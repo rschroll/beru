@@ -5,8 +5,8 @@
  */
 
 import QtQuick 2.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.Popups 1.0
 import Ubuntu.Components.Extras.Browser 0.2
 import Ubuntu.DownloadManager 0.1
 
@@ -254,35 +254,19 @@ Page {
         }
     }
 
-    tools: ToolbarItems {
-        id: browserPageToolbar
+    head.actions: [
+        Action {
+            text: i18n.tr("Back")
+            iconName: "go-previous"
+            enabled: webView.canGoBack
+            onTriggered: webView.goBack()
+        },
 
-        back: ToolbarButton {
-            action: Action {
-                text: i18n.tr("Library")
-                iconName: "back"
-                onTriggered: pageStack.pop()
-            }
+        Action {
+            text: i18n.tr("Forward")
+            iconName: "go-next"
+            enabled: webView.canGoForward
+            onTriggered: webView.goForward()
         }
-
-        ToolbarButton {
-            id: backButton
-            action: Action {
-                text: i18n.tr("Back")
-                iconName: "go-previous"
-                enabled: webView.canGoBack
-                onTriggered: webView.goBack()
-            }
-        }
-
-        ToolbarButton {
-            id: forwardButton
-            action: Action {
-                text: i18n.tr("Forward")
-                iconName: "go-next"
-                enabled: webView.canGoForward
-                onTriggered: webView.goForward()
-            }
-        }
-    }
+    ]
 }

@@ -7,9 +7,9 @@
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
 import QtGraphicalEffects 1.0
-import Ubuntu.Components 0.1
-import Ubuntu.Components.ListItems 0.1
-import Ubuntu.Components.Popups 0.1
+import Ubuntu.Components 1.1
+import Ubuntu.Components.ListItems 1.0
+import Ubuntu.Components.Popups 1.0
 import Epub 1.0
 
 import "components"
@@ -623,37 +623,25 @@ Page {
         height: units.gu(5)
     }
     
-    tools: ToolbarItems {
-        id: localBooksToolbar
+    head.actions: [
+        Action {
+            text: i18n.tr("Get Books")
+            iconName: "search"
+            onTriggered: pageStack.push(bookSources)
+        },
 
-        ToolbarButton {
-            id: getBooksButton
-            action: Action {
-                text: i18n.tr("Get Books")
-                iconName: "search"
-                onTriggered: pageStack.push(bookSources)
-            }
-        }
+        Action {
+            text: i18n.tr("Sort")
+            iconName: "filter"
+            onTriggered: PopupUtils.open(sortComponent, fakeSortButton)
+        },
 
-        ToolbarButton {
-            id: sortButton
-            action: Action {
-                text: i18n.tr("Sort")
-                iconName: "filter"
-                onTriggered: PopupUtils.open(sortComponent, fakeSortButton)
-            }
+        Action {
+            text: i18n.tr("Settings")
+            iconName: "settings"
+            onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent)
         }
-
-        ToolbarButton {
-            id: settingsButton
-            action: Action {
-                text: i18n.tr("Settings")
-                iconName: "settings"
-                onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent,
-                                                            settingsButton)
-            }
-        }
-    }
+    ]
 
     Component {
         id: settingsComponent

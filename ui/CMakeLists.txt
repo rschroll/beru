@@ -12,7 +12,6 @@ set(UI_SRC_FILES
     components/OptionSelector.qml
     components/StylableOptionSelectorDelegate.qml
     components/StyledButton.qml
-    components/TitlelessDialog.qml
     components/Toolbar.qml
     images/default_cover.svg
     images/error_cover.svg
