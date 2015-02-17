@@ -17,7 +17,7 @@ import "qmlmessaging.js" as Messaging
 import "historystack.js" as History
 
 
-Page {
+PageWithBottomEdge {
     id: bookPage
     //flickable: null
     
@@ -25,6 +25,8 @@ Page {
     property var currentChapter: null
     property var history: new History.History(updateNavButtons)
     property bool navjump: false
+    property bool canBack: false
+    property bool canForward: false
 
     focus: true
     Keys.onPressed: {
@@ -87,123 +89,85 @@ Page {
         ]
     }
 
-    ToolbarItems {
-        id: bookPageToolbar
+    bottomEdgeControls: Item {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: childrenRect.height
 
-        back: ToolbarButton {
-            action: Action {
-                text: i18n.tr("Library")
-                iconName: "back"
-                onTriggered: {
-                    pageStack.pop()
-                    localBooks.flickable.returnToBounds()  // Fix bug #63
+        FloatingButton {
+            anchors.left: parent.left
+            iconName: "back"
+
+            onTriggered: {
+                pageStack.pop()
+                localBooks.flickable.returnToBounds()  // Fix bug #63
+            }
+        }
+
+        FloatingButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenterOffset: -width/2
+            iconName: "go-previous"
+            enabled: canBack
+            onTriggered: {
+                var locus = history.goBackward()
+                if (locus !== null) {
+                    navjump = true
+                    Messaging.sendMessage("GotoLocus", locus)
                 }
             }
         }
 
-        ToolbarButton {
-            action: Action {
-                id: backAction
-                /*/ Limited space: ~8 characters /*/
-                text: i18n.tr("Back")
-                iconName: "go-previous"
-                enabled: false
-                onTriggered: {
-                    var locus = history.goBackward()
-                    if (locus !== null) {
-                        navjump = true
-                        Messaging.sendMessage("GotoLocus", locus)
-                    }
+        FloatingButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.horizontalCenterOffset: width/2
+            iconName: "go-next"
+            enabled: canForward
+            onTriggered: {
+                var locus = history.goForward()
+                if (locus !== null) {
+                    navjump = true
+                    Messaging.sendMessage("GotoLocus", locus)
                 }
             }
         }
 
-        ToolbarButton {
-            action: Action {
-                id: forwardAction
-                /*/ Limited space: ~8 characters /*/
-                text: i18n.tr("Forward")
-                iconName: "go-next"
-                enabled: false
-                onTriggered: {
-                    var locus = history.goForward()
-                    if (locus !== null) {
-                        navjump = true
-                        Messaging.sendMessage("GotoLocus", locus)
-                    }
-                }
-            }
-        }
-
-        ToolbarButton {
-            id: contentsButton
-            action: Action {
-                /*/ Button presents Table of Contents.  Limited space: ~8 characters /*/
-                text: i18n.tr("Contents")
-                iconSource: Qt.resolvedUrl("images/toc.svg")
-                onTriggered: PopupUtils.open(contentsComponent, contentsButton)
-            }
-        }
-
-        ToolbarButton {
-            id: settingsButton
-            action: Action {
-                /*/ Limited space: ~8 characters /*/
-                text: i18n.tr("Settings")
-                iconName: "settings"
-                onTriggered: PopupUtils.open(stylesComponent, settingsButton)
+        FloatingButton {
+            anchors.right: parent.right
+            iconName: "settings"
+            onTriggered: {
+                PopupUtils.open(stylesComponent)
+                closeBottomEdge()
             }
         }
     }
 
-    Toolbar {
-        id: toolbar
-        tools: bookPageToolbar
-    }
+    bottomEdgePageComponent: ListView {
+        id: contentsListView
 
-    Component {
-        id: contentsComponent
-
-        Popover {
-            id: contentsPopover
-            property var defaultTimeout: null
-
-            ListView {
-                id: contentsListView
-                anchors {
-                    left: parent.left
-                    right: parent.right
-                    top: parent.top
-                }
-                height: 0.9*(bookPage.height - toolbar.height)
-
-                model: contentsListModel
-                delegate: Standard {
-                    text: (new Array(model.level + 1)).join("    ") +
-                          model.title.replace(/(\n| )+/g, " ")
-                    selected: bookPage.currentChapter == model.src
-                    onClicked: {
-                        Messaging.sendMessage("NavigateChapter", model.src)
-                        PopupUtils.close(contentsPopover)
-                        bookPageToolbar.opened = false
-                    }
-                }
-
-                Component.onCompleted: {
-                    for (var i=0; i<contentsListModel.count; i++) {
-                        if (contentsListModel.get(i).src == bookPage.currentChapter)
-                            positionViewAtIndex(i, ListView.Center)
-                    }
-                }
+        model: contentsListModel
+        delegate: Standard {
+            text: (new Array(model.level + 1)).join("    ") +
+                  model.title.replace(/(\n| )+/g, " ")
+            selected: bookPage.currentChapter == model.src
+            onClicked: {
+                Messaging.sendMessage("NavigateChapter", model.src)
+                closeBottomEdge()
             }
+        }
 
-            onVisibleChanged: {
-                if (defaultTimeout == null)
-                    defaultTimeout = toolbar.hideTimeout
-                toolbar.hideTimeout = visible ? -1 : defaultTimeout
+        Connections {
+            target: bookPage
+            onBottomEdgePressed: {
+                for (var i=0; i<contentsListModel.count; i++) {
+                    if (contentsListModel.get(i).src == bookPage.currentChapter)
+                        positionViewAtIndex(i, ListView.Center)
+                }
             }
         }
     }
+    bottomEdgeTitle: i18n.tr("Contents")
+    reloadBottomEdgePage: false
 
     Item {
         id: bookStyles
@@ -582,8 +546,8 @@ Page {
     }
 
     function updateNavButtons(back, forward) {
-        backAction.enabled = back
-        forwardAction.enabled = forward
+        canBack = back
+        canForward = forward
     }
 
     function onExternalLink(href) {

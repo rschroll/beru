@@ -9,7 +9,9 @@ set(UI_SRC_FILES
     qmlmessaging.js
     qmlmessaging-userscript.js
     Server.qml
+    components/FloatingButton.qml
     components/OptionSelector.qml
+    components/PageWithBottomEdge.qml
     components/StylableOptionSelectorDelegate.qml
     components/StyledButton.qml
     components/Toolbar.qml
