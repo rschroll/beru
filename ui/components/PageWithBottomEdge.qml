@@ -241,7 +241,7 @@ Page {
             bottom: parent.bottom
         }
         height: bottomEdge.tipHeight
-        z: 1
+        z: 2
 
         onReleased: {
             page.bottomEdgeReleased()
@@ -510,6 +510,15 @@ Page {
                         duration: UbuntuAnimation.FastDuration
                     }
                 }
+            },
+            Transition {
+                from: "controls"
+                to: "collapsed,floating"
+                SmoothedAnimation {
+                    target: controls
+                    property: "y"
+                    duration: UbuntuAnimation.FastDuration
+                }
             }
         ]
 
@@ -535,21 +544,32 @@ Page {
         }
     }
 
-    Item {
+    MouseArea {
         id: controls
         objectName: "controls"
 
-        z: 2
-        clip: true
+        preventStealing: true
+        drag {
+            axis: Drag.YAxis
+            target: controls
+            minimumY: page.height - height
+            maximumY: page.height
+        }
+        enabled: bottomEdge.state == "controls"
+        visible: (y < bottomEdge.height)
+
         anchors {
             left: parent.left
             right: parent.right
         }
-        height: controlLoader.item.height
         y: page.height
-        layer.enabled: true
+        height: controlLoader.item.height
+        z: 1
 
-        visible: (y < bottomEdge.height)
+        onReleased: {
+            if (drag.active && mouseY > 0)
+                bottomEdge.state = "collapsed"
+        }
 
         Loader {
             id: controlLoader
