@@ -50,6 +50,7 @@ PageWithBottomEdge {
             url = ""
             bookWebView.opacity = 0
             loadingIndicator.opacity = 1
+            closeBottomEdge()
         } else {
             bookStyles.loadForBook()
         }
@@ -74,8 +75,12 @@ PageWithBottomEdge {
         context: bookWebContext
 
         onTitleChanged: Messaging.handleMessage(title)
-        // Reject attempts to give WebView focus
-        onActiveFocusChanged: focus = false
+        onActiveFocusChanged: {
+            if (activeFocus)
+                closeBottomEdge()
+            // Reject attempts to give WebView focus
+            focus = false
+        }
     }
 
     WebContext {
