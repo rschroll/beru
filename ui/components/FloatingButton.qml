@@ -9,43 +9,59 @@ import QtGraphicalEffects 1.0
 import Ubuntu.Components 1.1
 
 
-AbstractButton {
+Item {
     id: floatingButton
 
-    property int size: units.gu(8)
+    property int size: units.gu(6)
     property int margin: units.gu(1)
     property color color: "white"
     property color borderColor: Theme.palette.normal.foregroundText
+    property list<Action> buttons
 
-    width: size
-    height: size
+    width: bubble.width + 2*margin
+    height: bubble.height + 2*margin
 
     Item {
         id: container
         anchors.fill: parent
 
         Rectangle {
-            anchors {
-                margins: margin
-                fill: parent
-            }
-            radius: width/2
+            id: bubble
+
+            x: margin
+            y: margin
+            width: childrenRect.width
+            height: size
+            radius: size/2
             color: floatingButton.color
             border {
                 color: borderColor
                 width: units.dp(1)
             }
 
-            Image {
-                id: icon
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                    horizontalCenter: parent.horizontalCenter
+            Row {
+                Repeater {
+                    model: buttons
+
+                    AbstractButton {
+                        id: button
+                        width: size
+                        height: size
+                        action: modelData
+
+                        Image {
+                            id: icon
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                horizontalCenter: parent.horizontalCenter
+                            }
+                            width: parent.width/2
+                            height: width
+                            source: button.iconSource
+                            opacity: button.enabled ? 1.0 : 0.5
+                        }
+                    }
                 }
-                width: parent.width/2
-                height: width
-                source: floatingButton.iconSource
-                opacity: floatingButton.enabled ? 1.0 : 0.5
             }
         }
     }

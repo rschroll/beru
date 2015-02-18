@@ -101,49 +101,60 @@ PageWithBottomEdge {
 
         FloatingButton {
             anchors.left: parent.left
-            iconName: "back"
 
-            onTriggered: {
-                pageStack.pop()
-                localBooks.flickable.returnToBounds()  // Fix bug #63
-            }
+            buttons: [
+                Action {
+                    iconName: "back"
+
+                    onTriggered: {
+                        pageStack.pop()
+                        localBooks.flickable.returnToBounds()  // Fix bug #63
+                    }
+                }
+            ]
         }
 
         FloatingButton {
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.horizontalCenterOffset: -width/2
-            iconName: "go-previous"
-            enabled: canBack
-            onTriggered: {
-                var locus = history.goBackward()
-                if (locus !== null) {
-                    navjump = true
-                    Messaging.sendMessage("GotoLocus", locus)
-                }
-            }
-        }
 
-        FloatingButton {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.horizontalCenterOffset: width/2
-            iconName: "go-next"
-            enabled: canForward
-            onTriggered: {
-                var locus = history.goForward()
-                if (locus !== null) {
-                    navjump = true
-                    Messaging.sendMessage("GotoLocus", locus)
+            buttons: [
+                Action {
+                    iconName: "go-previous"
+                    enabled: canBack
+                    onTriggered: {
+                        var locus = history.goBackward()
+                        if (locus !== null) {
+                            navjump = true
+                            Messaging.sendMessage("GotoLocus", locus)
+                        }
+                    }
+                },
+                Action {
+                    iconName: "go-next"
+                    enabled: canForward
+                    onTriggered: {
+                        var locus = history.goForward()
+                        if (locus !== null) {
+                            navjump = true
+                            Messaging.sendMessage("GotoLocus", locus)
+                        }
+                    }
                 }
-            }
+            ]
         }
 
         FloatingButton {
             anchors.right: parent.right
-            iconName: "settings"
-            onTriggered: {
-                PopupUtils.open(stylesComponent)
-                closeBottomEdge()
-            }
+
+            buttons: [
+                Action {
+                    iconName: "settings"
+                    onTriggered: {
+                        PopupUtils.open(stylesComponent)
+                        closeBottomEdge()
+                    }
+                }
+            ]
         }
     }
 
