@@ -600,6 +600,7 @@ PageWithBottomEdge {
     function onReady() {
         bookWebView.opacity = 1
         loadingIndicator.opacity = 0
+        previewControls()
     }
 
     function windowSizeChanged() {

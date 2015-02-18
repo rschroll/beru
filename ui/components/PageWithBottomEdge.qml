@@ -71,13 +71,14 @@ Page {
 
     property alias bottomEdgePageComponent: edgeLoader.sourceComponent
     property alias bottomEdgePageSource: edgeLoader.source
-    property alias bottomEdgeTitle: tipLabel.text
+    property string bottomEdgeTitle
     property bool bottomEdgeEnabled: true
     property int bottomEdgeExpandThreshold: page.height * 0.2
     property int bottomEdgeExposedArea: bottomEdge.state !== "expanded" ? (page.height - bottomEdge.y - bottomEdge.tipHeight) : _areaWhenExpanded
     property bool reloadBottomEdgePage: true
 
     property alias bottomEdgeControls: controlLoader.sourceComponent
+    property int controlPreviewTime: 2000
 
     readonly property alias bottomEdgePage: edgeLoader.item
     readonly property bool isReady: ((bottomEdge.y === fakeHeader.height) && bottomEdgePageLoaded)
@@ -104,6 +105,20 @@ Page {
 
     function closeBottomEdge() {
         bottomEdge.state = "collapsed"
+    }
+
+    function previewControls() {
+        bottomEdge.state = "controls"
+        previewTimer.restart()
+    }
+
+    Timer {
+        id: previewTimer
+        interval: controlPreviewTime
+        onTriggered: {
+            if (bottomEdge.state == "controls")
+                closeBottomEdge()
+        }
     }
 
     function _pushPage()
@@ -145,61 +160,6 @@ Page {
         anchors.fill: page
         opacity: 0.7 * ((page.height - bottomEdge.y) / page.height)
         z: 1
-    }
-
-    UbuntuShape {
-        id: tip
-        objectName: "bottomEdgeTip"
-
-        property bool hidden: (activeFocus === false) ||
-                             ((bottomEdge.y - units.gu(1)) < tip.y)
-
-        property bool isAnimating: true
-
-        enabled: mouseArea.enabled
-        visible: page.bottomEdgeEnabled
-        anchors {
-            bottom: parent.bottom
-            horizontalCenter: bottomEdge.horizontalCenter
-            bottomMargin: hidden ? - height + units.gu(1) : -units.gu(1)
-            Behavior on bottomMargin {
-                SequentialAnimation {
-                    // wait some msecs in case of the focus change again, to avoid flickering
-                    PauseAnimation {
-                        duration: 300
-                    }
-                    UbuntuNumberAnimation {
-                        duration: UbuntuAnimation.SnapDuration
-                    }
-                    ScriptAction {
-                        script: tip.isAnimating = false
-                    }
-                }
-            }
-        }
-
-        z: 1
-        width: tipLabel.paintedWidth + units.gu(6)
-        height: bottomEdge.tipHeight + units.gu(1)
-        color: Theme.palette.normal.overlay
-        Label {
-            id: tipLabel
-
-            anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-            }
-            height: bottomEdge.tipHeight
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            opacity: tip.hidden ? 0.0 : 1.0
-            Behavior on opacity {
-                UbuntuNumberAnimation {
-                    duration: UbuntuAnimation.SnapDuration
-                }
-            }
-        }
     }
 
     Rectangle {
@@ -262,7 +222,6 @@ Page {
         onPressed: {
             page.bottomEdgePressed()
             previousY = mouse.y
-            tip.forceActiveFocus()
         }
 
         onMouseYChanged: {
@@ -478,8 +437,6 @@ Page {
                             // destroy current bottom page
                             if (page.reloadBottomEdgePage) {
                                 edgeLoader.active = false
-                            } else {
-                                tip.forceActiveFocus()
                             }
 
                             // notify
@@ -514,10 +471,15 @@ Page {
             Transition {
                 from: "controls"
                 to: "collapsed,floating"
-                SmoothedAnimation {
-                    target: controls
-                    property: "y"
-                    duration: UbuntuAnimation.FastDuration
+                ParallelAnimation{
+                    SmoothedAnimation {
+                        target: controls
+                        property: "y"
+                        duration: UbuntuAnimation.FastDuration
+                    }
+                    ScriptAction {
+                        script: previewTimer.stop()
+                    }
                 }
             }
         ]
@@ -536,7 +498,6 @@ Page {
             }
 
             onLoaded: {
-                tip.forceActiveFocus()
                 if (page.isReady) {
                     page._pushPage()
                 }
