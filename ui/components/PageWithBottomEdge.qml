@@ -241,14 +241,14 @@ Page {
             bottom: parent.bottom
         }
         height: bottomEdge.tipHeight
-        z: 2
+        z: 1
 
         onReleased: {
             page.bottomEdgeReleased()
             if (dragDirection === "BottomToTop") {
                 if (bottomEdge.y < (page.height - bottomEdgeExpandThreshold - bottomEdge.tipHeight))
                     bottomEdge.state = "expanded"
-                else if (bottomEdge.y < (page.height - 0.75*controls.height))
+                else if (bottomEdge.y < (page.height - 0.75*controls.fullHeight))
                     bottomEdge.state = "controls"
                 else
                     bottomEdge.state = "collapsed"
@@ -380,9 +380,9 @@ Page {
                     y: {
                         var threshold = page.height - bottomEdgeExpandThreshold - bottomEdge.tipHeight
                         if (bottomEdge.y > threshold)
-                            Math.max(bottomEdge.y, bottomEdge.height - controls.height)
+                            Math.max(bottomEdge.y, bottomEdge.height - controls.fullHeight)
                         else
-                            Math.min(bottomEdge.height - controls.height + threshold - bottomEdge.y,
+                            Math.min(bottomEdge.height - controls.fullHeight + threshold - bottomEdge.y,
                                      bottomEdge.height)
                     }
                 }
@@ -399,7 +399,7 @@ Page {
                 }
                 PropertyChanges {
                     target: controls
-                    y: bottomEdge.height - controls.height
+                    y: bottomEdge.height - controls.fullHeight
                 }
             }
         ]
@@ -548,11 +548,13 @@ Page {
         id: controls
         objectName: "controls"
 
+        property real fullHeight: controlLoader.item.height
+
         preventStealing: true
         drag {
             axis: Drag.YAxis
             target: controls
-            minimumY: page.height - height
+            minimumY: page.height - fullHeight
             maximumY: page.height
         }
         enabled: bottomEdge.state == "controls"
@@ -563,8 +565,8 @@ Page {
             right: parent.right
         }
         y: page.height
-        height: controlLoader.item.height
-        z: 1
+        height: fullHeight - bottomEdge.tipHeight
+        z: 2
 
         onReleased: {
             if (drag.active && mouseY > 0)
@@ -575,7 +577,11 @@ Page {
             id: controlLoader
 
             asynchronous: true
-            anchors.fill: parent
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+            }
         }
     }
 }
