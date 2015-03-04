@@ -25,6 +25,8 @@ Page {
     property var currentChapter: null
     property var history: new History.History(updateNavButtons)
     property bool navjump: false
+    property int currentPageNumber: 1
+    property int totalPageCount: 1
 
     focus: true
     Keys.onPressed: {
@@ -168,14 +170,53 @@ Page {
             id: contentsPopover
             property var defaultTimeout: null
 
-            ListView {
-                id: contentsListView
+            Item {
+                id: pageChooser
                 anchors {
                     left: parent.left
+                    leftMargin: units.gu(2)
+                    rightMargin: units.gu(2)
                     right: parent.right
                     top: parent.top
                 }
-                height: 0.9*(bookPage.height - toolbar.height)
+                height: units.gu(11)
+
+                Label {
+                    fontSize: "medium"
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: parent.top
+                        topMargin: units.gu(2)
+                    }
+                    horizontalAlignment: Text.AlignHCenter
+                    text: bookPage.currentPageNumber + " of " + bookPage.totalPageCount
+                }
+                Slider {
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        bottom: parent.bottom
+                    }
+                    minimumValue: 1
+                    maximumValue: bookPage.totalPageCount
+                    value: bookPage.currentPageNumber
+                    live: false
+                    onValueChanged: {
+                        Messaging.sendMessage("SetPage", Math.round(value));
+                    }
+                }
+            }
+
+            ListView {
+                id: contentsListView
+                clip: true
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: pageChooser.bottom
+                }
+                height: (0.9*(bookPage.height - toolbar.height)) - pageChooser.height
 
                 model: contentsListModel
                 delegate: Standard {
@@ -615,6 +656,9 @@ Page {
         currentChapter = location.chapterSrc
         setBookSetting("locus", { componentId: location.componentId,
                                   percent: location.percent })
+
+        totalPageCount = Math.round(1 / location.pageSizePercentage);
+        currentPageNumber = location.pageNumber;
     }
 
     function onReady() {
