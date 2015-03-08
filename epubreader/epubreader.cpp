@@ -12,6 +12,7 @@
 #include <QBuffer>
 #include <QDir>
 #include <QCryptographicHash>
+#include <QDebug>
 #include "quazip/quazip.h"
 #include "quazip/quazipfile.h"
 #include "../qhttpserver/qhttpresponse.h"
@@ -189,7 +190,26 @@ bool EpubReader::parseOPF()
                 this->sortmetadata[name] = fileas;
         }
     }
-
+    // And construct the components weight list, based on file size
+    if (!this->metadata.contains("componentWeights")) {
+        quint32 totalSize = 0;
+        QVariantList componentWeights;
+        foreach(const QString filename, this->spine) {
+            this->zip->setCurrentFile(filename);
+            QuaZipFileInfo info;
+            this->zip->getCurrentFileInfo(&info);
+            totalSize += info.uncompressedSize;
+        }
+        foreach(const QString filename, this->spine) {
+            this->zip->setCurrentFile(filename);
+            QuaZipFileInfo info;
+            this->zip->getCurrentFileInfo(&info);
+            QVariant thisComponentWeight;
+            thisComponentWeight = (float)info.uncompressedSize / (float)totalSize;
+            componentWeights.append(thisComponentWeight.toDouble());
+        }
+        this->metadata["componentWeights"] = componentWeights;
+    }
     // If this is an Epub3, we've already found the table of contents.  If not,
     // we'll get the Epub2 table of contents.
     if (this->navhref == "")

@@ -44,8 +44,8 @@ function createReader(bookData) {
     Messaging.registerHandler("ChangePage", function(dir) {
         reader.moveTo({direction: dir});
     });
-    Messaging.registerHandler("SetPage", function(pg) {
-        reader.moveTo({page: pg});
+    Messaging.registerHandler("SetPage", function(page, componentId) {
+        reader.moveTo({page: page, component: componentId});
     });
 
     reader.listen("monocle:link:external", function(event) {
@@ -61,7 +61,12 @@ function createReader(bookData) {
                                               componentId: place.componentId(),
                                               percent: place.percentageThrough(),
                                               pageSizePercentage: place.pageSizePercentage(),
-                                              pageNumber: place.pageNumber()});
+                                              percentageOfBook: place.percentageOfBook(),
+                                              pageNumber: place.pageNumber(),
+                                              componentWeights: place.properties.component.properties.book.componentWeights(),
+                                              componentIndex: place.properties.component.properties.index,
+                                              componentIds: place.properties.component.properties.book.properties.componentIds
+                                          });
     });
 }
 
