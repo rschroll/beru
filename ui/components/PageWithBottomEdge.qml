@@ -290,8 +290,8 @@ Page {
             left: parent.left
             right: parent.right
         }
-        height: page.height
-        y: height
+        height: page.height - fakeHeader.height
+        y: page.height
 
         visible: !page.isCollapsed
         state: "collapsed"
@@ -300,7 +300,7 @@ Page {
                 name: "collapsed"
                 PropertyChanges {
                     target: bottomEdge
-                    y: bottomEdge.height
+                    y: page.height
                 }
                 PropertyChanges {
                     target: fakeHeader
@@ -308,7 +308,7 @@ Page {
                 }
                 PropertyChanges {
                     target: controls
-                    y: bottomEdge.height
+                    y: page.height
                 }
             },
             State {
@@ -327,7 +327,7 @@ Page {
                 when: mouseArea.drag.active
                 PropertyChanges {
                     target: bottomEdge
-                    opacity: Math.min((bottomEdge.height - bottomEdge.y) / bottomEdgeExpandThreshold,
+                    opacity: Math.min((page.height - bottomEdge.y) / bottomEdgeExpandThreshold,
                                       1)
                 }
                 PropertyChanges {
@@ -339,10 +339,10 @@ Page {
                     y: {
                         var threshold = page.height - bottomEdgeExpandThreshold - bottomEdge.tipHeight
                         if (bottomEdge.y > threshold)
-                            Math.max(bottomEdge.y, bottomEdge.height - controls.fullHeight)
+                            Math.max(bottomEdge.y, page.height - controls.fullHeight)
                         else
-                            Math.min(bottomEdge.height - controls.fullHeight + threshold - bottomEdge.y,
-                                     bottomEdge.height)
+                            Math.min(page.height - controls.fullHeight + threshold - bottomEdge.y,
+                                     page.height)
                     }
                 }
             },
@@ -350,7 +350,7 @@ Page {
                 name: "controls"
                 PropertyChanges {
                     target: bottomEdge
-                    y: bottomEdge.height
+                    y: page.height
                 }
                 PropertyChanges {
                     target: fakeHeader
@@ -358,7 +358,7 @@ Page {
                 }
                 PropertyChanges {
                     target: controls
-                    y: bottomEdge.height - controls.fullHeight
+                    y: page.height - controls.fullHeight
                 }
             }
         ]
@@ -519,7 +519,7 @@ Page {
             maximumY: page.height
         }
         enabled: bottomEdge.state == "controls"
-        visible: (y < bottomEdge.height)
+        visible: (y < page.height)
 
         anchors {
             left: parent.left
