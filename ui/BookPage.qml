@@ -25,6 +25,9 @@ Page {
     property var currentChapter: null
     property var history: new History.History(updateNavButtons)
     property bool navjump: false
+    property int currentPageNumber: 1
+    property int totalPageCount: 1
+    property var componentStartPages: []
 
     focus: true
     Keys.onPressed: {
@@ -168,14 +171,75 @@ Page {
             id: contentsPopover
             property var defaultTimeout: null
 
-            ListView {
-                id: contentsListView
+            Item {
+                id: pageChooser
                 anchors {
                     left: parent.left
+                    leftMargin: units.gu(2)
+                    rightMargin: units.gu(2)
                     right: parent.right
                     top: parent.top
                 }
-                height: 0.9*(bookPage.height - toolbar.height)
+                height: units.gu(11)
+
+                Label {
+                    fontSize: "medium"
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: parent.top
+                        topMargin: units.gu(2)
+                    }
+                    horizontalAlignment: Text.AlignHCenter
+                    text: bookPage.currentPageNumber + " of " + bookPage.totalPageCount
+                }
+                Slider {
+                    property bool valueHasBeenChangedByUser: false
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        bottom: parent.bottom
+                    }
+                    minimumValue: 1
+                    maximumValue: bookPage.totalPageCount
+                    value: bookPage.currentPageNumber
+                    live: false
+                    onPressedChanged: valueHasBeenChangedByUser = true
+                    onValueChanged: {
+                        if (!valueHasBeenChangedByUser) return; // stops valuechanged firing when we open the dialog
+                        console.log("go to page", value, JSON.stringify(bookPage.componentStartPages));
+                        var componentIndex = 0, chosenComponent;
+                        while (true) {
+                            if (bookPage.componentStartPages[componentIndex].start > value) {
+                                chosenComponent = bookPage.componentStartPages[componentIndex-1];
+                                break;
+                            }
+                            componentIndex += 1;
+                            if (componentIndex >= bookPage.componentStartPages.length) {
+                                // overrun the end of the book. this shouldn't happen
+                                chosenComponent = bookPage.componentStartPages[0];
+                                console.log("overrun");
+                                break;
+                            }
+                        }
+                        console.log("now go to page", 
+                            Math.round(value - chosenComponent.start),
+                            "in component", chosenComponent.id);
+                        valueHasBeenChangedByUser = false;
+                        Messaging.sendMessage("SetPage", Math.round(value - chosenComponent.start), chosenComponent.id);
+                    }
+                }
+            }
+
+            ListView {
+                id: contentsListView
+                clip: true
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: pageChooser.bottom
+                }
+                height: (0.9*(bookPage.height - toolbar.height)) - pageChooser.height
 
                 model: contentsListModel
                 delegate: Standard {
@@ -615,6 +679,24 @@ Page {
         currentChapter = location.chapterSrc
         setBookSetting("locus", { componentId: location.componentId,
                                   percent: location.percent })
+
+        var pgInComponent = location.pageNumber;
+        var pcInComponent = location.percent;
+        var totalPagesInComponent = pgInComponent / pcInComponent;
+        var thisComponentWeight = location.componentWeights[location.componentIndex];
+        totalPageCount = Math.round(totalPagesInComponent / thisComponentWeight);
+        var pcBeforeComponent = 0;
+        for (var i = 0, ii = location.componentIndex; i < ii; ++i) { pcBeforeComponent += location.componentWeights[i]; }
+        var pagesBeforeComponent = Math.round(pcBeforeComponent * totalPageCount);
+        currentPageNumber = pgInComponent + pagesBeforeComponent;
+        if (componentStartPages.length == 0) {
+            var startpage = 0;
+            for (var i=0; i<location.componentIds.length; i++) {
+                componentStartPages.push({id: location.componentIds[i], start: startpage});
+                startpage += Math.max(Math.round(location.componentWeights[i] * totalPageCount), 1);
+            }
+        }
+        console.log("pgchg", pagesBeforeComponent, pcBeforeComponent, pgInComponent, totalPageCount);
     }
 
     function onReady() {
@@ -632,6 +714,7 @@ Page {
         Messaging.registerHandler("PageChange", onPageChange)
         Messaging.registerHandler("Styles", bookStyles.load)
         Messaging.registerHandler("Ready", onReady)
+        Messaging.registerHandler("LogMessage", function(msg) { console.log("console:" + JSON.stringify(msg)); });
         server.epub.contentsReady.connect(parseContents)
         onWidthChanged.connect(windowSizeChanged)
         onHeightChanged.connect(windowSizeChanged)
