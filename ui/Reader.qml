@@ -25,12 +25,25 @@ Item {
         onContentsReady: reader.contentsReady(contents)
     }
 
-    function isCBZ(filename) {
-        return (filename.slice(-4) == ".cbz")
+    PDFReader {
+        id: pdf
+        onContentsReady: reader.contentsReady(contents)
+    }
+
+    function getReader(filename) {
+        if (filename.slice(-4) == ".cbz")
+            return cbz;
+        if (filename.slice(-4) == ".pdf")
+            return pdf;
+        if (filename.slice(-5) == ".epub")
+            return epub;
+        return undefined;
     }
 
     function load(filename) {
-        currentReader = isCBZ(filename) ? cbz : epub
+        currentReader = getReader(filename)
+        if (currentReader === undefined)
+            return false
         return currentReader.load(filename)
     }
 
