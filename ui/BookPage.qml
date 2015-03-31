@@ -164,7 +164,7 @@ PageWithBottomEdge {
         model: contentsListModel
         delegate: Standard {
             text: (new Array(model.level + 1)).join("    ") +
-                  model.title.replace(/(\n| )+/g, " ")
+                  model.title.replace(/(\n| )+/g, " ").replace(/^%PAGE%/, i18n.tr("Page"))
             selected: bookPage.currentChapter == model.src
             onClicked: {
                 Messaging.sendMessage("NavigateChapter", model.src)
@@ -613,7 +613,7 @@ PageWithBottomEdge {
         Messaging.registerHandler("PageChange", onPageChange)
         Messaging.registerHandler("Styles", bookStyles.load)
         Messaging.registerHandler("Ready", onReady)
-        server.epub.contentsReady.connect(parseContents)
+        server.reader.contentsReady.connect(parseContents)
         onWidthChanged.connect(windowSizeChanged)
         onHeightChanged.connect(windowSizeChanged)
     }

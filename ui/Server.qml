@@ -6,7 +6,6 @@
 
 import QtQuick 2.0
 import HttpServer 1.0
-import Epub 1.0
 
 
 HttpServer {
@@ -18,19 +17,15 @@ HttpServer {
         while (!listen("127.0.0.1", port))
             port += 1
     }
-    
-    property var epub: EpubReader {
-        id: epub
+
+    property var reader: Reader {
+        id: reader
     }
 
     property var fileserver: FileServer {
         id: fileserver
     }
 
-    function loadFile(filename) {
-        return epub.load(filename)
-    }
-    
     function static_file(path, response) {
         // Need to strip off leading "file://"
         fileserver.serve(Qt.resolvedUrl("../html/" + path).slice(7), response)
@@ -55,11 +50,11 @@ HttpServer {
         if (request.path == "/")
             return static_file("index.html", response)
         if (request.path == "/.bookdata.js")
-            return epub.serveBookData(response)
+            return reader.serveBookData(response)
         if (request.path == "/.defaults.js")
             return defaults(response)
         if (request.path[1] == ".")
             return static_file(request.path.slice(2), response)
-        return epub.serveComponent(request.path.slice(1), response)
+        return reader.serveComponent(request.path.slice(1), response)
     }
 }

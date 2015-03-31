@@ -8,6 +8,7 @@ set(UI_SRC_FILES
     main.qml
     qmlmessaging.js
     qmlmessaging-userscript.js
+    Reader.qml
     Server.qml
     components/FloatingButton.qml
     components/OptionSelector.qml

@@ -6,9 +6,11 @@
 
 #include "epubreaderplugin.h"
 #include "epubreader.h"
+#include "cbzreader.h"
 #include <qqml.h>
 
 void EpubReaderPlugin::registerTypes(const char *uri)
 {
     qmlRegisterType<EpubReader>(uri, 1, 0, "EpubReader");
+    qmlRegisterType<CBZReader>(uri, 1, 0, "CBZReader");
 }

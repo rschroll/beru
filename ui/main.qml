@@ -102,9 +102,9 @@ MainView {
     }
 
     function loadFile(filename) {
-        if (server.loadFile(filename)) {
+        if (server.reader.load(filename)) {
             pageStack.push(bookPage, {url: "http://127.0.0.1:" + server.port})
-            window.title = server.epub.title
+            window.title = server.reader.title()
             localBooks.updateRead(filename)
             return true
         }
@@ -144,25 +144,25 @@ MainView {
     }
 
     function getBookSetting(key) {
-        if (server.epub.hash == "")
+        if (server.reader.hash() == "")
             return undefined
 
-        var settings = bookSettingsDatabase.getDoc(server.epub.hash)
+        var settings = bookSettingsDatabase.getDoc(server.reader.hash())
         if (settings == undefined)
             return undefined
         return settings[key]
     }
 
     function setBookSetting(key, value) {
-        if (server.epub.hash == "")
+        if (server.reader.hash() == "")
             return false
 
         if (databaseTimer.hash != null &&
-                (databaseTimer.hash != server.epub.hash || databaseTimer.key != key))
+                (databaseTimer.hash != server.reader.hash() || databaseTimer.key != key))
             databaseTimer.triggered()
 
         databaseTimer.stop()
-        databaseTimer.hash = server.epub.hash
+        databaseTimer.hash = server.reader.hash()
         databaseTimer.key = key
         databaseTimer.value = value
         databaseTimer.start()

@@ -10,7 +10,6 @@ import QtGraphicalEffects 1.0
 import Ubuntu.Components 1.1
 import Ubuntu.Components.ListItems 1.0
 import Ubuntu.Components.Popups 1.0
-import Epub 1.0
 
 import "components"
 
@@ -52,7 +51,7 @@ Page {
     }
     
     function fileToTitle(filename) {
-        return filename.replace(/\.epub$/, "").replace(/_/g, " ")
+        return filename.replace(/\.epub$/, "").replace(/\.cbz$/, "").replace(/_/g, " ")
     }
     
     // New items are given a lastread time of now, since these are probably
@@ -74,7 +73,7 @@ Page {
     function addBookDir() {
         var db = openDatabase()
         db.transaction(function (tx) {
-            var files = filesystem.listDir(bookdir, ["*.epub"])
+            var files = filesystem.listDir(bookdir, ["*.epub", "*.cbz"])
             for (var i=0; i<files.length; i++) {
                 var fileName = files[i].split("/").pop()
                 tx.executeSql(addFileSQL, [files[i], fileToTitle(fileName)])
@@ -311,7 +310,7 @@ Page {
             gridview.positionViewAtBeginning()
     }
 
-    EpubReader {
+    Reader {
         id: coverReader
     }
 
