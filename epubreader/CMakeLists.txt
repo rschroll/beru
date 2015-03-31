@@ -2,6 +2,7 @@ set(PLUGIN_DIR Epub)
 
 set(epubreader_SRCS
     epubreader.cpp
+    cbzreader.cpp
     epubreaderplugin.cpp
     quazip/JlCompress.cpp
     quazip/qioapi.cpp
