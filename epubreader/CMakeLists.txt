@@ -3,6 +3,7 @@ set(PLUGIN_DIR Epub)
 set(epubreader_SRCS
     epubreader.cpp
     cbzreader.cpp
+    pdfreader.cpp
     epubreaderplugin.cpp
     quazip/JlCompress.cpp
     quazip/qioapi.cpp
@@ -26,6 +27,7 @@ add_library(epubreaderplugin MODULE
 )
 
 qt5_use_modules(epubreaderplugin Gui Xml Qml Quick)
+target_link_libraries(epubreaderplugin poppler-qt5)
 
 # Copy the plugin file to the build dir
 set_target_properties(epubreaderplugin PROPERTIES

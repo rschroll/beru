@@ -51,7 +51,7 @@ Page {
     }
     
     function fileToTitle(filename) {
-        return filename.replace(/\.epub$/, "").replace(/\.cbz$/, "").replace(/_/g, " ")
+        return filename.replace(/\.epub$/, "").replace(/\.cbz$/, "").replace(/\.pdf$/, "").replace(/_/g, " ")
     }
     
     // New items are given a lastread time of now, since these are probably
@@ -73,7 +73,7 @@ Page {
     function addBookDir() {
         var db = openDatabase()
         db.transaction(function (tx) {
-            var files = filesystem.listDir(bookdir, ["*.epub", "*.cbz"])
+            var files = filesystem.listDir(bookdir, ["*.epub", "*.cbz", "*.pdf"])
             for (var i=0; i<files.length; i++) {
                 var fileName = files[i].split("/").pop()
                 tx.executeSql(addFileSQL, [files[i], fileToTitle(fileName)])
