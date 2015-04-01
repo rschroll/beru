@@ -32,6 +32,7 @@ bool PDFReader::load(const QString &filename)
     }
     this->_hash = "";
     this->spine.clear();
+    this->metadata.clear();
 
     this->pdf = Poppler::Document::load(filename.toLatin1());
     if (this->pdf == NULL)
@@ -42,6 +43,7 @@ bool PDFReader::load(const QString &filename)
         return false;
     }
     this->computeHash(filename);
+    this->readMetadata();
     return true;
 }
 
@@ -50,6 +52,12 @@ bool PDFReader::parse() {
     for (int i=0; i<n; i++)
         this->spine.append(QString::number(i + 1));
     return true;
+}
+
+void PDFReader::readMetadata() {
+    QStringList keys = this->pdf->infoKeys();
+    foreach (QString k, keys)
+        this->metadata[k.toLower()] = this->pdf->info(k);
 }
 
 QString PDFReader::hash() {
@@ -66,7 +74,7 @@ void PDFReader::computeHash(const QString &filename) {
 }
 
 QString PDFReader::title() {
-    return "";
+    return this->metadata.contains("title") ? this->metadata["title"].toString() : "";
 }
 
 void PDFReader::serveComponent(const QString &filename, QHttpResponse *response)
@@ -123,14 +131,16 @@ void PDFReader::serveBookData(QHttpResponse *response)
     response->writeHead(200);
     QJsonDocument spine(QJsonArray::fromStringList(this->spine));
     QJsonDocument contents(QJsonArray::fromVariantList(this->getContents()));
+    QJsonDocument metadata(QJsonObject::fromVariantMap(this->metadata));
     QString res = "var bookData = {" \
             "getComponents: function () { return %1; }, " \
             "getContents:   function () { return %2; }, " \
             "getComponent:  function (component) { return " \
             "\"<img style='display: block; margin: auto; max-height: 100% !important' src='\"" \
             "+ component + \"' />\"; }, " \
-            "getMetaData:   function (key) { return ''; } }";
-    response->write(res.arg(QString(spine.toJson()), QString(contents.toJson())));
+            "getMetaData:   function (key) { return %3[key]; } }";
+    response->write(res.arg(QString(spine.toJson()), QString(contents.toJson()),
+                            QString(metadata.toJson())));
     response->end();
 }
 
@@ -140,8 +150,8 @@ QVariantMap PDFReader::getCoverInfo(int thumbsize, int fullsize)
     if (!this->pdf)
         return res;
 
-    res["title"] = "ZZZnone";
-    res["author"] = "";
+    res["title"] = this->metadata.contains("title") ? this->metadata["title"] : "ZZZnone";
+    res["author"] = this->metadata.contains("author") ? this->metadata["author"] : "";
     res["authorsort"] = "zzznone";
     res["cover"] = "ZZZnone";
 
