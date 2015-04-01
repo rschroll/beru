@@ -44,6 +44,8 @@ bool PDFReader::load(const QString &filename)
     }
     this->computeHash(filename);
     this->readMetadata();
+    this->pdf->setRenderHint(Poppler::Document::Antialiasing, true);
+    this->pdf->setRenderHint(Poppler::Document::TextAntialiasing, true);
     return true;
 }
 
@@ -83,6 +85,44 @@ QString PDFReader::title() {
     return this->metadata.contains("title") ? this->metadata["title"].toString() : "";
 }
 
+int PDFReader::height() {
+    return this->_height;
+}
+
+void PDFReader::setHeight(int value) {
+    this->_height = value;
+}
+
+int PDFReader::width() {
+    return this->_width;
+}
+
+void PDFReader::setWidth(int value) {
+    this->_width = value;
+}
+
+QImage PDFReader::renderPage(int pageNum, int maxWidth, int maxHeight) {
+    Poppler::Page *page = this->pdf->page(pageNum);
+    QSizeF pageSize = page->pageSizeF();
+    qreal pageWidth = pageSize.width(), pageHeight = pageSize.height();
+    double res;
+    if (maxWidth == -1 && maxHeight == -1) {
+        maxWidth = this->_width;
+        maxHeight = this->_height;
+    }
+    if (maxHeight == -1) {
+        res = maxWidth / pageWidth * 72;
+    } else if (maxWidth == -1) {
+        res = maxHeight / pageHeight * 72;
+    } else {
+        if ((double) pageWidth / pageHeight > maxWidth / maxHeight)
+            res = maxWidth / pageWidth * 72;
+        else
+            res = maxHeight / pageHeight * 72;
+    }
+    return page->renderToImage(res, res);
+}
+
 void PDFReader::serveComponent(const QString &filename, QHttpResponse *response)
 {
     if (!this->pdf) {
@@ -99,8 +139,7 @@ void PDFReader::serveComponent(const QString &filename, QHttpResponse *response)
         return;
     }
 
-    Poppler::Page *page = this->pdf->page(pageNum);
-    QImage pageImage = page->renderToImage();
+    QImage pageImage = this->renderPage(pageNum, -1, -1);
     QByteArray byteArray;
     QBuffer buffer(&byteArray);
     pageImage.save(&buffer, "PNG");
@@ -189,15 +228,16 @@ QVariantMap PDFReader::getCoverInfo(int thumbsize, int fullsize)
     res["authorsort"] = "zzznone";
     res["cover"] = "ZZZnone";
 
-    Poppler::Page *page = this->pdf->page(0);
-    QImage coverimg = page->renderToImage();
+    QImage coverimg = this->renderPage(0, thumbsize, -1);
     QByteArray byteArray;
     QBuffer buffer(&byteArray);
-    coverimg.scaledToWidth(thumbsize, Qt::SmoothTransformation).save(&buffer, "PNG");
+    coverimg.save(&buffer, "PNG");
     res["cover"] = "data:image/png;base64," + QString(byteArray.toBase64());
+
+    QImage coverimgf = this->renderPage(0, fullsize, -1);
     QByteArray byteArrayf;
     QBuffer bufferf(&byteArrayf);
-    coverimg.scaledToWidth(fullsize, Qt::SmoothTransformation).save(&bufferf, "PNG");
+    coverimgf.save(&bufferf, "PNG");
     res["fullcover"] = "data:image/png;base64," + QString(byteArrayf.toBase64());
     return res;
 }

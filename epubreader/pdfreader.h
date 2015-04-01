@@ -18,10 +18,17 @@ class PDFReader : public QObject
     Q_OBJECT
     Q_PROPERTY(QString hash READ hash)
     Q_PROPERTY(QString title READ title)
+    Q_PROPERTY(int width READ width WRITE setWidth)
+    Q_PROPERTY(int height READ height WRITE setHeight)
 public:
     explicit PDFReader(QObject *parent = 0);
     QString hash();
     QString title();
+    int width();
+    void setWidth(int value);
+    int height();
+    void setHeight(int value);
+
     Q_INVOKABLE bool load(const QString &filename);
     Q_INVOKABLE void serveBookData(QHttpResponse *response);
     Q_INVOKABLE void serveComponent(const QString &filename, QHttpResponse *response);
@@ -36,11 +43,14 @@ private:
     QVariantList parseContents(QDomElement el);
     void computeHash(const QString &filename);
     void readMetadata();
+    QImage renderPage(int pageNum, int maxWidth, int maxHeight);
 
     Poppler::Document* pdf;
     QString _hash;
     QStringList spine;
     QVariantMap metadata;
+    int _width;
+    int _height;
 
 };
 

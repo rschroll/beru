@@ -29,6 +29,8 @@ Item {
     PDFReader {
         id: pdf
         onContentsReady: reader.contentsReady(contents)
+        width: mainView.width
+        height: mainView.height
     }
 
     function getReader(filename) {
