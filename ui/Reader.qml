@@ -34,13 +34,16 @@ Item {
     }
 
     function getReader(filename) {
-        if (filename.slice(-4) == ".cbz")
-            return cbz;
-        if (filename.slice(-4) == ".pdf")
-            return pdf;
-        if (filename.slice(-5) == ".epub")
+        switch (filesystem.fileType(filename)) {
+        case "EPUB":
             return epub;
-        return undefined;
+        case "CBZ":
+            return cbz;
+        case "PDF":
+            return pdf;
+        default:
+            return undefined;
+        }
     }
 
     function load(filename) {

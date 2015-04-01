@@ -51,7 +51,7 @@ Page {
     }
     
     function fileToTitle(filename) {
-        return filename.replace(/\.epub$/, "").replace(/\.cbz$/, "").replace(/\.pdf$/, "").replace(/_/g, " ")
+        return filename.replace(/\.\w+$/, "").replace(/_/g, " ")
     }
     
     // New items are given a lastread time of now, since these are probably
