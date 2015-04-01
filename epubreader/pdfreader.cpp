@@ -109,16 +109,44 @@ void PDFReader::serveComponent(const QString &filename, QHttpResponse *response)
     response->end();
 }
 
-QVariantList PDFReader::getContents()
-{
+QVariantList PDFReader::getContents() {
     QVariantList res;
-    for (int i=0; i<this->spine.length(); i++) {
-        QVariantMap entry;
-        entry["title"] = "%PAGE% " + QString::number(i + 1);
-        entry["src"] = this->spine[i];
-        res.append(entry);
+    QDomDocument *toc = this->pdf->toc();
+    if (toc) {
+        res = this->parseContents(toc->firstChildElement());
+    } else {
+        for (int i=0; i<this->spine.length(); i++) {
+            QVariantMap entry;
+            entry["title"] = "%PAGE% " + QString::number(i + 1);
+            entry["src"] = this->spine[i];
+            res.append(entry);
+        }
     }
     emit contentsReady(res);
+    return res;
+}
+
+QVariantList PDFReader::parseContents(QDomElement el) {
+    QVariantList res;
+    while (!el.isNull()) {
+        QString title = el.tagName();
+        Poppler::LinkDestination *destination = NULL;
+        if (el.hasAttribute("Destination")) {
+            destination = new Poppler::LinkDestination(el.attribute("Destination"));
+        } else if (el.hasAttribute("DestinationName")) {
+            destination = this->pdf->linkDestination(el.attribute("DestinationName"));
+        }
+        if (destination) {
+            QVariantMap entry;
+            entry["title"] = title;
+            entry["src"] = QString::number(destination->pageNumber());
+            QDomElement child = el.firstChildElement();
+            if (!child.isNull())
+                entry["children"] = this->parseContents(child);
+            res.append(entry);
+        }
+        el = el.nextSiblingElement();
+    }
     return res;
 }
 

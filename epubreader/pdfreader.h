@@ -33,6 +33,7 @@ signals:
 private:
     bool parse();
     QVariantList getContents();
+    QVariantList parseContents(QDomElement el);
     void computeHash(const QString &filename);
     void readMetadata();
 
