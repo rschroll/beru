@@ -14,6 +14,7 @@ Item {
     signal contentsReady(var contents)
 
     property var currentReader
+    property bool pictureBook: currentReader !== epub
 
     EpubReader {
         id: epub

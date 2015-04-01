@@ -197,6 +197,7 @@ PageWithBottomEdge {
         property string background
         property real margin
         property real marginv
+        property real bumper
 
         property var defaults: ({
             textColor: "#222",
@@ -222,8 +223,9 @@ PageWithBottomEdge {
             lineHeight = styles.lineHeight || defaults.lineHeight
             fontScale = styles.fontScale || defaults.fontScale
             background = styles.background || defaults.background
-            margin = styles.margin || defaults.margin
-            marginv = styles.marginv || defaults.marginv
+            margin = styles.margin || (server.reader.pictureBook ? 0 : defaults.margin)
+            marginv = styles.marginv || (server.reader.pictureBook ? 0 : defaults.marginv)
+            bumper = server.reader.pictureBook ? 0 : 1
             loading = false
         }
 
@@ -240,7 +242,8 @@ PageWithBottomEdge {
                 fontScale: fontScale,
                 background: background,
                 margin: margin,
-                marginv: marginv
+                marginv: marginv,
+                bumper: bumper
             }
         }
 
