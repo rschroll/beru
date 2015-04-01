@@ -34,10 +34,12 @@ private:
     bool parse();
     QVariantList getContents();
     void computeHash(const QString &filename);
+    void readMetadata();
 
     Poppler::Document* pdf;
     QString _hash;
     QStringList spine;
+    QVariantMap metadata;
 
 };
 
