@@ -56,8 +56,11 @@ bool PDFReader::parse() {
 
 void PDFReader::readMetadata() {
     QStringList keys = this->pdf->infoKeys();
-    foreach (QString k, keys)
-        this->metadata[k.toLower()] = this->pdf->info(k);
+    foreach (QString k, keys) {
+        QString value = this->pdf->info(k);
+        if (value != "")
+            this->metadata[k.toLower()] = value;
+    }
 }
 
 QString PDFReader::hash() {
