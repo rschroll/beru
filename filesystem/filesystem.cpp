@@ -78,3 +78,22 @@ QStringList FileSystem::listDir(const QString &dirname, const QStringList &filte
         files.append(iter.next());
     return files;
 }
+
+/*
+ * Guess at the type of a file from its magic number.
+ */
+QString FileSystem::fileType(const QString &filename) {
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly))
+        return "unreadable";
+
+    QByteArray bytes = file.read(60);
+    if (bytes.left(4) == "%PDF") {
+        return "PDF";
+    } else if (bytes.left(2) == "PK") {
+        if (bytes.mid(30, 28) == "mimetypeapplication/epub+zip")
+            return "EPUB";
+        return "CBZ";
+    }
+    return "unknown";
+}
