@@ -340,7 +340,7 @@ PageWithBottomEdge {
                 model: colorModel
 
                 delegate: StylableOptionSelectorDelegate {
-                    text: name
+                    text: server.reader.pictureBook ? pictureName : name
                     Component.onCompleted: {
                         textLabel.color = foreground
                         if (background.slice(0, 5) == "url(.") {
@@ -371,21 +371,25 @@ PageWithBottomEdge {
                 id: colorModel
                 ListElement {
                     name: "Black on White"
+                    pictureName: "White"
                     foreground: "black"
                     background: "white"
                 }
                 ListElement {
                     name: "Dark on Texture"
+                    pictureName: "Light Texture"
                     foreground: "#222"
                     background: "url(.background_paper@30.png)"
                 }
                 ListElement {
                     name: "Light on Texture"
+                    pictureName: "Dark Texture"
                     foreground: "#999"
                     background: "url(.background_paper_invert@30.png)"
                 }
                 ListElement {
                     name: "White on Black"
+                    pictureName: "Black"
                     foreground: "white"
                     background: "black"
                 }
@@ -393,6 +397,7 @@ PageWithBottomEdge {
 
             OptionSelector {
                 id: fontSelector
+                visible: !server.reader.pictureBook
                 onSelectedIndexChanged: bookStyles.fontFamily = model[selectedIndex]
 
                 model: fontLister.fontList
@@ -407,6 +412,7 @@ PageWithBottomEdge {
             }
 
             Row {
+                visible: !server.reader.pictureBook
                 Label {
                     /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Font Scaling")
@@ -430,6 +436,7 @@ PageWithBottomEdge {
             }
 
             Row {
+                visible: !server.reader.pictureBook
                 Label {
                     /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Line Height")
@@ -479,6 +486,7 @@ PageWithBottomEdge {
             }
 
             Row {
+                visible: !server.reader.pictureBook
                 Label {
                     /*/ Prefer string of < 16 characters /*/
                     text: i18n.tr("Margins")
