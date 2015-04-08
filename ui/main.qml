@@ -88,8 +88,7 @@ MainView {
         Dialog {
             id: errorOpenDialog
             title: i18n.tr("Error Opening File")
-            text: i18n.tr("Beru could not open this file.\n\n" +
-                          "Remember, Beru can only open Epub files without DRM.")
+            text: server.reader.error
             StyledButton {
                 text: i18n.tr("OK")
                 onClicked: PopupUtils.close(errorOpenDialog)

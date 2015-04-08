@@ -13,8 +13,28 @@ Item {
 
     signal contentsReady(var contents)
 
-    property var currentReader
+    property string fileType: ""
+    property var currentReader: {
+        switch (fileType) {
+        case "EPUB":
+            return epub
+        case "CBZ":
+            return cbz
+        case "PDF":
+            return pdf
+        default:
+            return undefined
+        }
+    }
     property bool pictureBook: currentReader !== epub
+    property string error: {
+        if (currentReader === undefined)
+            return i18n.tr("Could not determine file type.\n\n" +
+                           "Remember, Beru can only open EPUB, PDF, and CBZ files without DRM.")
+        else
+            return i18n.tr("Could not parse file.\n\n" +
+                           "Although it appears to be a %1 file, it could not be parsed by Beru.").arg(fileType)
+    }
 
     EpubReader {
         id: epub
@@ -33,21 +53,8 @@ Item {
         height: mainView.height
     }
 
-    function getReader(filename) {
-        switch (filesystem.fileType(filename)) {
-        case "EPUB":
-            return epub;
-        case "CBZ":
-            return cbz;
-        case "PDF":
-            return pdf;
-        default:
-            return undefined;
-        }
-    }
-
     function load(filename) {
-        currentReader = getReader(filename)
+        fileType = filesystem.fileType(filename)
         if (currentReader === undefined)
             return false
         return currentReader.load(filename)
