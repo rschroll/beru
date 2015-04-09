@@ -74,12 +74,15 @@ Page {
                               "download is complete."),
                 url: request.url
             }
-            if (request.mimeType != "application/epub+zip") {
+            if (request.mimeType != "application/epub+zip" &&
+                    request.mimeType != "application/x-cbr" &&
+                    request.mimeType != "application/zip" &&
+                    request.mimeType != "application/pdf") {
                 var filename = request.url.toString().split("/").pop()
                 PopupUtils.open(extensionWarning, browserPage, {downloadargs: downloadargs,
                                     // A path on the file system. //
-                                    text: i18n.tr("This file, <i>%1</i>, may not be an Epub file.  " +
-                                                  "If it is not, Beru will not be able to " +
+                                    text: i18n.tr("This file, <i>%1</i>, may not be an Epub, CBZ, or" +
+                                                  "PDF file.  If it is not, Beru will not be able to" +
                                                   "read it.").arg(filename)})
             } else {
                 PopupUtils.open(downloadComponent, browserPage, downloadargs)
