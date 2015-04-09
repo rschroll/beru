@@ -108,6 +108,7 @@ Page {
             title: i18n.tr("Downloading Ebook")
             property string details
             property string url
+            property bool closed: false
 
 
             SingleDownload {
@@ -120,6 +121,8 @@ Page {
                     detailsShape.visible = true
                     openFileButton.path = path
                     openFileButton.visible = true
+                    if (closed)
+                        destroy()
                 }
             }
 
@@ -209,6 +212,14 @@ Page {
 
             Component.onCompleted: {
                 download.download(url)
+            }
+
+            function __closePopup() {
+                console.log(download.isCompleted)
+                if (download.isCompleted)
+                    destroy()
+                else
+                    closed = true
             }
         }
     }
