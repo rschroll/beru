@@ -146,7 +146,7 @@ Page {
                 return
 
             localBooks.needsort = true
-            var title, author, authorsort, cover, fullcover
+            var title, author, authorsort, cover, fullcover, hash
             if (coverReader.load(res.rows.item(0).filename)) {
                 var coverinfo = coverReader.getCoverInfo(units.gu(5), 2*mingridwidth)
                 title = coverinfo.title
@@ -175,16 +175,18 @@ Page {
 
                 cover = coverinfo.cover
                 fullcover = coverinfo.fullcover
+                hash = coverReader.hash()
             } else {
                 title = res.rows.item(0).title
                 author = i18n.tr("Could not open this book.")
                 authorsort = "zzzzerror"
                 cover = "ZZZerror"
                 fullcover = ""
+                hash = ""
             }
             tx.executeSql("UPDATE LocalBooks SET title=?, author=?, authorsort=?, cover=?, " +
-                          "fullcover=? WHERE filename=?",
-                          [title, author, authorsort, cover, fullcover, res.rows.item(0).filename])
+                          "fullcover=?, hash=? WHERE filename=?",
+                          [title, author, authorsort, cover, fullcover, hash, res.rows.item(0).filename])
 
             if (localBooks.visible) {
                 for (var i=0; i<bookModel.count; i++) {
@@ -277,6 +279,13 @@ Page {
             db.changeVersion(db.version, "3", function (tx) {
                 tx.executeSql("ALTER TABLE LocalBooks ADD fullcover BLOB DEFAULT ''")
                 // Trigger re-rendering of covers.
+                tx.executeSql("UPDATE LocalBooks SET authorsort='zzznull'")
+            })
+        }
+        if (db.version == "" || db.version == "1" || db.version == "2" || db.version == "3") {
+            db.changeVersion(db.version, "4", function (tx) {
+                tx.executeSql("ALTER TABLE LocalBooks ADD hash TEXT DEFAULT ''")
+                // Trigger re-evaluation to update hashes.
                 tx.executeSql("UPDATE LocalBooks SET authorsort='zzznull'")
             })
         }
