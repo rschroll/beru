@@ -4,7 +4,8 @@
     "hooks": {
         "beru": {
             "apparmor": "apparmor/beru@SUFFIX@.json",
-            "desktop": "beru.desktop"
+            "desktop": "beru.desktop",
+            "content-hub": "beru.contenthub.json"
         }
     },
     "maintainer": "Robert Schroll <rschroll@gmail.com>",

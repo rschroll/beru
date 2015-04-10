@@ -4,6 +4,7 @@ set(UI_SRC_FILES
     BrowserPage.qml
     DefaultCover.qml
     historystack.js
+    Importer.qml
     LocalBooks.qml
     main.qml
     qmlmessaging.js

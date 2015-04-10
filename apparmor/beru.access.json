@@ -1,5 +1,5 @@
 {
-    "policy_groups": ["networking", "webview"],
+    "policy_groups": ["networking", "webview", "content_exchange"],
     "policy_version": 1.2,
     "read_path": ["@{HOME}/"]
 }

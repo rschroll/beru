@@ -100,8 +100,15 @@ MainView {
         id: server
     }
 
+    Importer {
+        id: importer
+    }
+
     function loadFile(filename) {
         if (server.reader.load(filename)) {
+            while (pageStack.currentPage != localBooks)
+                pageStack.pop()
+
             pageStack.push(bookPage, {url: "http://127.0.0.1:" + server.port})
             window.title = server.reader.title()
             localBooks.updateRead(filename)

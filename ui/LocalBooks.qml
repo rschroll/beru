@@ -214,6 +214,17 @@ Page {
         coverTimer.start()
     }
 
+    function inDatabase(hash, existsCallback, newCallback) {
+        var db = openDatabase()
+        db.readTransaction(function (tx) {
+            var res = tx.executeSql("SELECT filename FROM LocalBooks WHERE hash == ?", [hash])
+            if (res.rows.length > 0 && filesystem.exists(res.rows.item(0).filename))
+                existsCallback(res.rows.item(0).filename)
+            else
+                newCallback()
+        })
+    }
+
     function readBookDir() {
         addBookDir()
         listBooks()
