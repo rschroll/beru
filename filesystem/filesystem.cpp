@@ -39,14 +39,15 @@ QString FileSystem::homePath() const
     return QDir::homePath();
 }
 
-bool FileSystem::writableHome()
+bool FileSystem::readableHome()
 {
-    QTemporaryFile temp(QDir::homePath() + "/tmp");
-    if (!temp.open())
-        return false;
-    temp.write("test");
-    temp.seek(0);
-    return temp.readAll() == "test";
+    // .bash_logout in not readable under confinement
+    QFile canary(QDir::homePath() + "/.bash_logout");
+    if (canary.open(QFile::ReadOnly)) {
+        canary.close();
+        return true;
+    }
+    return false;
 }
 
 /*

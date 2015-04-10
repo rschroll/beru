@@ -23,7 +23,7 @@ Page {
     property bool firststart: false
     property bool wide: false
     property string bookdir: ""
-    property bool writablehome: false
+    property bool readablehome: false
     property string defaultdirname: i18n.tr("Books")
     property double gridmargin: units.gu(1)
     property double mingridwidth: units.gu(15)
@@ -244,12 +244,12 @@ Page {
     }
 
     function loadBookDir() {
-        if (filesystem.writableHome()) {
-            writablehome = true
+        if (filesystem.readableHome()) {
+            readablehome = true
             var storeddir = getSetting("bookdir")
             bookdir = (storeddir == null) ? filesystem.getDataDir(defaultdirname) : storeddir
         } else {
-            writablehome = false
+            readablehome = false
             bookdir = filesystem.getDataDir(defaultdirname)
         }
     }
@@ -290,8 +290,8 @@ Page {
             loadBookDir()
             readBookDir()
         } else {
-            writablehome = filesystem.writableHome()
-            if (writablehome) {
+            readablehome = filesystem.readableHome()
+            if (readablehome) {
                 setBookDir(filesystem.homePath() + "/" + defaultdirname)
                 PopupUtils.open(settingsComponent)
             } else {
@@ -625,7 +625,7 @@ Page {
             Action {
                 text: i18n.tr("Settings")
                 iconName: "settings"
-                onTriggered: PopupUtils.open(writablehome ? settingsComponent : settingsDisabledComponent)
+                onTriggered: PopupUtils.open(readablehome ? settingsComponent : settingsDisabledComponent)
             }
         ]
 

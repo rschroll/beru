@@ -19,7 +19,7 @@ public:
     Q_INVOKABLE QString canonicalFilePath(const QString &filename);
     Q_INVOKABLE bool makeDir(const QString &path);
     Q_INVOKABLE QString homePath() const;
-    Q_INVOKABLE bool writableHome();
+    Q_INVOKABLE bool readableHome();
     Q_INVOKABLE QString getDataDir(const QString &subDir);
     Q_INVOKABLE QStringList listDir(const QString &dirname, const QStringList &filters);
     Q_INVOKABLE QString fileType(const QString &filename);
