@@ -18,16 +18,22 @@ Page {
 
         model: sourcesModel
         delegate: Standard {
-            text: model.name
+            text: (model.url == "contenthub") ? i18n.tr("Import from Content Hub") : model.name
             progression: true
             onClicked: {
-                browserLoader.loadURL(model.url, model.murl, model.name, model.showAddressBar)
+                if (model.url == "contenthub")
+                    pageStack.push(importer.pickerPage)
+                else
+                    browserLoader.loadURL(model.url, model.murl, model.name, model.showAddressBar)
             }
         }
     }
 
     ListModel {
         id: sourcesModel
+        ListElement {
+            url: "contenthub"
+        }
         ListElement {
             name: "Project Gutenberg"
             url: "http://www.gutenberg.org"

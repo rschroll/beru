@@ -7,7 +7,7 @@
 import QtQuick 2.0
 import Ubuntu.Components 1.1
 import Ubuntu.Components.Popups 1.0
-import Ubuntu.Content 0.1
+import Ubuntu.Content 1.1
 
 import "components"
 
@@ -15,12 +15,23 @@ Item {
     id: importer
     property bool importError: false
     property bool openImport: true
+    property var activeTransfer
+    property var pickerPage: picker
 
     Connections {
         target: ContentHub
         onImportRequested: {
-            if (transfer.state === ContentTransfer.Charged)
-                importItems(transfer.items)
+            activeTransfer = transfer
+            if (activeTransfer.state === ContentTransfer.Charged)
+                importItems(activeTransfer.items)
+        }
+    }
+
+    Connections {
+        target: activeTransfer
+        onStateChanged: {
+            if (activeTransfer.state === ContentTransfer.Charged)
+                importItems(activeTransfer.items)
         }
     }
 
@@ -87,5 +98,28 @@ Item {
                 }
             }
         }
+    }
+
+    Page {
+        id: picker
+        visible: false
+        ContentPeerPicker {
+            handler: ContentHandler.Source
+            contentType: ContentType.Documents
+            headerText: i18n.tr("Import books from")
+
+            onPeerSelected: {
+                peer.selectionType = ContentTransfer.Multiple
+                activeTransfer = peer.request()
+                pageStack.pop()
+            }
+
+            onCancelPressed: pageStack.pop()
+        }
+    }
+
+    ContentTransferHint {
+        anchors.fill: mainView
+        activeTransfer: importer.activeTransfer
     }
 }

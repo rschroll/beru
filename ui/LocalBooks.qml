@@ -638,7 +638,7 @@ Page {
         actions: [
             Action {
                 text: i18n.tr("Get Books")
-                iconName: "search"
+                iconName: "save"
                 onTriggered: pageStack.push(bookSources)
             },
 
