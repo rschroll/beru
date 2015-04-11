@@ -450,6 +450,7 @@ Page {
                     if (loadFile(filename) && pasterror)
                         refreshCover(filename)
                 }
+                onPressAndHold: openInfoDialog(model)
             }
         }
     }
@@ -483,6 +484,10 @@ Page {
                         refreshCover(filename)
                 }
             }
+            onPressAndHold: {
+                if (model.filename != "ZZZback")
+                    openInfoDialog(model)
+            }
         }
     }
 
@@ -515,6 +520,10 @@ Page {
                     if (loadFile(filename) && pasterror)
                         refreshCover(filename)
                 }
+            }
+            onPressAndHold: {
+                if (model.count == 1)
+                    openInfoDialog(model)
             }
         }
     }
@@ -783,6 +792,82 @@ Page {
                 text: i18n.tr("Close")
                 primary: false
                 onClicked: PopupUtils.close(settingsDisabledDialog)
+            }
+        }
+    }
+
+    function openInfoDialog(book) {
+        var dialog = PopupUtils.open(infoComponent)
+        dialog.bookTitle = book.title
+        dialog.filename = book.filename
+
+        if (book.cover == "ZZZerror")
+            dialog.coverSource = defaultCover.errorCover(book)
+        else if (!book.fullcover)
+            dialog.coverSource = defaultCover.missingCover(book)
+        else
+            dialog.coverSource = book.fullcover
+    }
+
+    Component {
+        id: infoComponent
+
+        Dialog {
+            id: infoDialog
+
+            property alias coverSource: infoCover.source
+            property alias bookTitle: titleLabel.text
+            property alias filename: filenameLabel.text
+
+            Item {
+                height: Math.max(infoCover.height, infoColumn.height)
+
+                Image {
+                    id: infoCover
+                    width: parent.width / 3
+                    height: parent.width / 2
+                    anchors {
+                        left: parent.left
+                        top: parent.top
+                    }
+                    fillMode: Image.PreserveAspectFit
+                    // Prevent blurry SVGs
+                    sourceSize.width: 2*localBooks.mingridwidth
+                    sourceSize.height: 3*localBooks.mingridwidth
+                }
+
+                Column {
+                    id: infoColumn
+                    anchors {
+                        left: infoCover.right
+                        right: parent.right
+                        top: parent.top
+                        leftMargin: units.gu(2)
+                    }
+                    spacing: units.gu(2)
+
+                    Label {
+                        id: titleLabel
+                        width: parent.width
+                        horizontalAlignment: Text.AlignHCenter
+                        fontSize: "large"
+                        color: UbuntuColors.darkGrey
+                        wrapMode: Text.Wrap
+                    }
+                    Label {
+                        id: filenameLabel
+                        width: parent.width
+                        horizontalAlignment: Text.AlignLeft
+                        fontSize: "small"
+                        color: UbuntuColors.darkGrey
+                        wrapMode: Text.WrapAnywhere
+                    }
+                }
+            }
+
+            StyledButton {
+                text: i18n.tr("Close")
+                onClicked: PopupUtils.close(infoDialog)
             }
         }
     }
