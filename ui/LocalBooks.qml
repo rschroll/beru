@@ -27,6 +27,7 @@ Page {
     property string defaultdirname: i18n.tr("Books")
     property double gridmargin: units.gu(1)
     property double mingridwidth: units.gu(15)
+    property bool reloading: false
     onSortChanged: {
         listBooks()
         perAuthorModel.clear()
@@ -226,9 +227,11 @@ Page {
     }
 
     function readBookDir() {
+        reloading = true
         addBookDir()
         listBooks()
         coverTimer.start()
+        reloading = false
     }
 
     function adjustViews(showAuthor) {
@@ -539,6 +542,11 @@ Page {
                 }
             }
         }
+
+        PullToRefresh {
+            refreshing: reloading
+            onRefresh: readBookDir()
+        }
     }
 
     Scrollbar {
@@ -581,6 +589,11 @@ Page {
 
         model: bookModel
         delegate: coverDelegate
+
+        PullToRefresh {
+            refreshing: reloading
+            onRefresh: readBookDir()
+        }
     }
 
     Scrollbar {
