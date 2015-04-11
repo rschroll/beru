@@ -177,7 +177,6 @@ Item {
     }
 
     ContentTransferHint {
-        anchors.fill: mainView
         activeTransfer: importer.activeTransfer
     }
 }
