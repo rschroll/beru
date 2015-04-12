@@ -802,7 +802,6 @@ Page {
         var dirs = ["/.local/share/%1", "/.local/share/ubuntu-download-manager/%1"]
         for (var i=0; i<dirs.length; i++) {
             var path = filesystem.homePath() + dirs[i].arg(mainView.applicationName)
-            console.log(path)
             if (dialog.filename.slice(0, path.length) == path) {
                 dialog.allowDelete = true
                 break
