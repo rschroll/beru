@@ -156,6 +156,10 @@ Item {
                 }
             }
         }
+        Scrollbar {
+            flickableItem: sourcesView
+            align: Qt.AlignTrailing
+        }
     }
 
     Page {

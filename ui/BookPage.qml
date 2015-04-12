@@ -158,28 +158,35 @@ PageWithBottomEdge {
         }
     }
 
-    bottomEdgePageComponent: ListView {
-        id: contentsListView
+    bottomEdgePageComponent: Item {
+        ListView {
+            id: contentsListView
+            anchors.fill: parent
 
-        model: contentsListModel
-        delegate: Standard {
-            text: (new Array(model.level + 1)).join("    ") +
-                  model.title.replace(/(\n| )+/g, " ").replace(/^%PAGE%/, i18n.tr("Page"))
-            selected: bookPage.currentChapter == model.src
-            onClicked: {
-                Messaging.sendMessage("NavigateChapter", model.src)
-                closeBottomEdge()
-            }
-        }
-
-        Connections {
-            target: bookPage
-            onBottomEdgePressed: {
-                for (var i=0; i<contentsListModel.count; i++) {
-                    if (contentsListModel.get(i).src == bookPage.currentChapter)
-                        positionViewAtIndex(i, ListView.Center)
+            model: contentsListModel
+            delegate: Standard {
+                text: (new Array(model.level + 1)).join("    ") +
+                      model.title.replace(/(\n| )+/g, " ").replace(/^%PAGE%/, i18n.tr("Page"))
+                selected: bookPage.currentChapter == model.src
+                onClicked: {
+                    Messaging.sendMessage("NavigateChapter", model.src)
+                    closeBottomEdge()
                 }
             }
+
+            Connections {
+                target: bookPage
+                onBottomEdgePressed: {
+                    for (var i=0; i<contentsListModel.count; i++) {
+                        if (contentsListModel.get(i).src == bookPage.currentChapter)
+                            positionViewAtIndex(i, ListView.Center)
+                    }
+                }
+            }
+        }
+        Scrollbar {
+            flickableItem: contentsListView
+            align: Qt.AlignTrailing
         }
     }
     bottomEdgeTitle: i18n.tr("Contents")
