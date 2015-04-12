@@ -16,6 +16,7 @@ set(UI_SRC_FILES
     components/PageWithBottomEdge.qml
     components/StylableOptionSelectorDelegate.qml
     components/StyledButton.qml
+    components/SwipeControl.qml
     components/Toolbar.qml
     images/default_cover.svg
     images/error_cover.svg

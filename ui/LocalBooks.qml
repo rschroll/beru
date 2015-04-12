@@ -801,6 +801,16 @@ Page {
         dialog.bookTitle = book.title
         dialog.filename = book.filename
 
+        var dirs = ["/.local/share/%1", "/.local/share/ubuntu-download-manager/%1"]
+        for (var i=0; i<dirs.length; i++) {
+            var path = filesystem.homePath() + dirs[i].arg(mainView.applicationName)
+            console.log(path)
+            if (dialog.filename.slice(0, path.length) == path) {
+                dialog.allowDelete = true
+                break
+            }
+        }
+
         if (book.cover == "ZZZerror")
             dialog.coverSource = defaultCover.errorCover(book)
         else if (!book.fullcover)
@@ -818,6 +828,7 @@ Page {
             property alias coverSource: infoCover.source
             property alias bookTitle: titleLabel.text
             property alias filename: filenameLabel.text
+            property alias allowDelete: swipe.visible
 
             Item {
                 height: Math.max(infoCover.height, infoColumn.height)
@@ -862,6 +873,21 @@ Page {
                         color: UbuntuColors.darkGrey
                         wrapMode: Text.WrapAnywhere
                     }
+                }
+            }
+
+            SwipeControl {
+                id: swipe
+                visible: false
+                /*/ A control can be dragged to delete a file.  The deletion occurs /*/
+                /*/ when the user releases the control. /*/
+                actionText: i18n.tr("Release to Delete")
+                /*/ A control can be dragged to delete a file. /*/
+                notificationText: i18n.tr("Swipe to Delete")
+                onTriggered: {
+                    filesystem.remove(infoDialog.filename)
+                    PopupUtils.close(infoDialog)
+                    readBookDir()
                 }
             }
 

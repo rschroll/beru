@@ -23,6 +23,7 @@ public:
     Q_INVOKABLE QString getDataDir(const QString &subDir);
     Q_INVOKABLE QStringList listDir(const QString &dirname, const QStringList &filters);
     Q_INVOKABLE QString fileType(const QString &filename);
+    Q_INVOKABLE bool remove(const QString &filename);
 };
 
 #endif // FILESYSTEM_H

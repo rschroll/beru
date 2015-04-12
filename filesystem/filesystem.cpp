@@ -98,3 +98,7 @@ QString FileSystem::fileType(const QString &filename) {
     }
     return "unknown";
 }
+
+bool FileSystem::remove(const QString &filename) {
+    return QFile::remove(filename);
+}
