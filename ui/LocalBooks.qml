@@ -18,7 +18,7 @@ Page {
     id: localBooks
     title: i18n.tr("Library")
     flickable: gridview
-    property int sort: localBooks.head.sections.selectedIndex
+    property int sort: Math.max(localBooks.head.sections.selectedIndex, 0)
     property bool needsort: false
     property bool firststart: false
     property bool wide: false
@@ -322,6 +322,8 @@ Page {
                 readBookDir()
             }
         }
+        // We get crashes when we set this initially.  See bug #82.
+        localBooks.head.sections.model = [i18n.tr("Recently Read"), i18n.tr("Title"), i18n.tr("Author")]
     }
 
     // If we need to resort, do it when hiding or showing this page
@@ -670,10 +672,6 @@ Page {
                 onTriggered: PopupUtils.open(readablehome ? settingsComponent : settingsDisabledComponent)
             }
         ]
-
-        sections {
-            model: [i18n.tr("Recently Read"), i18n.tr("Title"), i18n.tr("Author")]
-        }
     }
 
     Component {
