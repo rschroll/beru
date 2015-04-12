@@ -1,7 +1,6 @@
 set(UI_SRC_FILES
     BookPage.qml
     BookSources.qml
-    BrowserPage.qml
     DefaultCover.qml
     historystack.js
     Importer.qml

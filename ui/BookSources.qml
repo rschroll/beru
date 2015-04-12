@@ -24,7 +24,8 @@ Page {
                 if (model.url == "contenthub")
                     pageStack.push(importer.pickerPage)
                 else
-                    browserLoader.loadURL(model.url, model.murl, model.name, model.showAddressBar)
+                    Qt.openUrlExternally((width < units.gu(80)
+                                          && model.murl != undefined) ? model.murl : model.url)
             }
         }
     }
