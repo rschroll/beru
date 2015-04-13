@@ -1,4 +1,4 @@
 {
-    "policy_groups": ["networking", "webview", "content_exchange"],
+    "policy_groups": ["networking", "webview", "content_exchange", "usermetrics"],
     "policy_version": 1.2
 }
