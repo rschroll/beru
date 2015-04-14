@@ -21,13 +21,8 @@ Page {
     property int sort: 0
     property bool needsort: false
     property bool firststart: false
-    property bool wide: false
-    property string bookdir: ""
-    property bool readablehome: false
-    property string defaultdirname: i18n.tr("Books")
     property double gridmargin: units.gu(1)
     property double mingridwidth: units.gu(15)
-    property bool reloading: false
     
     function onFirstStart(db) {
         db.changeVersion(db.version, "1")
@@ -39,32 +34,7 @@ Page {
         return LocalStorage.openDatabaseSync("BeruLocalBooks", "", "Books on the local device",
                                              1000000, onFirstStart);
     }
-    
-    function fileToTitle(filename) {
-        return filename.replace(/\.\w+$/, "").replace(/_/g, " ")
-    }
-    
-    // New items are given a lastread time of now, since these are probably
-    // interesting for a user to see.
-    property string addFileSQL: "INSERT OR IGNORE INTO LocalBooks(filename, title, author, authorsort, " +
-                                "cover, lastread) VALUES(?, ?, '', 'zzznull', 'ZZZnone', datetime('now'))"
 
-    function addFile(filePath, startCoverTimer) {
-        console.log("  !! add file")
-    }
-
-    function addBookDir() {
-        var db = openDatabase()
-        db.transaction(function (tx) {
-            var files = filesystem.listDir(bookdir, ["*.epub", "*.cbz", "*.pdf"])
-            for (var i=0; i<files.length; i++) {
-                var fileName = files[i].split("/").pop()
-                tx.executeSql(addFileSQL, [files[i], fileToTitle(fileName)])
-            }
-        })
-        localBooks.needsort = true
-    }
-    
     function listBooks() {
         // We only need to GROUP BY in the author sort, but this lets us use the same
         // SQL logic for all three cases.
@@ -75,8 +45,6 @@ Page {
             console.log("Error: Undefined sorting: " + localBooks.sort)
             return
         }
-
-        //listview.delegate = (localBooks.sort == 2) ? authorDelegate : titleDelegate
 
         bookModel.clear()
         var db = openDatabase()
@@ -94,96 +62,12 @@ Page {
         localBooks.needsort = false
     }
 
-    function listAuthorBooks(authorsort) {
-        perAuthorModel.clear()
-        var db = openDatabase()
-        db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title, author, cover, fullcover FROM LocalBooks " +
-                                    "WHERE authorsort=? ORDER BY title ASC", [authorsort])
-            for (var i=0; i<res.rows.length; i++) {
-                var item = res.rows.item(i)
-                if (filesystem.exists(item.filename))
-                    perAuthorModel.append({filename: item.filename, title: item.title,
-                                           author: item.author, cover: item.cover, fullcover: item.fullcover})
-            }
-            perAuthorModel.append({filename: "ZZZback", title: i18n.tr("Back"),
-                                   author: "", cover: ""})
-        })
-    }
-
-    function updateRead(filename) {
-        var db = openDatabase()
-        db.transaction(function (tx) {
-            tx.executeSql("UPDATE OR IGNORE LocalBooks SET lastread=datetime('now') WHERE filename=?",
-                          [filename])
-        })
-        if (localBooks.sort == 0)
-            listBooks()
-    }
-
-    function updateBookCover() {
-        console.log("  !! Update book cover")
-    }
-
-    function refreshCover(filename) {
-        console.log("  !! Refresh cover")
-    }
-
-    function inDatabase(hash, existsCallback, newCallback) {
-        var db = openDatabase()
-        db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename FROM LocalBooks WHERE hash == ?", [hash])
-            if (res.rows.length > 0 && filesystem.exists(res.rows.item(0).filename))
-                existsCallback(res.rows.item(0).filename)
-            else
-                newCallback()
-        })
-    }
-
     function readBookDir() {
-        reloading = true
-        addBookDir()
         listBooks()
-        //coverTimer.start()
-        reloading = false
-    }
-
-    function adjustViews(showAuthor) {
-        if (sort != 2 || perAuthorModel.count == 0)
-            showAuthor = false  // Don't need to show authors' list
-
-        if (sort == 0) {
-            listview.visible = false
-            gridview.visible = true
-            localBooks.flickable = gridview
-        } else {
-            listview.visible = true
-            gridview.visible = false
-            if (!wide || sort != 2) {
-                listview.width = localBooks.width
-                listview.x = showAuthor ? -localBooks.width : 0
-                localBooks.flickable = showAuthor ? perAuthorListView : listview
-            } else {
-                localBooks.flickable = null
-                listview.width = localBooks.width / 2
-                listview.x = 0
-                listview.topMargin = 0
-                perAuthorListView.topMargin = 0
-            }
-        }
-    }
-
-    function loadBookDir() {
-        readablehome = false
-        bookdir = filesystem.getDataDir(defaultdirname)
-    }
-
-    function setBookDir(dir) {
-        bookdir = dir
-        setSetting("bookdir", dir)
     }
 
     Component.onCompleted: {
+        console.log("  !! component completed")
         var db = openDatabase()
         db.transaction(function (tx) {
             tx.executeSql("CREATE TABLE IF NOT EXISTS LocalBooks(filename TEXT UNIQUE, " +
@@ -215,16 +99,10 @@ Page {
 
     // We need to wait for main to be finished, so that the settings are available.
     function onMainCompleted() {
+        console.log("  !! main completed")
         // readBookDir() will trigger the loading of all files in the default directory
         // into the library.
-        if (!firststart) {
-            loadBookDir()
-            readBookDir()
-        } else {
-            readablehome = false //filesystem.readableHome()
-            setBookDir(filesystem.getDataDir(defaultdirname))
-            readBookDir()
-        }
+        readBookDir()
     }
 
     ListModel {
@@ -347,11 +225,6 @@ Page {
 
         model: bookModel
         delegate: coverDelegate
-
-        PullToRefresh {
-            refreshing: reloading
-            onRefresh: readBookDir()
-        }
     }
 
     head {
