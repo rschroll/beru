@@ -1,5 +1,6 @@
 set(UI_SRC_FILES
     main.qml
+    sqlout.js
 )
 
 if(${OUT_OF_TREE_BUILD})

@@ -5,10 +5,9 @@
  */
 
 import QtQuick 2.0
-import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 1.1
-import File 1.0
 
+import "sqlout.js" as Res
 
 MainView {
     // objectName for functional testing purposes (autopilot-qt5)
@@ -31,10 +30,6 @@ MainView {
     property double gridmargin: units.gu(1)
     property double mingridwidth: units.gu(15)
 
-    FileSystem {
-        id: filesystem
-    }
-
     PageStack {
         id: pageStack
         Component.onCompleted: {
@@ -48,22 +43,12 @@ MainView {
             title: "Library"
             flickable: gridview
 
-            function openDatabase() {
-                return LocalStorage.openDatabaseSync("BeruLocalBooks", "", "Books on the local device",
-                                                     1000000);
-            }
-
             function listBooks() {
                 bookModel.clear()
-                var db = openDatabase()
-                db.readTransaction(function (tx) {
-                    var res = tx.executeSql("SELECT filename, fullcover FROM LocalBooks")
-                    for (var i=0; i<res.rows.length; i++) {
-                        var item = res.rows.item(i)
-                        if (filesystem.exists(item.filename))
-                            bookModel.append({fullcover: item.fullcover})
-                    }
-                })
+                for (var i=0; i<Res.rows.length; i++) {
+                    var item = Res.rows[i]
+                    bookModel.append({fullcover: item.fullcover})
+                }
             }
 
             ListModel {
