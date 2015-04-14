@@ -89,11 +89,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${DESKTOP_FILE} DESTINATION ${DESKTOP_
 install(FILES ${ICON_FILE} DESTINATION ${DATA_DIR})
 
 # Add the needed subdirectories to be built and look for a CMakeLists.txt file in each directory
-add_subdirectory(epubreader)
 add_subdirectory(filesystem)
-add_subdirectory(fontlister)
-add_subdirectory(html)
-add_subdirectory(qhttpserver)
 add_subdirectory(ui)
 
 add_subdirectory(po)

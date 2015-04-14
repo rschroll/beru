@@ -1,26 +1,11 @@
 set(UI_SRC_FILES
-    BookPage.qml
-    BookSources.qml
     DefaultCover.qml
-    historystack.js
-    Importer.qml
     LocalBooks.qml
     main.qml
-    qmlmessaging.js
-    qmlmessaging-userscript.js
-    Reader.qml
-    Server.qml
-    components/FloatingButton.qml
-    components/OptionSelector.qml
-    components/PageWithBottomEdge.qml
-    components/StylableOptionSelectorDelegate.qml
     components/StyledButton.qml
-    components/SwipeControl.qml
-    components/Toolbar.qml
     images/default_cover.svg
     images/error_cover.svg
     images/error_cover_full.svg
-    images/toc.svg
 )
 
 if(${OUT_OF_TREE_BUILD})
