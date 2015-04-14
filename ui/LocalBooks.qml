@@ -109,10 +109,6 @@ Page {
         id: bookModel
     }
 
-    DefaultCover {
-        id: defaultCover
-    }
-
     Component {
         id: coverDelegate
         Item {
@@ -132,78 +128,11 @@ Page {
                         bottomMargin: 1.5*gridmargin
                     }
                     fillMode: Image.PreserveAspectFit
-                    source: {
-                        if (model.cover == "ZZZerror")
-                            return defaultCover.errorCover(model)
-                        if (!model.fullcover)
-                            return defaultCover.missingCover(model)
-                        return model.fullcover
-                    }
+                    source: model.fullcover
                     // Prevent blurry SVGs
                     sourceSize.width: 2*localBooks.mingridwidth
                     sourceSize.height: 3*localBooks.mingridwidth
-
-                    Text {
-                        x: ((model.cover == "ZZZerror") ? 0.09375 : 0.125)*parent.width
-                        y: 0.0625*parent.width
-                        width: 0.8125*parent.width
-                        height: parent.height/2 - 0.125*parent.width
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        wrapMode: Text.Wrap
-                        elide: Text.ElideRight
-                        color: defaultCover.textColor(model)
-                        style: Text.Raised
-                        styleColor: defaultCover.highlightColor(model, defaultCover.hue(model))
-                        font.family: "URW Bookman L"
-                        text: {
-                            if (!model.fullcover)
-                                return model.title
-                            return ""
-                        }
-                    }
-
-                    Text {
-                        x: ((model.cover == "ZZZerror") ? 0.09375 : 0.125)*parent.width
-                        y: parent.height/2 + 0.0625*parent.width
-                        width: 0.8125*parent.width
-                        height: parent.height/2 - 0.125*parent.width
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
-                        wrapMode: Text.Wrap
-                        elide: Text.ElideRight
-                        color: defaultCover.textColor(model)
-                        style: Text.Raised
-                        styleColor: defaultCover.highlightColor(model, defaultCover.hue(model))
-                        font.family: "URW Bookman L"
-                        text: {
-                            if (!model.fullcover)
-                                return model.author
-                            return ""
-                        }
-                    }
                 }
-            }
-
-            DropShadow {
-                anchors.fill: image
-                radius: 1.5*gridmargin
-                samples: 16
-                source: image
-                color: "#808080"
-                verticalOffset: 0.25*gridmargin
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    // Save copies now, since these get cleared by loadFile (somehow...)
-                    var filename = model.filename
-                    var pasterror = model.cover == "ZZZerror"
-                    if (loadFile(filename) && pasterror)
-                        refreshCover(filename)
-                }
-                onPressAndHold: openInfoDialog(model)
             }
         }
     }
