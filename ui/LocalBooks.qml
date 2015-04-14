@@ -645,7 +645,7 @@ Page {
             }
 
             StyledButton {
-                text: i18n.tr("Download Books")
+                text: i18n.tr("Get Books")
                 width: parent.width
                 onClicked: pageStack.push(bookSources)
             }
