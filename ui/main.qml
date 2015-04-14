@@ -45,7 +45,7 @@ MainView {
         Page {
             id: localBooks
             visible: false
-            title: i18n.tr("Library")
+            title: "Library"
             flickable: gridview
 
             function openDatabase() {
@@ -72,29 +72,15 @@ MainView {
 
             Component {
                 id: coverDelegate
-                Item {
+                Image {
                     width: gridview.cellWidth
                     height: gridview.cellHeight
 
-                    Item {
-                        id: image
-                        anchors.fill: parent
-
-                        Image {
-                            anchors {
-                                fill: parent
-                                leftMargin: gridmargin
-                                rightMargin: gridmargin
-                                topMargin: 1.5*gridmargin
-                                bottomMargin: 1.5*gridmargin
-                            }
-                            fillMode: Image.PreserveAspectFit
-                            source: model.fullcover
-                            // Prevent blurry SVGs
-                            sourceSize.width: 2*localBooks.mingridwidth
-                            sourceSize.height: 3*localBooks.mingridwidth
-                        }
-                    }
+                    fillMode: Image.PreserveAspectFit
+                    source: model.fullcover
+                    // Prevent blurry SVGs
+                    sourceSize.width: 2*localBooks.mingridwidth
+                    sourceSize.height: 3*localBooks.mingridwidth
                 }
             }
 
@@ -119,7 +105,7 @@ MainView {
 
             head {
                 sections {
-                    model: [i18n.tr("Recently Read"), i18n.tr("Title"), i18n.tr("Author")]
+                    model: ["Recently Read", "Title", "Author"]
                 }
             }
         }

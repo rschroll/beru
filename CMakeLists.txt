@@ -91,5 +91,3 @@ install(FILES ${ICON_FILE} DESTINATION ${DATA_DIR})
 # Add the needed subdirectories to be built and look for a CMakeLists.txt file in each directory
 add_subdirectory(filesystem)
 add_subdirectory(ui)
-
-add_subdirectory(po)
