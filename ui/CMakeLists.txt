@@ -1,5 +1,4 @@
 set(UI_SRC_FILES
-    LocalBooks.qml
     main.qml
 )
 
