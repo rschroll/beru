@@ -5,14 +5,8 @@
  */
 
 import QtQuick 2.0
-import QtQuick.LocalStorage 2.0
-import QtQuick.Window 2.0
 import Ubuntu.Components 1.1
-import Ubuntu.Components.Popups 1.0
-import U1db 1.0 as U1db
 import File 1.0
-
-import "components"
 
 
 MainView {
@@ -47,24 +41,6 @@ MainView {
             id: localBooks
             visible: false
         }
-    }
-
-    function getSetting(key) {
-        console.log("  !!  getSettings " + key)
-        return undefined
-    }
-
-    function setSetting(key, value) {
-        console.log("  !!  setSettings " + key)
-    }
-
-    function getBookSetting(key) {
-        console.log("  !!  getBookSettings " + key)
-        return undefined
-    }
-
-    function setBookSetting(key, value) {
-        console.log("  !!  setBookSettings " + key)
     }
 
     Component.onCompleted: {

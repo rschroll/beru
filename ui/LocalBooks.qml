@@ -6,12 +6,7 @@
 
 import QtQuick 2.0
 import QtQuick.LocalStorage 2.0
-import QtGraphicalEffects 1.0
 import Ubuntu.Components 1.1
-import Ubuntu.Components.ListItems 1.0
-import Ubuntu.Components.Popups 1.0
-
-import "components"
 
 
 Page {
@@ -30,14 +25,11 @@ Page {
         bookModel.clear()
         var db = openDatabase()
         db.readTransaction(function (tx) {
-            var res = tx.executeSql("SELECT filename, title, author, cover, fullcover, authorsort, count(*) " +
-                                    "FROM LocalBooks GROUP BY filename ORDER BY lastread DESC, title ASC")
+            var res = tx.executeSql("SELECT filename, fullcover FROM LocalBooks")
             for (var i=0; i<res.rows.length; i++) {
                 var item = res.rows.item(i)
                 if (filesystem.exists(item.filename))
-                    bookModel.append({filename: item.filename, title: item.title,
-                                      author: item.author, cover: item.cover, fullcover: item.fullcover,
-                                      authorsort: item.authorsort, count: item["count(*)"]})
+                    bookModel.append({fullcover: item.fullcover})
             }
         })
     }
