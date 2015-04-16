@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-11-03 12:53-0500\n"
+"POT-Creation-Date: 2015-04-12 22:26-0400\n"
 "PO-Revision-Date: 2014-08-18 19:08+0000\n"
 "Last-Translator: Phillip Sz <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
@@ -15,80 +15,100 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2014-11-07 16:52+0000\n"
-"X-Generator: Launchpad (build 17231)\n"
+"X-Launchpad-Export-Date: 2015-04-16 03:00+0000\n"
+"X-Generator: Launchpad (build 17428)\n"
 
-#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:259 ui/BookPage.qml:95
+#: ui/Reader.qml:32
+msgid ""
+"Could not determine file type.\n"
+"\n"
+"Remember, Beru can only open EPUB, PDF, and CBZ files without DRM."
+msgstr ""
+
+#: ui/Reader.qml:35
+msgid ""
+"Could not parse file.\n"
+"\n"
+"Although it appears to be a %1 file, it could not be parsed by Beru."
+msgstr ""
+
+#: ui/LocalBooks.qml:19
 msgid "Library"
 msgstr "Bibliothek"
 
-#: ui/LocalBooks.qml:26
+#: ui/LocalBooks.qml:27
 msgid "Books"
 msgstr "Bücher"
 
-#: ui/LocalBooks.qml:43 ui/LocalBooks.qml:661
+#: ui/LocalBooks.qml:45 ui/LocalBooks.qml:682
 msgid "Welcome to Beru"
 msgstr ""
 
-#. / Limited space: ~8 characters /
-#: ui/LocalBooks.qml:125 ui/BrowserPage.qml:268 ui/BookPage.qml:105
+#: ui/LocalBooks.qml:127
 msgid "Back"
 msgstr "Zurück"
 
-#: ui/LocalBooks.qml:179
+#: ui/LocalBooks.qml:182
 msgid "Could not open this book."
 msgstr ""
 
-#: ui/LocalBooks.qml:468
+#: ui/LocalBooks.qml:326
+msgid "Recently Read"
+msgstr ""
+
+#: ui/LocalBooks.qml:326
+msgid "Title"
+msgstr "Titel"
+
+#: ui/LocalBooks.qml:326
+msgid "Author"
+msgstr "Autor"
+
+#: ui/LocalBooks.qml:499
 msgid "Unknown Author"
 msgstr "Unbekannter Autor"
 
 #. / Argument will be at least 2. /
-#: ui/LocalBooks.qml:470
+#: ui/LocalBooks.qml:501
 msgid "%1 Book"
 msgid_plural "%1 Books"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ui/LocalBooks.qml:586
+#: ui/LocalBooks.qml:631
 msgid "No Books in Library"
 msgstr ""
 
 #. / A path on the file system. /
-#: ui/LocalBooks.qml:594
+#: ui/LocalBooks.qml:639
 msgid ""
 "Beru could not find any books for your library.  Beru will automatically "
 "find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
 "will be added to the library."
 msgstr ""
 
-#: ui/LocalBooks.qml:603
+#: ui/LocalBooks.qml:648
 msgid "Download Books"
 msgstr ""
 
-#: ui/LocalBooks.qml:609
+#: ui/LocalBooks.qml:654
 msgid "Search Again"
 msgstr "Erneut Suchen"
 
-#: ui/LocalBooks.qml:630 ui/BookSources.qml:13
+#: ui/LocalBooks.qml:664 ui/BookSources.qml:13
 msgid "Get Books"
 msgstr ""
 
-#: ui/LocalBooks.qml:639
-msgid "Sort"
-msgstr "Sortieren"
-
-#. / Limited space: ~8 characters /
-#: ui/LocalBooks.qml:648 ui/BookPage.qml:149
+#: ui/LocalBooks.qml:670
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: ui/LocalBooks.qml:661 ui/LocalBooks.qml:738
+#: ui/LocalBooks.qml:682 ui/LocalBooks.qml:759
 msgid "Default Book Location"
 msgstr ""
 
 #. / Text precedes an entry for a file path. /
-#: ui/LocalBooks.qml:663
+#: ui/LocalBooks.qml:684
 msgid ""
 "Enter the folder in your home directory where your ebooks are or should be "
 "stored.\n"
@@ -97,35 +117,35 @@ msgid ""
 msgstr ""
 
 #. / Create a new directory from path given. /
-#: ui/LocalBooks.qml:679
+#: ui/LocalBooks.qml:700
 msgid "Create Directory"
 msgstr "Ordner erstellen"
 
 #. / File exists with path given. /
-#: ui/LocalBooks.qml:683
+#: ui/LocalBooks.qml:704
 msgid "File Exists"
 msgstr "Datei vorhanden"
 
 #. / Read the books in the given directory again. /
-#: ui/LocalBooks.qml:688 ui/LocalBooks.qml:758
+#: ui/LocalBooks.qml:709 ui/LocalBooks.qml:779
 msgid "Reload Directory"
 msgstr ""
 
 #. / Use directory specified to store books. /
-#: ui/LocalBooks.qml:691
+#: ui/LocalBooks.qml:712
 msgid "Use Directory"
 msgstr ""
 
-#: ui/LocalBooks.qml:706
+#: ui/LocalBooks.qml:727
 msgid "Please wait..."
 msgstr "Bitte warten …"
 
-#: ui/LocalBooks.qml:725
+#: ui/LocalBooks.qml:746
 msgid "Cancel"
 msgstr "Abbrechen"
 
 #. / A path on the file system. /
-#: ui/LocalBooks.qml:740
+#: ui/LocalBooks.qml:761
 msgid ""
 "Beru seems to be operating under AppArmor restrictions that prevent it from "
 "accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
@@ -133,129 +153,88 @@ msgid ""
 msgstr ""
 
 #. / Hyperlinked URL follows. /
-#: ui/LocalBooks.qml:746
+#: ui/LocalBooks.qml:767
 msgid "For more information:"
 msgstr "Für weitere Informationen:"
 
-#: ui/LocalBooks.qml:769 ui/BookPage.qml:515
+#: ui/LocalBooks.qml:790 ui/LocalBooks.qml:892 ui/BookPage.qml:526
 msgid "Close"
 msgstr "Schließen"
 
-#: ui/LocalBooks.qml:794
-msgid "Recently Read"
+#. / A control can be dragged to delete a file.  The deletion occurs /
+#. / when the user releases the control. /
+#: ui/LocalBooks.qml:881
+msgid "Release to Delete"
 msgstr ""
 
-#: ui/LocalBooks.qml:798
-msgid "Title"
-msgstr "Titel"
+#. / A control can be dragged to delete a file. /
+#: ui/LocalBooks.qml:883
+msgid "Swipe to Delete"
+msgstr ""
 
-#: ui/LocalBooks.qml:802
-msgid "Author"
-msgstr "Autor"
-
-#: ui/main.qml:88
+#: ui/main.qml:66
 msgid "Error Opening File"
 msgstr "Fehler beim Öffnen der Datei"
 
-#: ui/main.qml:89
-msgid ""
-"Beru could not open this file.\n"
-"\n"
-"Remember, Beru can only open Epub files without DRM."
-msgstr ""
-
-#: ui/main.qml:92
+#: ui/main.qml:69
 msgid "OK"
 msgstr "OK"
 
-#: ui/BrowserPage.qml:31
-msgid "Enter URL"
-msgstr "URL eingeben"
-
-#: ui/BrowserPage.qml:42
-msgid "Go"
-msgstr "Los"
-
-#: ui/BrowserPage.qml:70
-msgid ""
-"This book will be added to your library as soon as the download is complete."
+#: ui/Importer.qml:121
+msgid "Importing books..."
 msgstr ""
 
-#. //
-#: ui/BrowserPage.qml:78
-msgid ""
-"This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
-"be able to read it."
+#: ui/Importer.qml:142
+msgid "Waiting"
 msgstr ""
 
-#: ui/BrowserPage.qml:105
-msgid "Downloading Ebook"
+#: ui/Importer.qml:144
+msgid "Processing"
 msgstr ""
 
-#. / A path on the file system. /
-#: ui/BrowserPage.qml:116
-msgid "This book was saved as <i>%1</i>"
+#: ui/Importer.qml:146
+msgid "Imported to %1"
 msgstr ""
 
-#: ui/BrowserPage.qml:131
-msgid "Read book"
+#: ui/Importer.qml:148
+msgid "Already in library: %1"
 msgstr ""
 
-#: ui/BrowserPage.qml:167
-msgid "Details"
+#: ui/Importer.qml:150
+msgid "Error: %1"
 msgstr ""
 
-#: ui/BrowserPage.qml:203
-msgid "Continue Browsing"
+#: ui/Importer.qml:171
+msgid "Import books from"
 msgstr ""
 
-#: ui/BrowserPage.qml:218
-msgid "Possibly Incompatible File Type"
+#: ui/BookPage.qml:101
+msgid "Pages read today: %1"
 msgstr ""
 
-#: ui/BrowserPage.qml:223
-msgid "Cancel Download"
-msgstr "Herunterladen abbrechen"
-
-#: ui/BrowserPage.qml:228
-msgid "Continue Download"
+#: ui/BookPage.qml:102
+msgid "No pages read today"
 msgstr ""
 
-#: ui/BrowserPage.qml:242
-msgid "Download Error"
-msgstr "Fehler beim Herunterladen"
-
-#: ui/BrowserPage.qml:243
-msgid ""
-"Beru was unable to find a place where the ebook could be saved.  This "
-"shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
+#: ui/BookPage.qml:178
+msgid "Page"
 msgstr ""
 
-#: ui/BrowserPage.qml:248
-msgid "What a Bummer!"
-msgstr ""
-
-#. / Limited space: ~8 characters /
-#: ui/BrowserPage.qml:278 ui/BookPage.qml:122
-msgid "Forward"
-msgstr "Weiterleiten"
-
-#. / Button presents Table of Contents.  Limited space: ~8 characters /
-#: ui/BookPage.qml:139
+#: ui/BookPage.qml:201
 msgid "Contents"
 msgstr "Inhalte"
 
-#: ui/BookPage.qml:415
+#: ui/BookPage.qml:422
 msgid "Default Font"
 msgstr "Standardschrift"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:426
+#: ui/BookPage.qml:434
 msgid "Font Scaling"
 msgstr ""
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:448
+#: ui/BookPage.qml:458
 msgid "Line Height"
 msgstr ""
 
@@ -263,23 +242,27 @@ msgstr ""
 #. / user-set value.  There is only space for about 5 characters; if /
 #. / the translated string will not fit, please translate this as an /
 #. / em-dash (—). /
-#: ui/BookPage.qml:471
+#: ui/BookPage.qml:481
 msgid "Auto"
 msgstr "Automatisch"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:497
+#: ui/BookPage.qml:508
 msgid "Margins"
 msgstr ""
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:525
+#: ui/BookPage.qml:536
 msgid "Make Default"
 msgstr "Als Vorgabe verwenden"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:539
+#: ui/BookPage.qml:550
 msgid "Load Defaults"
+msgstr ""
+
+#: ui/BookSources.qml:21
+msgid "Import from Content Hub"
 msgstr ""
 
 #. / The application name is both an acronym and an homage to Star Wars. /

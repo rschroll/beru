@@ -1,4 +1,4 @@
-# Basque translation for beru
+# Japanese translation for beru
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the beru package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-04-12 22:26-0400\n"
-"PO-Revision-Date: 2014-11-02 12:07+0000\n"
-"Last-Translator: Asier Iturralde Sarasola <Unknown>\n"
-"Language-Team: Basque <eu@li.org>\n"
+"PO-Revision-Date: 2014-11-11 07:17+0000\n"
+"Last-Translator: Mitsuya Shibata <mty.shibata@gmail.com>\n"
+"Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Launchpad-Export-Date: 2015-04-16 03:00+0000\n"
 "X-Generator: Launchpad (build 17428)\n"
 
@@ -34,50 +34,49 @@ msgstr ""
 
 #: ui/LocalBooks.qml:19
 msgid "Library"
-msgstr "Liburutegia"
+msgstr "本棚"
 
 #: ui/LocalBooks.qml:27
 msgid "Books"
-msgstr "Liburuak"
+msgstr "書籍"
 
 #: ui/LocalBooks.qml:45 ui/LocalBooks.qml:682
 msgid "Welcome to Beru"
-msgstr "Ongi etorri Beru-ra"
+msgstr "Beruへようこそ"
 
 #: ui/LocalBooks.qml:127
 msgid "Back"
-msgstr "Atzera"
+msgstr "戻る"
 
 #: ui/LocalBooks.qml:182
 msgid "Could not open this book."
-msgstr "Ezin izan da liburua ireki."
+msgstr "書籍を開けませんでした"
 
 #: ui/LocalBooks.qml:326
 msgid "Recently Read"
-msgstr "Azkena irakurriak"
+msgstr "最近読んだ本"
 
 #: ui/LocalBooks.qml:326
 msgid "Title"
-msgstr "Izenburua"
+msgstr "タイトル"
 
 #: ui/LocalBooks.qml:326
 msgid "Author"
-msgstr "Egilea"
+msgstr "著者"
 
 #: ui/LocalBooks.qml:499
 msgid "Unknown Author"
-msgstr "Egile ezezaguna"
+msgstr "著者不明"
 
 #. / Argument will be at least 2. /
 #: ui/LocalBooks.qml:501
 msgid "%1 Book"
 msgid_plural "%1 Books"
-msgstr[0] "Liburu %1"
-msgstr[1] "%1 liburu"
+msgstr[0] "%1冊"
 
 #: ui/LocalBooks.qml:631
 msgid "No Books in Library"
-msgstr "Ez dago libururik liburutegian"
+msgstr "本棚に書籍がありません"
 
 #. / A path on the file system. /
 #: ui/LocalBooks.qml:639
@@ -85,30 +84,27 @@ msgid ""
 "Beru could not find any books for your library.  Beru will automatically "
 "find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
 "will be added to the library."
-msgstr ""
-"Beru-k ezin izan du zure liburutegirako libururik aurkitu. Beru-k "
-"automatikoki aurkituko ditu epub fitxategiak <i>%1</i>(e)n. Gainera, Beru "
-"erabiliz irekitako edozein liburu liburutegira gehituko da."
+msgstr "本棚が空です。Beruは<i>%1</i>からEPUBファイルを自動的に検出します。さらにBeruで開いた書籍は本棚に追加されます。"
 
 #: ui/LocalBooks.qml:648
 msgid "Download Books"
-msgstr "Deskargatu liburuak"
+msgstr "書籍をダウンロードする"
 
 #: ui/LocalBooks.qml:654
 msgid "Search Again"
-msgstr "Bilatu berriz"
+msgstr "もう一度検索する"
 
 #: ui/LocalBooks.qml:664 ui/BookSources.qml:13
 msgid "Get Books"
-msgstr "Eskuratu liburuak"
+msgstr "書籍を入手する"
 
 #: ui/LocalBooks.qml:670
 msgid "Settings"
-msgstr "Ezarpenak"
+msgstr "設定"
 
 #: ui/LocalBooks.qml:682 ui/LocalBooks.qml:759
 msgid "Default Book Location"
-msgstr "Liburuen kokaleku lehenetsia"
+msgstr "標準の書籍の場所"
 
 #. / Text precedes an entry for a file path. /
 #: ui/LocalBooks.qml:684
@@ -118,38 +114,37 @@ msgid ""
 "\n"
 "Changing this value will not affect existing books in your library."
 msgstr ""
-"Sartu zure ebook-ak gordetzeko erabiliko den karpeta.\n"
+"電子書籍が保存されているホームディレクトリ内部のフォルダーを指定してください。\n"
 "\n"
-"Balio hau aldatzeak ez du eraginik izango dagoeneko liburutegian dituzun "
-"liburuengan."
+"この設定を変更しても本棚にある既存の書籍には影響しません。"
 
 #. / Create a new directory from path given. /
 #: ui/LocalBooks.qml:700
 msgid "Create Directory"
-msgstr "Sortu direktorioa"
+msgstr "ディレクトリを作成する"
 
 #. / File exists with path given. /
 #: ui/LocalBooks.qml:704
 msgid "File Exists"
-msgstr "Fitxategia existitzen da"
+msgstr "ファイルが存在します"
 
 #. / Read the books in the given directory again. /
 #: ui/LocalBooks.qml:709 ui/LocalBooks.qml:779
 msgid "Reload Directory"
-msgstr "Birkargatu direktorioa"
+msgstr "再読み込みする"
 
 #. / Use directory specified to store books. /
 #: ui/LocalBooks.qml:712
 msgid "Use Directory"
-msgstr "Erabili direktorioa"
+msgstr "このディレクトリを使用する"
 
 #: ui/LocalBooks.qml:727
 msgid "Please wait..."
-msgstr "Itxaron..."
+msgstr "お待ちください。。…"
 
 #: ui/LocalBooks.qml:746
 msgid "Cancel"
-msgstr "Utzi"
+msgstr "キャンセル"
 
 #. / A path on the file system. /
 #: ui/LocalBooks.qml:761
@@ -158,15 +153,17 @@ msgid ""
 "accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
 "for Beru to read them."
 msgstr ""
+"AppArmorによってBeruがホームディレクトリのほとんどの場所へアクセスできないようです。Beruがこの書籍を読み込むためには、<i>%1</i>へ"
+"配置してください。"
 
 #. / Hyperlinked URL follows. /
 #: ui/LocalBooks.qml:767
 msgid "For more information:"
-msgstr "Informazio gehiago:"
+msgstr "詳しい情報："
 
 #: ui/LocalBooks.qml:790 ui/LocalBooks.qml:892 ui/BookPage.qml:526
 msgid "Close"
-msgstr "Itxi"
+msgstr "閉じる"
 
 #. / A control can be dragged to delete a file.  The deletion occurs /
 #. / when the user releases the control. /
@@ -181,11 +178,11 @@ msgstr ""
 
 #: ui/main.qml:66
 msgid "Error Opening File"
-msgstr "Errorea fitxategia irekitzean"
+msgstr "ファイル読み込みエラー"
 
 #: ui/main.qml:69
 msgid "OK"
-msgstr "Ados"
+msgstr "OK"
 
 #: ui/Importer.qml:121
 msgid "Importing books..."
@@ -229,21 +226,21 @@ msgstr ""
 
 #: ui/BookPage.qml:201
 msgid "Contents"
-msgstr "Edukiak"
+msgstr "目次"
 
 #: ui/BookPage.qml:422
 msgid "Default Font"
-msgstr "Letra-tipo lehenetsia"
+msgstr "標準のフォント"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:434
 msgid "Font Scaling"
-msgstr ""
+msgstr "文字の大きさ"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:458
 msgid "Line Height"
-msgstr "Lerroaren altuera"
+msgstr "行間"
 
 #. / Indicates the default line height will be used, as opposed to a /
 #. / user-set value.  There is only space for about 5 characters; if /
@@ -251,22 +248,22 @@ msgstr "Lerroaren altuera"
 #. / em-dash (—). /
 #: ui/BookPage.qml:481
 msgid "Auto"
-msgstr "Auto"
+msgstr "自動"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:508
 msgid "Margins"
-msgstr "Marjinak"
+msgstr "余白"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:536
 msgid "Make Default"
-msgstr "Bihurtu lehenetsi"
+msgstr "初期値とする"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:550
 msgid "Load Defaults"
-msgstr "Kargatu lehenetsiak"
+msgstr "初期値に戻す"
 
 #: ui/BookSources.qml:21
 msgid "Import from Content Hub"
@@ -280,4 +277,4 @@ msgstr "Beru"
 #. / "Basic" is used in the sense of "simple" or "uncomplicated". /
 #: beru.desktop.tr:6
 msgid "The Basic Epub Reader for Ubuntu"
-msgstr "Ubunturako oinarrizko Epub irakurgailua"
+msgstr "UbuntuのためのシンプルなEPUBリーダー"

@@ -7,55 +7,87 @@ msgid ""
 msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2014-11-03 12:53-0500\n"
-"PO-Revision-Date: 2014-10-29 19:04+0000\n"
+"POT-Creation-Date: 2015-04-12 22:26-0400\n"
+"PO-Revision-Date: 2015-04-13 07:27+0000\n"
 "Last-Translator: Jiri Grönroos <Unknown>\n"
 "Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2014-11-07 16:52+0000\n"
-"X-Generator: Launchpad (build 17231)\n"
+"X-Launchpad-Export-Date: 2015-04-16 03:00+0000\n"
+"X-Generator: Launchpad (build 17428)\n"
 
-#: ui/LocalBooks.qml:18 ui/BrowserPage.qml:259 ui/BookPage.qml:95
+#: ui/Reader.qml:32
+msgid ""
+"Could not determine file type.\n"
+"\n"
+"Remember, Beru can only open EPUB, PDF, and CBZ files without DRM."
+msgstr ""
+"Tiedostotyyppiä ei voitu päätellä.\n"
+"\n"
+"Muistathan, että Beru voi avata vain seuraavia tiedostomuotoja ilman DRM-"
+"suojausta: EPUB, PDF ja CBZ."
+
+#: ui/Reader.qml:35
+msgid ""
+"Could not parse file.\n"
+"\n"
+"Although it appears to be a %1 file, it could not be parsed by Beru."
+msgstr ""
+"Tiedostoa ei voitu jäsentää.\n"
+"\n"
+"Vaikkakin se vaikuttaa olevan %1-tiedosto, Beru ei voinut jäsentää tiedostoa."
+
+#: ui/LocalBooks.qml:19
 msgid "Library"
 msgstr "Kirjasto"
 
-#: ui/LocalBooks.qml:26
+#: ui/LocalBooks.qml:27
 msgid "Books"
 msgstr "Kirjat"
 
-#: ui/LocalBooks.qml:43 ui/LocalBooks.qml:661
+#: ui/LocalBooks.qml:45 ui/LocalBooks.qml:682
 msgid "Welcome to Beru"
 msgstr "Tervetuloa Berun pariin"
 
-#. / Limited space: ~8 characters /
-#: ui/LocalBooks.qml:125 ui/BrowserPage.qml:268 ui/BookPage.qml:105
+#: ui/LocalBooks.qml:127
 msgid "Back"
 msgstr "Takaisin"
 
-#: ui/LocalBooks.qml:179
+#: ui/LocalBooks.qml:182
 msgid "Could not open this book."
 msgstr "Tämän kirjan avaaminen ei onnistunut."
 
-#: ui/LocalBooks.qml:468
+#: ui/LocalBooks.qml:326
+msgid "Recently Read"
+msgstr "Äskettäin luettu"
+
+#: ui/LocalBooks.qml:326
+msgid "Title"
+msgstr "Nimi"
+
+#: ui/LocalBooks.qml:326
+msgid "Author"
+msgstr "Tekijä"
+
+#: ui/LocalBooks.qml:499
 msgid "Unknown Author"
 msgstr "Tuntematon tekijä"
 
 #. / Argument will be at least 2. /
-#: ui/LocalBooks.qml:470
+#: ui/LocalBooks.qml:501
 msgid "%1 Book"
 msgid_plural "%1 Books"
 msgstr[0] "%1 kirja"
 msgstr[1] "%1 kirjaa"
 
-#: ui/LocalBooks.qml:586
+#: ui/LocalBooks.qml:631
 msgid "No Books in Library"
 msgstr "Kirjastossa ei ole kirjoja"
 
 #. / A path on the file system. /
-#: ui/LocalBooks.qml:594
+#: ui/LocalBooks.qml:639
 msgid ""
 "Beru could not find any books for your library.  Beru will automatically "
 "find all epub files in <i>%1</i>.  Additionally, any book opened with Beru "
@@ -65,33 +97,28 @@ msgstr ""
 "epub-tiedostot sijainnista <i>%1</i>.  Lisäksi mikä tahansa Berulla avattava "
 "kirja lisätään kirjastoon."
 
-#: ui/LocalBooks.qml:603
+#: ui/LocalBooks.qml:648
 msgid "Download Books"
 msgstr "Lataa kirjoja"
 
-#: ui/LocalBooks.qml:609
+#: ui/LocalBooks.qml:654
 msgid "Search Again"
 msgstr "Etsi uudelleen"
 
-#: ui/LocalBooks.qml:630 ui/BookSources.qml:13
+#: ui/LocalBooks.qml:664 ui/BookSources.qml:13
 msgid "Get Books"
 msgstr "Hanki kirjoja"
 
-#: ui/LocalBooks.qml:639
-msgid "Sort"
-msgstr "Lajittele"
-
-#. / Limited space: ~8 characters /
-#: ui/LocalBooks.qml:648 ui/BookPage.qml:149
+#: ui/LocalBooks.qml:670
 msgid "Settings"
 msgstr "Asetukset"
 
-#: ui/LocalBooks.qml:661 ui/LocalBooks.qml:738
+#: ui/LocalBooks.qml:682 ui/LocalBooks.qml:759
 msgid "Default Book Location"
 msgstr "Kirjojen oletussijainti"
 
 #. / Text precedes an entry for a file path. /
-#: ui/LocalBooks.qml:663
+#: ui/LocalBooks.qml:684
 msgid ""
 "Enter the folder in your home directory where your ebooks are or should be "
 "stored.\n"
@@ -104,35 +131,35 @@ msgstr ""
 "Tämän arvon muuttaminen ei vaikuta kirjastossa olemassa oleviin kirjoihin."
 
 #. / Create a new directory from path given. /
-#: ui/LocalBooks.qml:679
+#: ui/LocalBooks.qml:700
 msgid "Create Directory"
 msgstr "Luo kansio"
 
 #. / File exists with path given. /
-#: ui/LocalBooks.qml:683
+#: ui/LocalBooks.qml:704
 msgid "File Exists"
 msgstr "Tiedosto on jo olemassa"
 
 #. / Read the books in the given directory again. /
-#: ui/LocalBooks.qml:688 ui/LocalBooks.qml:758
+#: ui/LocalBooks.qml:709 ui/LocalBooks.qml:779
 msgid "Reload Directory"
 msgstr "Lataa kansio uudelleen"
 
 #. / Use directory specified to store books. /
-#: ui/LocalBooks.qml:691
+#: ui/LocalBooks.qml:712
 msgid "Use Directory"
 msgstr "Käytä kansiota"
 
-#: ui/LocalBooks.qml:706
+#: ui/LocalBooks.qml:727
 msgid "Please wait..."
 msgstr "Odota hetki..."
 
-#: ui/LocalBooks.qml:725
+#: ui/LocalBooks.qml:746
 msgid "Cancel"
 msgstr "Peru"
 
 #. / A path on the file system. /
-#: ui/LocalBooks.qml:740
+#: ui/LocalBooks.qml:761
 msgid ""
 "Beru seems to be operating under AppArmor restrictions that prevent it from "
 "accessing most of your home directory.  Ebooks should be put in <i>%1</i> "
@@ -143,137 +170,88 @@ msgstr ""
 "kirjat tulee asettaa sijaintiin <i>%1</i>, jotta Beru kykenee lukemaan niitä."
 
 #. / Hyperlinked URL follows. /
-#: ui/LocalBooks.qml:746
+#: ui/LocalBooks.qml:767
 msgid "For more information:"
 msgstr "Lisätietoa:"
 
-#: ui/LocalBooks.qml:769 ui/BookPage.qml:515
+#: ui/LocalBooks.qml:790 ui/LocalBooks.qml:892 ui/BookPage.qml:526
 msgid "Close"
 msgstr "Sulje"
 
-#: ui/LocalBooks.qml:794
-msgid "Recently Read"
-msgstr "Äskettäin luettu"
+#. / A control can be dragged to delete a file.  The deletion occurs /
+#. / when the user releases the control. /
+#: ui/LocalBooks.qml:881
+msgid "Release to Delete"
+msgstr "Vapauta poistaaksesi"
 
-#: ui/LocalBooks.qml:798
-msgid "Title"
-msgstr "Nimi"
+#. / A control can be dragged to delete a file. /
+#: ui/LocalBooks.qml:883
+msgid "Swipe to Delete"
+msgstr "Vedä poistaaksesi"
 
-#: ui/LocalBooks.qml:802
-msgid "Author"
-msgstr "Tekijä"
-
-#: ui/main.qml:88
+#: ui/main.qml:66
 msgid "Error Opening File"
 msgstr "Virhe tiedostoa avattaessa"
 
-#: ui/main.qml:89
-msgid ""
-"Beru could not open this file.\n"
-"\n"
-"Remember, Beru can only open Epub files without DRM."
-msgstr ""
-"Beru ei kyennyt avaamaan tätä tiedostoa.\n"
-"\n"
-"Beru voi avata vain ilman DRM:ää olevat Epub-tiedostot."
-
-#: ui/main.qml:92
+#: ui/main.qml:69
 msgid "OK"
 msgstr "OK"
 
-#: ui/BrowserPage.qml:31
-msgid "Enter URL"
-msgstr "Anna verkko-osoite"
+#: ui/Importer.qml:121
+msgid "Importing books..."
+msgstr "Tuodaan kirjoja..."
 
-#: ui/BrowserPage.qml:42
-msgid "Go"
-msgstr "Siirry"
+#: ui/Importer.qml:142
+msgid "Waiting"
+msgstr "Odottaa"
 
-#: ui/BrowserPage.qml:70
-msgid ""
-"This book will be added to your library as soon as the download is complete."
-msgstr "Tämä kirja lisätään kirjastoosi heti, kun lataus valmistuu."
+#: ui/Importer.qml:144
+msgid "Processing"
+msgstr "Käsittelee"
 
-#. //
-#: ui/BrowserPage.qml:78
-msgid ""
-"This file, <i>%1</i>, may not be an Epub file.  If it is not, Beru will not "
-"be able to read it."
-msgstr ""
-"Tiedosto <i>%1</i> ei välttämättä ole Epub-tiedosto.  Jos kyseessä ei ole "
-"Epub-tiedosto, Beru ei kykene lukemaan sitä."
+#: ui/Importer.qml:146
+msgid "Imported to %1"
+msgstr "Tuotu kohteeseen %1"
 
-#: ui/BrowserPage.qml:105
-msgid "Downloading Ebook"
-msgstr "Lataa Ebook"
+#: ui/Importer.qml:148
+msgid "Already in library: %1"
+msgstr "Entuudestaan kirjastossa: %1"
 
-#. / A path on the file system. /
-#: ui/BrowserPage.qml:116
-msgid "This book was saved as <i>%1</i>"
-msgstr "Kirja tallennettiin polkuun <i>%1</i>"
+#: ui/Importer.qml:150
+msgid "Error: %1"
+msgstr "Virhe: %1"
 
-#: ui/BrowserPage.qml:131
-msgid "Read book"
-msgstr "Lue kirja"
+#: ui/Importer.qml:171
+msgid "Import books from"
+msgstr "Kirjojen tuonnin lähde"
 
-#: ui/BrowserPage.qml:167
-msgid "Details"
-msgstr "Tiedot"
+#: ui/BookPage.qml:101
+msgid "Pages read today: %1"
+msgstr "Luettuja sivuja tänään: %1"
 
-#: ui/BrowserPage.qml:203
-msgid "Continue Browsing"
-msgstr "Jatka selaamista"
+#: ui/BookPage.qml:102
+msgid "No pages read today"
+msgstr "Ei tänään luettuja sivuja"
 
-#: ui/BrowserPage.qml:218
-msgid "Possibly Incompatible File Type"
-msgstr "Mahdollisesti yhteensopimaton tiedostotyyppi"
+#: ui/BookPage.qml:178
+msgid "Page"
+msgstr "Sivu"
 
-#: ui/BrowserPage.qml:223
-msgid "Cancel Download"
-msgstr "Peru lataus"
-
-#: ui/BrowserPage.qml:228
-msgid "Continue Download"
-msgstr "Jatka lataamista"
-
-#: ui/BrowserPage.qml:242
-msgid "Download Error"
-msgstr "Latausvirhe"
-
-#: ui/BrowserPage.qml:243
-msgid ""
-"Beru was unable to find a place where the ebook could be saved.  This "
-"shouldn't ever happen; please submit a bug at github.com/rschroll/beru/issues"
-msgstr ""
-"Beru ei kyennyt paikallistamaan sijaintia sähköisen kirjan tallennusta "
-"varten.  Tämä on selvä virhetapaus, ilmoita ongelmasta osoitteessa "
-"github.com/rschroll/beru/issues"
-
-#: ui/BrowserPage.qml:248
-msgid "What a Bummer!"
-msgstr "Mikä harmi!"
-
-#. / Limited space: ~8 characters /
-#: ui/BrowserPage.qml:278 ui/BookPage.qml:122
-msgid "Forward"
-msgstr "Eteenpäin"
-
-#. / Button presents Table of Contents.  Limited space: ~8 characters /
-#: ui/BookPage.qml:139
+#: ui/BookPage.qml:201
 msgid "Contents"
 msgstr "Sisältö"
 
-#: ui/BookPage.qml:415
+#: ui/BookPage.qml:422
 msgid "Default Font"
 msgstr "Oletusfontti"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:426
+#: ui/BookPage.qml:434
 msgid "Font Scaling"
 msgstr "Fontin skaalaus"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:448
+#: ui/BookPage.qml:458
 msgid "Line Height"
 msgstr "Rivikorkeus"
 
@@ -281,24 +259,28 @@ msgstr "Rivikorkeus"
 #. / user-set value.  There is only space for about 5 characters; if /
 #. / the translated string will not fit, please translate this as an /
 #. / em-dash (—). /
-#: ui/BookPage.qml:471
+#: ui/BookPage.qml:481
 msgid "Auto"
 msgstr "Automaattinen"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:497
+#: ui/BookPage.qml:508
 msgid "Margins"
 msgstr "Reunukset"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:525
+#: ui/BookPage.qml:536
 msgid "Make Default"
 msgstr "Aseta oletukseksi"
 
 #. / Prefer string of < 16 characters /
-#: ui/BookPage.qml:539
+#: ui/BookPage.qml:550
 msgid "Load Defaults"
 msgstr "Lataa oletusasetukset"
+
+#: ui/BookSources.qml:21
+msgid "Import from Content Hub"
+msgstr "Tuo sisältökeskittimestä"
 
 #. / The application name is both an acronym and an homage to Star Wars. /
 #: beru.desktop.tr:4
