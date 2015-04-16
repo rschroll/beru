@@ -16,11 +16,8 @@ set(UI_SRC_FILES
     components/StylableOptionSelectorDelegate.qml
     components/StyledButton.qml
     components/SwipeControl.qml
-    components/Toolbar.qml
-    images/default_cover.svg
     images/error_cover.svg
     images/error_cover_full.svg
-    images/toc.svg
 )
 
 if(${OUT_OF_TREE_BUILD})
