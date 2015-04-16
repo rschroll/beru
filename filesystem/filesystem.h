@@ -1,4 +1,4 @@
-/* Copyright 2013 Robert Schroll
+/* Copyright 2013, 2015 Robert Schroll
  *
  * This file is part of Beru and is distributed under the terms of
  * the GPL. See the file COPYING for full details.

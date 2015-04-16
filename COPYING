@@ -1,4 +1,4 @@
-Copyright 2013-2014 Robert Schroll
+Copyright 2013-2015 Robert Schroll
 
 Beru is licensed under the GNU General Public License (version 3 or
 later).  See the LICENSE file for the terms of this license.
@@ -31,7 +31,7 @@ Licensed under the LGPLv2 or later.
 http://quazip.sourceforge.net/
 
 Several components of the Ubuntu SDK, in ui/components
-Copyright 2012 Canonical Ltd.
+Copyright 2012, 2014 Canonical Ltd.
 Licensed under the LGPLv3.
 
 URW fonts, in html/fonts
