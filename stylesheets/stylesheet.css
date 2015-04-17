@@ -349,7 +349,7 @@ dl dt {
   color: #303030;
 }
 
-img.center {
+*.center {
   display: block;
   margin: auto auto 20px auto;
 }

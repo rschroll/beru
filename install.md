@@ -6,8 +6,8 @@ title: Installation Methods
 There are a number of ways to install Beru.  My recommendations are as follows:
 
 * On a touch device, if you don't care where books are stored: [Ubuntu Software Store](#store)
-* On a touch device, if you want to control where books are stored: [Click package](#click)
-* On the desktop: [PPA](#ppa)
+* On a touch device, if you want to control where books are stored: [OpenStore](#openstore)
+* On the desktop (older versions): [PPA](#ppa)
 * For development: [Git](#git)
 
 ## <a name="store">Ubuntu Software Store</a>
@@ -15,14 +15,15 @@ Beru is available in the Software Store for Ubuntu Touch.  (This is different fr
 
 Note that this version runs under [application confinement restrictions]({{ site.baseurl }}/confinement.html).
 
-## <a name="click">Click package</a>
-Download the click package for your [ARM touch device]({{ site.baseurl }}/assets/com.ubuntu.developer.rschroll.beru_1.0.1_armhf.click) and install it with
+## <a name="click">OpenStore</a>
+A less-confined version of Beru is available through the [OpenStore](http://notyetthere.org/openstore-tweakgeek-and-more/).  If you haven't already, download the [OpenStore click package](http://notyetthere.org/openstore/v1/openstore.mzanetti_0.2_armhf.click) and install it with
 {% highlight bash %}
-sudo pkcon install-local *.click
+pkcon install-local --allow-untrusted *.click
 {% endhighlight %}
+Then, install Beru from the OpenStore app.
 
 ## <a name="ppa">PPA</a>
-Beru is available in [ppa:rschroll/beru](https://launchpad.net/~rschroll/+archive/beru).  Add that to your software sources, and you should be able to install Beru with your favorite package manager.
+An older version of Beru is available in [ppa:rschroll/beru](https://launchpad.net/~rschroll/+archive/beru).  Add that to your software sources, and you should be able to install Beru with your favorite package manager.  Most of the recent work on Beru has focused on improving the experience on Ubuntu touch.  You aren't missing anything running an older version on the desktop.
 
 You may want to add [ppa:ubuntu-sdk-team/ppa](https://launchpad.net/~ubuntu-sdk-team/+archive/ppa) as well.  This used to ensure that you had an up-to-date version of the Ubuntu SDK.  I'm not quite sure what it does anymore.
 
