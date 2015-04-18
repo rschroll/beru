@@ -39,24 +39,23 @@ Page {
             name: "Project Gutenberg"
             url: "http://www.gutenberg.org"
             murl: "http://m.gutenberg.org"
-            showAddressBar: false
         }
         ListElement {
             name: "Open Library"
             url: "http://openlibrary.org"
-            showAddressBar: false
         }
         ListElement {
             name: "MobileRead Epubs"
             url: "http://www.mobileread.com/forums/ebooks.php?s=&sort=ebook&order=asc&page=1&ltr=&f=130&genreid="
             murl: "http://www.mobileread.mobi/forums/ebooks.php?s=&sort=ebook&order=asc&page=1&ltr=&f=130&genreid="
-            showAddressBar: false
         }
         ListElement {
-            name: "Search the Web"
-            url: "http://google.com"
-            murl: "http://google.com/m"
-            showAddressBar: true
+            name: "Loyal Books"
+            url: "http://www.loyalbooks.com"
+        }
+        ListElement {
+            name: "Archive.org"
+            url: "https://archive.org/details/texts"
         }
     }
 }
