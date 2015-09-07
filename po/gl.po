@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-04-12 22:26-0400\n"
-"PO-Revision-Date: 2015-04-14 07:57+0000\n"
+"PO-Revision-Date: 2015-06-16 09:53+0000\n"
 "Last-Translator: Marcos Lans <Unknown>\n"
 "Language-Team: Galician <gl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2015-04-16 03:00+0000\n"
-"X-Generator: Launchpad (build 17428)\n"
+"X-Launchpad-Export-Date: 2015-09-07 22:20+0000\n"
+"X-Generator: Launchpad (build 17706)\n"
 
 #: ui/Reader.qml:32
 msgid ""
@@ -186,7 +186,7 @@ msgstr "Soltar para eliminar"
 #. / A control can be dragged to delete a file. /
 #: ui/LocalBooks.qml:883
 msgid "Swipe to Delete"
-msgstr "Tirar para eliminar"
+msgstr "Esvarar o dedo para eliminar"
 
 #: ui/main.qml:66
 msgid "Error Opening File"
@@ -230,7 +230,7 @@ msgstr "Páxinas lidas hoxe: 1%"
 
 #: ui/BookPage.qml:102
 msgid "No pages read today"
-msgstr "Non hai páxinas lidas hoxe"
+msgstr "Hoxe non leu ningunha páxina"
 
 #: ui/BookPage.qml:178
 msgid "Page"
@@ -270,16 +270,16 @@ msgstr "Marxes"
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:536
 msgid "Make Default"
-msgstr "Predeterminar"
+msgstr "Facer predeterm."
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:550
 msgid "Load Defaults"
-msgstr "Cargar predet."
+msgstr "Cargar predeter."
 
 #: ui/BookSources.qml:21
 msgid "Import from Content Hub"
-msgstr "Importar do «content hub»"
+msgstr "Importar do «content-hub»"
 
 #. / The application name is both an acronym and an homage to Star Wars. /
 #: beru.desktop.tr:4
@@ -289,4 +289,4 @@ msgstr "Beru"
 #. / "Basic" is used in the sense of "simple" or "uncomplicated". /
 #: beru.desktop.tr:6
 msgid "The Basic Epub Reader for Ubuntu"
-msgstr "Lector básico de epub para Ubuntu"
+msgstr "Lector básico de epubs para Ubuntu"

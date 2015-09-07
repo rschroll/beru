@@ -2,13 +2,13 @@
 # Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
 # This file is distributed under the same license as the beru package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
-# GunChleoc <fios@foramnagaidhlig.net>, 2014.
+# GunChleoc <fios@foramnagaidhlig.net>, 2014, 2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-04-12 22:26-0400\n"
-"PO-Revision-Date: 2015-04-13 12:22+0000\n"
+"PO-Revision-Date: 2015-04-18 04:33+0000\n"
 "Last-Translator: GunChleoc <Unknown>\n"
 "Language-Team: Fòram na Gàidhlig\n"
 "MIME-Version: 1.0\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : "
 "(n > 2 && n < 20) ? 2 : 3;\n"
-"X-Launchpad-Export-Date: 2015-04-16 03:00+0000\n"
-"X-Generator: Launchpad (build 17428)\n"
+"X-Launchpad-Export-Date: 2015-09-07 22:20+0000\n"
+"X-Generator: Launchpad (build 17706)\n"
 "Language: gd\n"
 
 #: ui/Reader.qml:32
@@ -26,6 +26,10 @@ msgid ""
 "\n"
 "Remember, Beru can only open EPUB, PDF, and CBZ files without DRM."
 msgstr ""
+"Cha do mhothaich sinn do sheòrsa an fhaidhle.\n"
+"\n"
+"Thoir an aire nach urrainn do Bheru ach faidhlichean EPUB, PDF agus CBZ gun "
+"DRM fhosgladh."
 
 #: ui/Reader.qml:35
 msgid ""
@@ -33,6 +37,9 @@ msgid ""
 "\n"
 "Although it appears to be a %1 file, it could not be parsed by Beru."
 msgstr ""
+"Cha b' urrainn dhuinn am faidhle a pharsadh.\n"
+"\n"
+"Ged a tha coltas faidhle %1 air, cha b' urrainn do Bheru a pharsadh."
 
 #: ui/LocalBooks.qml:19
 msgid "Library"
@@ -180,12 +187,12 @@ msgstr "Dùin"
 #. / when the user releases the control. /
 #: ui/LocalBooks.qml:881
 msgid "Release to Delete"
-msgstr ""
+msgstr "Leig às airson a sguabadh às"
 
 #. / A control can be dragged to delete a file. /
 #: ui/LocalBooks.qml:883
 msgid "Swipe to Delete"
-msgstr ""
+msgstr "Grad-shlaighd airson a sguabadh às"
 
 #: ui/main.qml:66
 msgid "Error Opening File"
@@ -197,7 +204,7 @@ msgstr "Ceart ma-thà"
 
 #: ui/Importer.qml:121
 msgid "Importing books..."
-msgstr ""
+msgstr "Ag ion-phortadh leabhraichean..."
 
 #: ui/Importer.qml:142
 msgid "Waiting"
@@ -209,27 +216,27 @@ msgstr "'Ga làimhseachadh"
 
 #: ui/Importer.qml:146
 msgid "Imported to %1"
-msgstr ""
+msgstr "Air ion-phortadh gu %1"
 
 #: ui/Importer.qml:148
 msgid "Already in library: %1"
-msgstr ""
+msgstr "San leabhar-lann mar-thà: %1"
 
 #: ui/Importer.qml:150
 msgid "Error: %1"
-msgstr ""
+msgstr "Mearachd: %1"
 
 #: ui/Importer.qml:171
 msgid "Import books from"
-msgstr ""
+msgstr "Ion-phortaich leabhraichean o"
 
 #: ui/BookPage.qml:101
 msgid "Pages read today: %1"
-msgstr ""
+msgstr "Duilleagan air an leughadh an-diugh: %1"
 
 #: ui/BookPage.qml:102
 msgid "No pages read today"
-msgstr ""
+msgstr "Cha deach duilleag a leughadh an-diugh"
 
 #: ui/BookPage.qml:178
 msgid "Page"
@@ -278,7 +285,7 @@ msgstr "Luchdaich na bun-roghainnean"
 
 #: ui/BookSources.qml:21
 msgid "Import from Content Hub"
-msgstr ""
+msgstr "Ion-phortaich o làr-ionad na susbaint"
 
 #. / The application name is both an acronym and an homage to Star Wars. /
 #: beru.desktop.tr:4

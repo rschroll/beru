@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-04-12 22:26-0400\n"
-"PO-Revision-Date: 2014-08-15 17:38+0000\n"
-"Last-Translator: Pierre Slamich <pierre.slamich@gmail.com>\n"
+"PO-Revision-Date: 2015-07-14 11:12+0000\n"
+"Last-Translator: David Campillo <dcampillo@gmail.com>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Launchpad-Export-Date: 2015-04-16 03:00+0000\n"
-"X-Generator: Launchpad (build 17428)\n"
+"X-Launchpad-Export-Date: 2015-09-07 22:20+0000\n"
+"X-Generator: Launchpad (build 17706)\n"
 
 #: ui/Reader.qml:32
 msgid ""
@@ -24,6 +24,10 @@ msgid ""
 "\n"
 "Remember, Beru can only open EPUB, PDF, and CBZ files without DRM."
 msgstr ""
+"Impossible de déterminer le type de fichier.\n"
+"\n"
+"Important : Beru ne peut ouvrir que les fichiers au format EPUB, PDF et CBZ "
+"sans DRM."
 
 #: ui/Reader.qml:35
 msgid ""
@@ -31,6 +35,9 @@ msgid ""
 "\n"
 "Although it appears to be a %1 file, it could not be parsed by Beru."
 msgstr ""
+"Le fichier ne peut pas être analysé.\n"
+"\n"
+"Le fichier est un %1, Beru ne peut pas l'analyser."
 
 #: ui/LocalBooks.qml:19
 msgid "Library"
@@ -42,27 +49,27 @@ msgstr "Livres"
 
 #: ui/LocalBooks.qml:45 ui/LocalBooks.qml:682
 msgid "Welcome to Beru"
-msgstr ""
+msgstr "Bienvenue dans Beru"
 
 #: ui/LocalBooks.qml:127
 msgid "Back"
-msgstr ""
+msgstr "Précédent"
 
 #: ui/LocalBooks.qml:182
 msgid "Could not open this book."
-msgstr ""
+msgstr "Impossible d'ouvrir ce livre."
 
 #: ui/LocalBooks.qml:326
 msgid "Recently Read"
-msgstr ""
+msgstr "Lu récemment"
 
 #: ui/LocalBooks.qml:326
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #: ui/LocalBooks.qml:326
 msgid "Author"
-msgstr ""
+msgstr "Auteur"
 
 #: ui/LocalBooks.qml:499
 msgid "Unknown Author"
@@ -72,12 +79,12 @@ msgstr "Auteur inconnu"
 #: ui/LocalBooks.qml:501
 msgid "%1 Book"
 msgid_plural "%1 Books"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 livre"
+msgstr[1] "%1 livres"
 
 #: ui/LocalBooks.qml:631
 msgid "No Books in Library"
-msgstr ""
+msgstr "La bibliothèque est vide"
 
 #. / A path on the file system. /
 #: ui/LocalBooks.qml:639
@@ -89,15 +96,15 @@ msgstr ""
 
 #: ui/LocalBooks.qml:648
 msgid "Download Books"
-msgstr ""
+msgstr "Télécharger des livres"
 
 #: ui/LocalBooks.qml:654
 msgid "Search Again"
-msgstr ""
+msgstr "Chercher à nouveau"
 
 #: ui/LocalBooks.qml:664 ui/BookSources.qml:13
 msgid "Get Books"
-msgstr ""
+msgstr "Obtenir des livres"
 
 #: ui/LocalBooks.qml:670
 msgid "Settings"
@@ -105,7 +112,7 @@ msgstr "Paramètres"
 
 #: ui/LocalBooks.qml:682 ui/LocalBooks.qml:759
 msgid "Default Book Location"
-msgstr ""
+msgstr "Emplacement par défaut des livres"
 
 #. / Text precedes an entry for a file path. /
 #: ui/LocalBooks.qml:684
@@ -119,30 +126,30 @@ msgstr ""
 #. / Create a new directory from path given. /
 #: ui/LocalBooks.qml:700
 msgid "Create Directory"
-msgstr ""
+msgstr "Créer un répertoire"
 
 #. / File exists with path given. /
 #: ui/LocalBooks.qml:704
 msgid "File Exists"
-msgstr ""
+msgstr "Le fichier existe déjà"
 
 #. / Read the books in the given directory again. /
 #: ui/LocalBooks.qml:709 ui/LocalBooks.qml:779
 msgid "Reload Directory"
-msgstr ""
+msgstr "Rafraîchir le répertoire"
 
 #. / Use directory specified to store books. /
 #: ui/LocalBooks.qml:712
 msgid "Use Directory"
-msgstr ""
+msgstr "Utiliser le répertoire"
 
 #: ui/LocalBooks.qml:727
 msgid "Please wait..."
-msgstr ""
+msgstr "Veuillez patienter..."
 
 #: ui/LocalBooks.qml:746
 msgid "Cancel"
-msgstr ""
+msgstr "Annuler"
 
 #. / A path on the file system. /
 #: ui/LocalBooks.qml:761
@@ -155,88 +162,88 @@ msgstr ""
 #. / Hyperlinked URL follows. /
 #: ui/LocalBooks.qml:767
 msgid "For more information:"
-msgstr ""
+msgstr "Plus d'informations :"
 
 #: ui/LocalBooks.qml:790 ui/LocalBooks.qml:892 ui/BookPage.qml:526
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #. / A control can be dragged to delete a file.  The deletion occurs /
 #. / when the user releases the control. /
 #: ui/LocalBooks.qml:881
 msgid "Release to Delete"
-msgstr ""
+msgstr "Relâcher pour supprimer"
 
 #. / A control can be dragged to delete a file. /
 #: ui/LocalBooks.qml:883
 msgid "Swipe to Delete"
-msgstr ""
+msgstr "Glisser pour supprimer"
 
 #: ui/main.qml:66
 msgid "Error Opening File"
-msgstr ""
+msgstr "Erreur lors de l'ouverture du fichier"
 
 #: ui/main.qml:69
 msgid "OK"
-msgstr ""
+msgstr "Valider"
 
 #: ui/Importer.qml:121
 msgid "Importing books..."
-msgstr ""
+msgstr "Importation des livres..."
 
 #: ui/Importer.qml:142
 msgid "Waiting"
-msgstr ""
+msgstr "En attente"
 
 #: ui/Importer.qml:144
 msgid "Processing"
-msgstr ""
+msgstr "Traitement"
 
 #: ui/Importer.qml:146
 msgid "Imported to %1"
-msgstr ""
+msgstr "Importé dans %1"
 
 #: ui/Importer.qml:148
 msgid "Already in library: %1"
-msgstr ""
+msgstr "Déja disponible dans la bibliothèque : %1"
 
 #: ui/Importer.qml:150
 msgid "Error: %1"
-msgstr ""
+msgstr "Erreur : %1"
 
 #: ui/Importer.qml:171
 msgid "Import books from"
-msgstr ""
+msgstr "Importer des livres depuis"
 
 #: ui/BookPage.qml:101
 msgid "Pages read today: %1"
-msgstr ""
+msgstr "Nombre de pages lues aujourd'hui : %1"
 
 #: ui/BookPage.qml:102
 msgid "No pages read today"
-msgstr ""
+msgstr "Aucune page lue aujourd'hui"
 
 #: ui/BookPage.qml:178
 msgid "Page"
-msgstr ""
+msgstr "Page"
 
 #: ui/BookPage.qml:201
 msgid "Contents"
-msgstr ""
+msgstr "Contenus"
 
 #: ui/BookPage.qml:422
 msgid "Default Font"
-msgstr ""
+msgstr "Police de caractères par défaut"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:434
 msgid "Font Scaling"
-msgstr ""
+msgstr "Taille de la police"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:458
 msgid "Line Height"
-msgstr ""
+msgstr "Hauteur de ligne"
 
 #. / Indicates the default line height will be used, as opposed to a /
 #. / user-set value.  There is only space for about 5 characters; if /
@@ -244,22 +251,22 @@ msgstr ""
 #. / em-dash (—). /
 #: ui/BookPage.qml:481
 msgid "Auto"
-msgstr ""
+msgstr "Automatique"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:508
 msgid "Margins"
-msgstr ""
+msgstr "Marges"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:536
 msgid "Make Default"
-msgstr ""
+msgstr "Définir par défaut"
 
 #. / Prefer string of < 16 characters /
 #: ui/BookPage.qml:550
 msgid "Load Defaults"
-msgstr ""
+msgstr "Charger les paramêtres par défauts"
 
 #: ui/BookSources.qml:21
 msgid "Import from Content Hub"
@@ -268,9 +275,9 @@ msgstr ""
 #. / The application name is both an acronym and an homage to Star Wars. /
 #: beru.desktop.tr:4
 msgid "Beru"
-msgstr ""
+msgstr "Beru"
 
 #. / "Basic" is used in the sense of "simple" or "uncomplicated". /
 #: beru.desktop.tr:6
 msgid "The Basic Epub Reader for Ubuntu"
-msgstr ""
+msgstr "Le lecteur de publications électroniques pour Ubuntu"

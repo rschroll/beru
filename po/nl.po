@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: beru\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-04-12 22:26-0400\n"
-"PO-Revision-Date: 2014-11-02 08:06+0000\n"
+"PO-Revision-Date: 2015-06-14 10:01+0000\n"
 "Last-Translator: Hannie Dumoleyn <Unknown>\n"
 "Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Launchpad-Export-Date: 2015-04-16 03:00+0000\n"
-"X-Generator: Launchpad (build 17428)\n"
+"X-Launchpad-Export-Date: 2015-09-07 22:20+0000\n"
+"X-Generator: Launchpad (build 17706)\n"
 
 #: ui/Reader.qml:32
 msgid ""
@@ -24,6 +24,9 @@ msgid ""
 "\n"
 "Remember, Beru can only open EPUB, PDF, and CBZ files without DRM."
 msgstr ""
+"Bestandstype kon niet worden vastgesteld.\n"
+"\n"
+"Onthoud dat Beru alleen EPUB-, PDF- en CBZ-bestanden kan openen zonder DRM."
 
 #: ui/Reader.qml:35
 msgid ""
@@ -31,6 +34,10 @@ msgid ""
 "\n"
 "Although it appears to be a %1 file, it could not be parsed by Beru."
 msgstr ""
+"Bestand kon niet worden ontleed.\n"
+"\n"
+"Alhoewel het een %1 bestand lijkt te zijn, kon het niet door Beru worden "
+"ontleed."
 
 #: ui/LocalBooks.qml:19
 msgid "Library"
@@ -176,12 +183,12 @@ msgstr "Sluiten"
 #. / when the user releases the control. /
 #: ui/LocalBooks.qml:881
 msgid "Release to Delete"
-msgstr ""
+msgstr "Loslaten om te wissen"
 
 #. / A control can be dragged to delete a file. /
 #: ui/LocalBooks.qml:883
 msgid "Swipe to Delete"
-msgstr ""
+msgstr "Vegen om te wissen"
 
 #: ui/main.qml:66
 msgid "Error Opening File"
@@ -193,43 +200,43 @@ msgstr "Ok"
 
 #: ui/Importer.qml:121
 msgid "Importing books..."
-msgstr ""
+msgstr "Boeken importeren…"
 
 #: ui/Importer.qml:142
 msgid "Waiting"
-msgstr ""
+msgstr "Wachten"
 
 #: ui/Importer.qml:144
 msgid "Processing"
-msgstr ""
+msgstr "Aan het verwerken"
 
 #: ui/Importer.qml:146
 msgid "Imported to %1"
-msgstr ""
+msgstr "Geïmporteerd naar %1"
 
 #: ui/Importer.qml:148
 msgid "Already in library: %1"
-msgstr ""
+msgstr "Reeds in bibliotheek: %1"
 
 #: ui/Importer.qml:150
 msgid "Error: %1"
-msgstr ""
+msgstr "Fout: %1"
 
 #: ui/Importer.qml:171
 msgid "Import books from"
-msgstr ""
+msgstr "Boeken importeren uit"
 
 #: ui/BookPage.qml:101
 msgid "Pages read today: %1"
-msgstr ""
+msgstr "Vandaag gelezen pagina's: %1"
 
 #: ui/BookPage.qml:102
 msgid "No pages read today"
-msgstr ""
+msgstr "Vandaag geen pagina's gelezen"
 
 #: ui/BookPage.qml:178
 msgid "Page"
-msgstr ""
+msgstr "Pagina"
 
 #: ui/BookPage.qml:201
 msgid "Contents"
@@ -274,7 +281,7 @@ msgstr "Standaard laden"
 
 #: ui/BookSources.qml:21
 msgid "Import from Content Hub"
-msgstr ""
+msgstr "Importeren uit Content Hub"
 
 #. / The application name is both an acronym and an homage to Star Wars. /
 #: beru.desktop.tr:4
