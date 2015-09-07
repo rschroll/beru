@@ -773,7 +773,6 @@ Page {
                 onLinkActivated: Qt.openUrlExternally(link)
                 horizontalAlignment: Text.AlignHCenter
                 fontSize: "medium"
-                color: Qt.rgba(1, 1, 1, 0.6)
                 wrapMode: Text.WordWrap
             }
 
